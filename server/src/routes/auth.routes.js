@@ -81,6 +81,9 @@ router.post('/login', validate(loginSchema), async (req, res, next) => {
     if (!user || !(await bcrypt.compare(req.body.password, user.password))) {
       return res.status(401).json({ error: 'Invalid email or password' });
     }
+    if (user.verificationStatus === 'rejected') {
+      return res.status(403).json({ error: 'Your account has been rejected. Contact admin@afrimos.et for details.' });
+    }
     if (user.supplierProfile) {
       await prisma.supplierProfile.update({
         where: { id: user.supplierProfile.id },

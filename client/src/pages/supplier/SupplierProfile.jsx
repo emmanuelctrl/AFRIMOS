@@ -88,7 +88,7 @@ export default function SupplierProfile() {
         </div>
       </div>
 
-      {flash && <p className="rounded-xl bg-brand-50 px-4 py-3 text-sm text-brand-800">{flash}</p>}
+      {flash && <p className="rounded-xl border border-brand-200/60 bg-brand-50/80 px-4 py-3 backdrop-blur-sm text-sm text-brand-800">{flash}</p>}
 
       <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
         <section className="card space-y-4">
@@ -168,7 +168,7 @@ export default function SupplierProfile() {
             {logo ? (
               <img src={logo} alt="Logo" className="h-16 w-16 rounded-lg object-cover" />
             ) : (
-              <div className="flex h-16 w-16 items-center justify-center rounded-lg bg-gray-100 text-gray-400">
+              <div className="flex h-16 w-16 items-center justify-center rounded-xl border border-white/40 bg-white/40 text-gray-500">
                 —
               </div>
             )}

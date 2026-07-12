@@ -58,12 +58,12 @@ export default function BuyerDashboard() {
             No RFQs yet. <Link to="/dashboard/buyer/rfqs/new" className="text-brand-700 underline">Create your first one</Link>.
           </p>
         ) : (
-          <div className="divide-y divide-gray-100">
+          <div className="divide-y divide-white/40">
             {rfqs.slice(0, 5).map((r) => (
               <Link
                 key={r.id}
                 to={`/dashboard/buyer/rfqs/${r.id}`}
-                className="flex items-center justify-between gap-4 py-3 hover:bg-gray-50"
+                className="flex items-center justify-between gap-4 py-3 row-hover"
               >
                 <div>
                   <p className="font-medium text-gray-900">{r.title}</p>

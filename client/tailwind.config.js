@@ -23,6 +23,10 @@ export default {
           600: '#cb6e17',
         },
       },
+      boxShadow: {
+        glass: '0 8px 32px rgba(16, 32, 25, 0.10), inset 0 1px 0 rgba(255, 255, 255, 0.45)',
+        'glass-lg': '0 20px 48px rgba(16, 32, 25, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.55)',
+      },
     },
   },
   plugins: [],

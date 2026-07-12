@@ -61,7 +61,7 @@ export default function AdminUsers() {
 
       <div className="card overflow-x-auto p-0">
         <table className="w-full text-left text-sm">
-          <thead className="border-b border-gray-200 bg-gray-50 text-xs uppercase text-gray-500">
+          <thead className="thead-glass">
             <tr>
               <th className="px-6 py-3">Name</th>
               <th className="px-6 py-3">Email</th>
@@ -71,9 +71,9 @@ export default function AdminUsers() {
               <th className="px-6 py-3">Status</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-100">
+          <tbody className="divide-y divide-white/40">
             {data.users.map((u) => (
-              <tr key={u.id} className="hover:bg-gray-50">
+              <tr key={u.id} className="row-hover">
                 <td className="px-6 py-3 font-medium text-gray-900">{u.fullName}</td>
                 <td className="px-6 py-3 text-gray-600">{u.email}</td>
                 <td className="px-6 py-3 capitalize text-gray-600">{u.role}</td>

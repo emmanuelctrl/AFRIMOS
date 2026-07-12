@@ -46,13 +46,13 @@ export default function SupplierDashboard() {
       </div>
 
       {user.verificationStatus === 'pending' && (
-        <p className="rounded-xl bg-yellow-50 px-4 py-3 text-sm text-yellow-800">
+        <p className="rounded-xl border border-yellow-200/60 bg-yellow-50/70 px-4 py-3 backdrop-blur-sm text-sm text-yellow-800">
           Your profile is under review. You'll appear in the public directory and receive
           inquiries once our team verifies your company.
         </p>
       )}
       {user.verificationStatus === 'rejected' && (
-        <p className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">
+        <p className="rounded-xl border border-red-200/60 bg-red-50/70 px-4 py-3 backdrop-blur-sm text-sm text-red-700">
           Your profile was rejected. Contact admin@afrimos.et for details.
         </p>
       )}
@@ -80,12 +80,12 @@ export default function SupplierDashboard() {
             No inquiries yet. Make sure your profile is complete and products are listed.
           </p>
         ) : (
-          <div className="divide-y divide-gray-100">
+          <div className="divide-y divide-white/40">
             {rfqs.map((r) => (
               <Link
                 key={r.id}
                 to={`/dashboard/supplier/rfqs/${r.id}`}
-                className="flex items-center justify-between gap-4 py-3 hover:bg-gray-50"
+                className="flex items-center justify-between gap-4 py-3 row-hover"
               >
                 <div>
                   <p className="font-medium text-gray-900">{r.title}</p>

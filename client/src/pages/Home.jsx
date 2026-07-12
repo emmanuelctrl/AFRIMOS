@@ -71,10 +71,15 @@ export default function Home() {
   return (
     <div>
       {/* Hero */}
-      <section className="bg-gradient-to-b from-brand-900 to-brand-700 text-white">
-        <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:py-28">
+      <section className="relative overflow-hidden bg-gradient-to-b from-brand-950 via-brand-900 to-brand-700 text-white">
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0">
+          <div className="absolute -left-32 top-10 h-96 w-96 rounded-full bg-brand-500/30 blur-3xl" />
+          <div className="absolute -right-24 top-1/3 h-[28rem] w-[28rem] rounded-full bg-accent-500/20 blur-3xl" />
+          <div className="absolute bottom-[-8rem] left-1/3 h-80 w-80 rounded-full bg-brand-300/20 blur-3xl" />
+        </div>
+        <div className="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:py-28">
           <div className="max-w-3xl">
-            <p className="mb-4 inline-block rounded-full bg-white/10 px-3 py-1 text-sm font-medium">
+            <p className="mb-4 inline-block rounded-full border border-white/25 bg-white/10 px-3 py-1 text-sm font-medium backdrop-blur-sm">
               Ethiopian exports · $4.2B market
             </p>
             <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl">
@@ -89,7 +94,7 @@ export default function Home() {
               <Link to="/signup?role=supplier" className="btn bg-accent-500 px-6 py-3 text-base text-white hover:bg-accent-600">
                 Sign up as Supplier
               </Link>
-              <Link to="/suppliers" className="btn bg-white px-6 py-3 text-base text-brand-800 hover:bg-brand-50">
+              <Link to="/suppliers" className="btn border border-white/40 bg-white/90 px-6 py-3 text-base text-brand-800 backdrop-blur-sm hover:bg-white">
                 Find Suppliers
               </Link>
             </div>
@@ -102,8 +107,8 @@ export default function Home() {
         <h2 className="text-center text-3xl font-bold text-gray-900">Why AFRIMOS</h2>
         <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {BENEFITS.map((b) => (
-            <div key={b.title} className="card">
-              <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-brand-100 text-brand-700">
+            <div key={b.title} className="card card-hover">
+              <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl border border-white/50 bg-brand-100/80 text-brand-700">
                 <svg className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" d={b.icon} />
                 </svg>
@@ -116,10 +121,10 @@ export default function Home() {
       </section>
 
       {/* Testimonials */}
-      <section className="bg-white py-16">
+      <section className="py-16">
         <div className="mx-auto max-w-3xl px-4 text-center sm:px-6">
           <h2 className="text-3xl font-bold text-gray-900">Trusted by exporters & buyers</h2>
-          <blockquote className="mt-8 min-h-32">
+          <blockquote className="card mt-8 min-h-32">
             <p className="text-lg italic text-gray-700">"{TESTIMONIALS[slide].quote}"</p>
             <footer className="mt-4 text-sm">
               <span className="font-semibold text-gray-900">{TESTIMONIALS[slide].name}</span>
@@ -142,7 +147,7 @@ export default function Home() {
       {/* FAQ */}
       <section className="mx-auto max-w-3xl px-4 py-16 sm:px-6">
         <h2 className="text-center text-3xl font-bold text-gray-900">Frequently asked questions</h2>
-        <div className="mt-8 divide-y divide-gray-200 rounded-xl border border-gray-200 bg-white">
+        <div className="glass mt-8 divide-y divide-white/40 overflow-hidden">
           {FAQS.map((f, i) => (
             <div key={f.q}>
               <button
@@ -159,15 +164,21 @@ export default function Home() {
       </section>
 
       {/* CTA */}
-      <section className="bg-brand-800 py-14 text-center text-white">
-        <h2 className="text-3xl font-bold">Ready to trade directly?</h2>
-        <p className="mx-auto mt-3 max-w-xl text-brand-100">
-          Join the marketplace built for African commodity exports.
-        </p>
-        <div className="mt-6 flex justify-center gap-4">
-          <Link to="/signup" className="btn bg-accent-500 px-6 py-3 text-white hover:bg-accent-600">
-            Get started free
-          </Link>
+      <section className="relative overflow-hidden bg-brand-900 py-14 text-center text-white">
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0">
+          <div className="absolute -left-20 top-0 h-64 w-64 rounded-full bg-accent-500/20 blur-3xl" />
+          <div className="absolute -right-20 bottom-0 h-64 w-64 rounded-full bg-brand-400/25 blur-3xl" />
+        </div>
+        <div className="relative">
+          <h2 className="text-3xl font-bold">Ready to trade directly?</h2>
+          <p className="mx-auto mt-3 max-w-xl text-brand-100">
+            Join the marketplace built for African commodity exports.
+          </p>
+          <div className="mt-6 flex justify-center gap-4">
+            <Link to="/signup" className="btn bg-accent-500 px-6 py-3 text-white shadow-lg shadow-black/20 hover:bg-accent-600">
+              Get started free
+            </Link>
+          </div>
         </div>
       </section>
     </div>

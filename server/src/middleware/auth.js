@@ -12,6 +12,9 @@ export async function requireAuth(req, res, next) {
       include: { supplierProfile: { select: { id: true } } },
     });
     if (!user) return res.status(401).json({ error: 'User no longer exists' });
+    if (user.verificationStatus === 'rejected') {
+      return res.status(403).json({ error: 'Your account has been rejected. Contact admin@afrimos.et for details.' });
+    }
     req.user = user;
     next();
   } catch {

@@ -52,7 +52,7 @@ export default function RfqList({ base }) {
               setParams(next);
             }}
             className={`rounded-full px-4 py-1.5 text-sm font-medium ${
-              status === s ? 'bg-brand-600 text-white' : 'bg-white text-gray-600 border border-gray-300 hover:bg-gray-50'
+              status === s ? 'bg-brand-600 text-white shadow-md shadow-brand-900/20' : 'border border-white/50 bg-white/50 text-gray-700 backdrop-blur-sm hover:bg-white/70'
             }`}
           >
             {s || 'All'}
@@ -71,7 +71,7 @@ export default function RfqList({ base }) {
       ) : (
         <div className="card overflow-x-auto p-0">
           <table className="w-full text-left text-sm">
-            <thead className="border-b border-gray-200 bg-gray-50 text-xs uppercase text-gray-500">
+            <thead className="thead-glass">
               <tr>
                 <th className="px-6 py-3">{isSupplier ? 'Buyer' : 'Supplier'}</th>
                 <th className="px-6 py-3">Request</th>
@@ -81,9 +81,9 @@ export default function RfqList({ base }) {
                 <th className="px-6 py-3">Status</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100">
+            <tbody className="divide-y divide-white/40">
               {data.rfqs.map((r) => (
-                <tr key={r.id} className="hover:bg-gray-50">
+                <tr key={r.id} className="row-hover">
                   <td className="px-6 py-3 text-gray-700">
                     {isSupplier ? r.buyer.fullName : r.supplier?.companyName || 'Broadcast'}
                   </td>

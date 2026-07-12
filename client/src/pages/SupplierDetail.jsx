@@ -51,7 +51,7 @@ export default function SupplierDetail() {
             <div className="mt-2 flex flex-wrap items-center gap-2">
               {supplier.user.verificationStatus === 'verified' && <VerifiedBadge />}
               {supplier.certifications.map((c) => (
-                <span key={c} className="rounded-full bg-gray-100 px-2.5 py-0.5 text-xs text-gray-700">
+                <span key={c} className="chip">
                   {c}
                 </span>
               ))}
@@ -83,7 +83,7 @@ export default function SupplierDetail() {
             {supplier.products.length === 0 ? (
               <p className="text-sm text-gray-500">No products listed yet.</p>
             ) : (
-              <div className="divide-y divide-gray-100">
+              <div className="divide-y divide-white/40">
                 {supplier.products.map((p) => (
                   <div key={p.id} className="flex items-center justify-between gap-4 py-3">
                     <div>
@@ -112,7 +112,7 @@ export default function SupplierDetail() {
             ) : (
               <div className="space-y-4">
                 {supplier.reviews.map((r) => (
-                  <div key={r.id} className="rounded-lg bg-gray-50 p-4">
+                  <div key={r.id} className="rounded-xl border border-white/40 bg-white/40 p-4">
                     <p className="text-sm font-medium text-amber-600">{'★'.repeat(r.rating)}</p>
                     {r.comment && <p className="mt-1 text-sm text-gray-700">{r.comment}</p>}
                     <p className="mt-2 text-xs text-gray-400">
