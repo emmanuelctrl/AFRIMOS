@@ -1,0 +1,186 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  supplier
+  buyer
+  admin
+}
+
+enum UserType {
+  individual
+  company
+}
+
+enum VerificationStatus {
+  pending
+  verified
+  rejected
+}
+
+enum ProductCategory {
+  Coffee
+  Pulses
+  Oilseeds
+  Sesame
+  Spices
+  Fruits
+}
+
+enum Unit {
+  kg
+  MT
+  bag
+}
+
+enum Quality {
+  Standard
+  Premium
+  Specialty
+}
+
+enum ShippingTerms {
+  FOB
+  CIF
+  DDP
+}
+
+enum RfqStatus {
+  Draft
+  Sent
+  Responded
+  Negotiating
+  Closed
+}
+
+enum MessageStatus {
+  Sent
+  Read
+}
+
+model User {
+  id                 String             @id @default(uuid())
+  email              String             @unique
+  password           String
+  fullName           String
+  role               Role
+  userType           UserType           @default(individual)
+  emailVerified      Boolean            @default(false)
+  emailVerifyToken   String?            @unique
+  verificationStatus VerificationStatus @default(pending)
+  verificationNotes  String?
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+
+  supplierProfile  SupplierProfile?
+  rfqsSent         Rfq[]            @relation("BuyerRfqs")
+  messagesSent     Message[]        @relation("SentMessages")
+  messagesReceived Message[]        @relation("ReceivedMessages")
+  reviewsWritten   Review[]         @relation("ReviewsWritten")
+}
+
+model SupplierProfile {
+  id                   String         @id @default(uuid())
+  userId               String         @unique
+  user                 User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  companyName          String
+  registrationNumber   String?
+  address              String?
+  city                 String?
+  country              String         @default("Ethiopia")
+  phone                String?
+  website              String?
+  logoBanner           String?
+  description          String?
+  certifications       String[]       @default([])
+  shippingTerms        ShippingTerms?
+  minimumOrderQuantity Int?
+  leadTime             Int?
+  rating               Float          @default(0)
+  totalInquiries       Int            @default(0)
+  totalTransactions    Int            @default(0)
+  lastActive           DateTime       @default(now())
+  createdAt            DateTime       @default(now())
+  updatedAt            DateTime       @updatedAt
+
+  products Product[]
+  rfqs     Rfq[]
+  reviews  Review[]
+}
+
+model Product {
+  id                   String          @id @default(uuid())
+  supplierId           String
+  supplier             SupplierProfile @relation(fields: [supplierId], references: [id], onDelete: Cascade)
+  category             ProductCategory
+  name                 String
+  description          String?
+  pricePerUnit         Float
+  unit                 Unit            @default(kg)
+  minimumOrderQuantity Int             @default(1)
+  maximumOrderQuantity Int?
+  origin               String?
+  quality              Quality         @default(Standard)
+  certifications       String[]        @default([])
+  image                String?
+  createdAt            DateTime        @default(now())
+  updatedAt            DateTime        @updatedAt
+}
+
+model Rfq {
+  id                   String          @id @default(uuid())
+  buyerId              String
+  buyer                User            @relation("BuyerRfqs", fields: [buyerId], references: [id], onDelete: Cascade)
+  supplierId           String?
+  supplier             SupplierProfile? @relation(fields: [supplierId], references: [id], onDelete: SetNull)
+  productCategory      ProductCategory
+  title                String
+  description          String?
+  quantity             Float
+  unit                 Unit            @default(kg)
+  requiredDeliveryDate DateTime?
+  budget               Float?
+  terms                String?
+  status               RfqStatus       @default(Sent)
+  createdAt            DateTime        @default(now())
+  updatedAt            DateTime        @updatedAt
+  closedAt             DateTime?
+
+  messages Message[]
+  reviews  Review[]
+}
+
+model Message {
+  id          String        @id @default(uuid())
+  rfqId       String
+  rfq         Rfq           @relation(fields: [rfqId], references: [id], onDelete: Cascade)
+  senderId    String
+  sender      User          @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
+  recipientId String
+  recipient   User          @relation("ReceivedMessages", fields: [recipientId], references: [id], onDelete: Cascade)
+  subject     String?
+  messageBody String
+  attachments String[]      @default([])
+  status      MessageStatus @default(Sent)
+  createdAt   DateTime      @default(now())
+  readAt      DateTime?
+}
+
+model Review {
+  id           String          @id @default(uuid())
+  fromUserId   String
+  fromUser     User            @relation("ReviewsWritten", fields: [fromUserId], references: [id], onDelete: Cascade)
+  toSupplierId String
+  toSupplier   SupplierProfile @relation(fields: [toSupplierId], references: [id], onDelete: Cascade)
+  rfqId        String?
+  rfq          Rfq?            @relation(fields: [rfqId], references: [id], onDelete: SetNull)
+  rating       Int
+  comment      String?
+  createdAt    DateTime        @default(now())
+}
