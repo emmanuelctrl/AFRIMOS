@@ -58,8 +58,8 @@ function ProductModal({ product, supplierId, onClose, onSaved }) {
   };
 
   return (
-    <div className="fixed inset-0 z-30 flex items-center justify-center bg-black/40 p-4">
-      <div className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-xl bg-white p-6">
+    <div className="fixed inset-0 z-30 flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm">
+      <div className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-2xl border border-white/50 bg-white/80 p-6 shadow-glass-lg backdrop-blur-md sm:backdrop-blur-lg">
         <div className="mb-4 flex items-center justify-between">
           <h2 className="text-lg font-semibold text-gray-900">
             {product ? 'Edit product' : 'Add product'}
@@ -68,7 +68,7 @@ function ProductModal({ product, supplierId, onClose, onSaved }) {
             ✕
           </button>
         </div>
-        {error && <p className="mb-3 rounded-lg bg-red-50 px-4 py-2 text-sm text-red-700">{error}</p>}
+        {error && <p className="mb-3 rounded-lg border border-red-200/60 bg-red-50/80 px-4 py-2 text-sm text-red-700">{error}</p>}
         <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
@@ -207,7 +207,7 @@ export default function SupplierProducts() {
       ) : (
         <div className="card overflow-x-auto p-0">
           <table className="w-full text-left text-sm">
-            <thead className="border-b border-gray-200 bg-gray-50 text-xs uppercase text-gray-500">
+            <thead className="thead-glass">
               <tr>
                 <th className="px-6 py-3">Product</th>
                 <th className="px-6 py-3">Category</th>
@@ -217,7 +217,7 @@ export default function SupplierProducts() {
                 <th className="px-6 py-3 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100">
+            <tbody className="divide-y divide-white/40">
               {supplier.products.map((p) => (
                 <tr key={p.id}>
                   <td className="px-6 py-3 font-medium text-gray-900">{p.name}</td>

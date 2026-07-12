@@ -5,9 +5,9 @@ const STYLES = {
   Sent: 'bg-blue-100 text-blue-800',
   Responded: 'bg-brand-100 text-brand-800',
   Negotiating: 'bg-purple-100 text-purple-800',
-  Closed: 'bg-gray-200 text-gray-700',
-  Draft: 'bg-gray-100 text-gray-600',
-  gray: 'bg-gray-100 text-gray-700',
+  Closed: 'bg-gray-200/80 text-gray-700',
+  Draft: 'bg-white/60 text-gray-600 border border-white/50',
+  gray: 'bg-white/60 text-gray-700 border border-white/50',
 };
 
 export default function Badge({ children, tone }) {

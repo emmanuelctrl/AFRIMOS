@@ -24,15 +24,15 @@ function ReviewModal({ supplier, onClose, onDecided }) {
   };
 
   return (
-    <div className="fixed inset-0 z-30 flex items-center justify-center bg-black/40 p-4">
-      <div className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-xl bg-white p-6">
+    <div className="fixed inset-0 z-30 flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm">
+      <div className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-2xl border border-white/50 bg-white/80 p-6 shadow-glass-lg backdrop-blur-md sm:backdrop-blur-lg">
         <div className="mb-4 flex items-center justify-between">
           <h2 className="text-lg font-semibold text-gray-900">Review supplier</h2>
           <button onClick={onClose} className="text-gray-400 hover:text-gray-700" aria-label="Close">
             ✕
           </button>
         </div>
-        {error && <p className="mb-3 rounded-lg bg-red-50 px-4 py-2 text-sm text-red-700">{error}</p>}
+        {error && <p className="mb-3 rounded-lg border border-red-200/60 bg-red-50/80 px-4 py-2 text-sm text-red-700">{error}</p>}
         <dl className="space-y-2 text-sm">
           {[
             ['Company', p?.companyName],
@@ -54,7 +54,7 @@ function ReviewModal({ supplier, onClose, onDecided }) {
           ))}
         </dl>
         {p?.description && (
-          <p className="mt-4 rounded-lg bg-gray-50 p-3 text-sm text-gray-700">{p.description}</p>
+          <p className="mt-4 rounded-xl border border-white/40 bg-white/40 p-3 text-sm text-gray-700">{p.description}</p>
         )}
         <div className="mt-4">
           <label className="label">Verification notes</label>
@@ -109,7 +109,7 @@ export default function AdminSuppliers() {
               setParams(next);
             }}
             className={`rounded-full px-4 py-1.5 text-sm font-medium capitalize ${
-              status === s ? 'bg-brand-600 text-white' : 'border border-gray-300 bg-white text-gray-600 hover:bg-gray-50'
+              status === s ? 'bg-brand-600 text-white shadow-md shadow-brand-900/20' : 'border border-white/50 bg-white/50 text-gray-700 backdrop-blur-sm hover:bg-white/70'
             }`}
           >
             {s || 'All'}
@@ -119,7 +119,7 @@ export default function AdminSuppliers() {
 
       <div className="card overflow-x-auto p-0">
         <table className="w-full text-left text-sm">
-          <thead className="border-b border-gray-200 bg-gray-50 text-xs uppercase text-gray-500">
+          <thead className="thead-glass">
             <tr>
               <th className="px-6 py-3">Company</th>
               <th className="px-6 py-3">Contact</th>
@@ -129,9 +129,9 @@ export default function AdminSuppliers() {
               <th className="px-6 py-3 text-right">Actions</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-100">
+          <tbody className="divide-y divide-white/40">
             {data.suppliers.map((s) => (
-              <tr key={s.id} className="hover:bg-gray-50">
+              <tr key={s.id} className="row-hover">
                 <td className="px-6 py-3 font-medium text-gray-900">
                   {s.supplierProfile?.companyName || '—'}
                 </td>

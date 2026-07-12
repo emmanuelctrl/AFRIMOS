@@ -30,7 +30,7 @@ export default function AdminDashboard() {
       {data.pendingVerifications > 0 && (
         <Link
           to="/admin/suppliers?status=pending"
-          className="block rounded-xl bg-yellow-50 px-4 py-3 text-sm font-medium text-yellow-800 hover:bg-yellow-100"
+          className="block rounded-xl border border-yellow-200/60 bg-yellow-50/70 px-4 py-3 backdrop-blur-sm text-sm font-medium text-yellow-800 hover:bg-yellow-100"
         >
           ⚠ {data.pendingVerifications} supplier{data.pendingVerifications === 1 ? '' : 's'} awaiting
           verification - review now

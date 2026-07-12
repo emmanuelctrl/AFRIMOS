@@ -103,14 +103,14 @@ export default function RfqDetail() {
           ))}
         </dl>
         {rfq.description && (
-          <p className="mt-4 whitespace-pre-line rounded-lg bg-gray-50 p-4 text-sm text-gray-700">
+          <p className="mt-4 whitespace-pre-line rounded-xl border border-white/40 bg-white/40 p-4 text-sm text-gray-700">
             {rfq.description}
           </p>
         )}
       </div>
 
       <div className="card flex h-[28rem] flex-col p-0">
-        <p className="border-b border-gray-200 px-6 py-3 font-semibold text-gray-900">Conversation</p>
+        <p className="border-b border-white/40 px-6 py-3 font-semibold text-gray-900">Conversation</p>
         <div className="flex-1 space-y-3 overflow-y-auto px-6 py-4">
           {messages.length === 0 && (
             <p className="py-10 text-center text-sm text-gray-400">
@@ -123,7 +123,7 @@ export default function RfqDetail() {
               <div key={m.id} className={`flex ${mine ? 'justify-end' : 'justify-start'}`}>
                 <div
                   className={`max-w-[75%] rounded-2xl px-4 py-2.5 text-sm ${
-                    mine ? 'bg-brand-600 text-white' : 'bg-gray-100 text-gray-800'
+                    mine ? 'bg-brand-600 text-white shadow-md shadow-brand-900/20' : 'border border-white/50 bg-white/60 text-gray-800 backdrop-blur-sm'
                   }`}
                 >
                   <p className="whitespace-pre-line">{m.messageBody}</p>
@@ -138,7 +138,7 @@ export default function RfqDetail() {
           <div ref={bottomRef} />
         </div>
         {error && <p className="px-6 pb-2 text-sm text-red-600">{error}</p>}
-        <form onSubmit={send} className="flex gap-3 border-t border-gray-200 p-4">
+        <form onSubmit={send} className="flex gap-3 border-t border-white/40 p-4">
           <input
             className="input"
             placeholder={

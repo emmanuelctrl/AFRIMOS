@@ -54,7 +54,7 @@ export default function CreateRfq() {
   return (
     <div className="mx-auto max-w-2xl space-y-6">
       <h1 className="text-2xl font-bold text-gray-900">Create a Request for Quote</h1>
-      {error && <p className="rounded-lg bg-red-50 px-4 py-2 text-sm text-red-700">{error}</p>}
+      {error && <p className="rounded-lg border border-red-200/60 bg-red-50/80 px-4 py-2 text-sm text-red-700">{error}</p>}
 
       <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
         <section className="card space-y-4">
@@ -126,11 +126,11 @@ export default function CreateRfq() {
         <section className="card space-y-4">
           <p className="font-semibold text-gray-900">Send to</p>
           <div className="flex flex-col gap-3 sm:flex-row">
-            <label className={`flex-1 cursor-pointer rounded-xl border p-4 ${mode === 'specific' ? 'border-brand-500 bg-brand-50' : 'border-gray-200'}`}>
+            <label className={`flex-1 cursor-pointer rounded-xl border p-4 ${mode === 'specific' ? 'border-brand-500 bg-brand-100/70' : 'border-white/50 bg-white/40'}`}>
               <input type="radio" className="mr-2" checked={mode === 'specific'} onChange={() => setMode('specific')} />
               A specific supplier
             </label>
-            <label className={`flex-1 cursor-pointer rounded-xl border p-4 ${mode === 'broadcast' ? 'border-brand-500 bg-brand-50' : 'border-gray-200'}`}>
+            <label className={`flex-1 cursor-pointer rounded-xl border p-4 ${mode === 'broadcast' ? 'border-brand-500 bg-brand-100/70' : 'border-white/50 bg-white/40'}`}>
               <input type="radio" className="mr-2" checked={mode === 'broadcast'} onChange={() => setMode('broadcast')} />
               Broadcast to all suppliers in this category
             </label>

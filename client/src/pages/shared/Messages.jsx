@@ -29,12 +29,12 @@ export default function Messages({ base }) {
             : 'Conversations start when you respond to buyer inquiries.'}
         </div>
       ) : (
-        <div className="card divide-y divide-gray-100 p-0">
+        <div className="card divide-y divide-white/40 p-0">
           {conversations.map((c) => (
             <Link
               key={c.rfq.id}
               to={`${base}/${c.rfq.id}`}
-              className="flex items-center gap-4 px-6 py-4 hover:bg-gray-50"
+              className="flex items-center gap-4 px-6 py-4 row-hover"
             >
               <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-brand-100 font-semibold text-brand-700">
                 {c.counterpart?.fullName?.[0] || '?'}

@@ -34,7 +34,7 @@ export default function Signup() {
         <div className="mt-10 space-y-4">
           <p className="text-center text-gray-600">I want to…</p>
           <button
-            className="card w-full text-left transition hover:border-brand-500"
+            className="card card-hover w-full text-left hover:border-brand-400"
             onClick={() => setRole('supplier')}
           >
             <p className="font-semibold text-gray-900">Sell my products (Supplier)</p>
@@ -43,7 +43,7 @@ export default function Signup() {
             </p>
           </button>
           <button
-            className="card w-full text-left transition hover:border-brand-500"
+            className="card card-hover w-full text-left hover:border-brand-400"
             onClick={() => setRole('buyer')}
           >
             <p className="font-semibold text-gray-900">Source products (Buyer)</p>
@@ -60,7 +60,7 @@ export default function Signup() {
               change
             </button>
           </p>
-          {error && <p className="rounded-lg bg-red-50 px-4 py-2 text-sm text-red-700">{error}</p>}
+          {error && <p className="rounded-lg border border-red-200/60 bg-red-50/80 px-4 py-2 text-sm text-red-700">{error}</p>}
           <div>
             <label className="label">Full name</label>
             <input className="input" {...register('fullName', { required: 'Your name is required', minLength: { value: 2, message: 'Too short' } })} />
