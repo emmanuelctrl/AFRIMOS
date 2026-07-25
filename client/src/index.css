@@ -5,90 +5,150 @@
 @layer base {
   html {
     color-scheme: dark;
+    scroll-behavior: smooth;
   }
   body {
-    @apply bg-ink-900 text-gray-200;
+    @apply bg-base-900 font-sans text-gray-300 antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  ::selection {
+    @apply bg-cyan-400/30 text-white;
+  }
+  /* Focus ring — visible for keyboard users, quiet for pointer users */
+  :focus-visible {
+    @apply outline-none ring-2 ring-cyan-400/70 ring-offset-2 ring-offset-base-900;
+  }
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #090d16;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 9999px;
+    border: 2px solid #090d16;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(34, 211, 238, 0.35);
   }
 }
 
 @layer components {
-  /* Frosted glass surfaces on a dark backdrop: a whisper of white over
-     near-black, with a hairline light rim. */
+  /* ---- Premium frosted glass ------------------------------------- */
   .glass {
-    @apply rounded-2xl border border-white/10 bg-white/5 shadow-glass backdrop-blur-sm sm:backdrop-blur-md;
+    @apply rounded-2xl border border-white/10 bg-white/5 shadow-glass backdrop-blur-xl;
   }
   .glass-dark {
-    @apply rounded-2xl border border-white/10 bg-black/30 shadow-glass backdrop-blur-sm sm:backdrop-blur-md;
+    @apply rounded-2xl border border-white/10 bg-black/30 shadow-glass backdrop-blur-xl;
   }
   .card {
     @apply glass p-6;
   }
   .card-hover {
-    @apply transition-all duration-200 hover:-translate-y-1 hover:border-white/20 hover:bg-white/10 hover:shadow-glass-lg;
+    @apply transition-all duration-300 hover:-translate-y-1 hover:border-white/20 hover:bg-white/[0.07] hover:shadow-glass-lg;
   }
+
+  /* ---- Buttons ---------------------------------------------------- */
   .btn {
-    @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2 text-sm font-semibold transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-50;
+    @apply relative inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2 text-sm font-semibold transition-all duration-300 disabled:cursor-not-allowed disabled:opacity-50;
   }
-  /* Primary actions use the crimson accent for contrast on dark */
   .btn-primary {
-    @apply btn bg-brand-600 text-white shadow-md shadow-brand-900/40 hover:bg-brand-500;
+    @apply btn bg-gradient-brand text-base-900 shadow-glow-cyan hover:shadow-[0_0_60px_rgba(34,211,238,0.45)];
   }
   .btn-secondary {
-    @apply btn border border-white/15 bg-white/5 text-gray-100 backdrop-blur-sm hover:bg-white/10;
+    @apply btn border border-white/15 bg-white/5 text-gray-100 backdrop-blur-xl hover:border-white/25 hover:bg-white/10;
   }
   .btn-danger {
     @apply btn bg-red-600 text-white shadow-md shadow-red-900/30 hover:bg-red-500;
   }
+
+  /* ---- Forms ------------------------------------------------------ */
   .input {
-    @apply w-full rounded-xl border border-white/15 bg-white/5 px-3 py-2 text-sm text-white shadow-inner placeholder:text-gray-500 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/50;
+    @apply w-full rounded-xl border border-white/[0.12] bg-white/5 px-3.5 py-2.5 text-sm text-white shadow-inner transition-all duration-300 placeholder:text-gray-500 focus:border-cyan-400/60 focus:bg-white/[0.07] focus:outline-none focus:ring-2 focus:ring-cyan-400/30;
   }
   .label {
-    @apply mb-1 block text-sm font-medium text-gray-300;
+    @apply mb-1.5 block text-sm font-medium text-gray-300;
   }
   .field-error {
     @apply mt-1 text-xs text-red-400;
   }
-  /* Small translucent chip used for product tags, certifications, etc. */
+
+  /* ---- Bits ------------------------------------------------------- */
   .chip {
-    @apply rounded-full border border-white/10 bg-white/5 px-2.5 py-0.5 text-xs text-gray-300 backdrop-blur-sm;
+    @apply rounded-full border border-white/10 bg-white/5 px-2.5 py-0.5 text-xs text-gray-300 backdrop-blur-md;
   }
-  /* Table styling over glass cards */
   .thead-glass {
-    @apply border-b border-white/10 bg-white/5 text-xs uppercase text-gray-400;
+    @apply border-b border-white/10 bg-white/5 text-xs uppercase tracking-wide text-gray-400;
   }
   .row-hover {
-    @apply transition-colors duration-150 hover:bg-white/5;
+    @apply transition-colors duration-200 hover:bg-white/5;
+  }
+
+  /* Gradient text used for headline accents */
+  .text-gradient {
+    @apply bg-gradient-brand bg-clip-text text-transparent;
+  }
+
+  /* Animated underline for nav links */
+  .link-underline {
+    @apply relative;
+  }
+  .link-underline::after {
+    content: '';
+    @apply absolute -bottom-1 left-0 h-px w-0 bg-gradient-brand transition-all duration-300;
+  }
+  .link-underline:hover::after,
+  .link-underline[data-active='true']::after {
+    @apply w-full;
+  }
+
+  /* Section rhythm */
+  .section {
+    @apply relative mx-auto w-full max-w-7xl px-5 py-24 sm:px-8 lg:py-32;
+  }
+}
+
+@layer utilities {
+  /* Border-only gradient (mask-composite trick) */
+  .gradient-border {
+    position: relative;
+  }
+  .gradient-border::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(140deg, rgba(34, 211, 238, 0.6), rgba(168, 85, 247, 0.45), transparent 70%);
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+  .noise-overlay {
+    background-image: theme('backgroundImage.noise');
+    opacity: 0.035;
+    mix-blend-mode: overlay;
+  }
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+  .preserve-3d {
+    transform-style: preserve-3d;
+  }
+  .backface-hidden {
+    backface-visibility: hidden;
   }
 }
 
 /* ------------------------------------------------------------------ *
- *  AFRIMOS landing — fonts & glass effects
+ *  Legacy landing effect (kept for the marketing hero)
  * ------------------------------------------------------------------ */
-
-/* Self-hosted Helvetica Neue Roman. Drop the binaries into
-   /public/fonts/ (see the README there); until then the fallback chain
-   keeps the page looking right. */
-@font-face {
-  font-family: 'Helvetica Neue Roman';
-  src:
-    url('/fonts/HelveticaNeue-Roman.woff2') format('woff2'),
-    url('/fonts/HelveticaNeue-Roman.woff') format('woff');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-/* Inter is the global default on every element. */
-* {
-  font-family: 'Inter', sans-serif;
-}
-
-/* Applied on the hero wrapper. Class specificity beats the `*` rule above. */
-.font-helvetica-neue {
-  font-family: 'Helvetica Neue Roman', 'Helvetica Neue', Helvetica, Arial, 'Inter', sans-serif;
-}
-
-/* Near-invisible frosted glass with a border-only gradient (mask-composite trick). */
 .liquid-glass {
   background: rgba(255, 255, 255, 0.01);
   background-blend-mode: luminosity;
@@ -120,4 +180,21 @@
   -webkit-mask-composite: xor;
   mask-composite: exclude;
   pointer-events: none;
+}
+
+/* ------------------------------------------------------------------ *
+ *  Accessibility — honour reduced-motion everywhere
+ * ------------------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
 }
