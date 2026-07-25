@@ -1,17 +1,17 @@
 import { Suspense, lazy, useEffect, useRef, useState } from 'react';
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
 import { SceneBoundary } from './SceneBoundary';
+import { ContainerFallback } from './ContainerFallback';
 
 // Three.js is heavy — keep it out of the entry chunk entirely.
 const HeroScene = lazy(() => import('./HeroScene'));
 
-/** Static gradient stand-in used while loading, and as the reduced-motion fallback. */
+/**
+ * Stand-in whenever WebGL is not in play. It draws the container in CSS rather
+ * than showing an empty glow, so the hero always has its subject.
+ */
 function SceneFallback() {
-  return (
-    <div aria-hidden="true" className="absolute inset-0 flex items-center justify-center">
-      <div className="h-[26rem] w-[26rem] max-w-[80vw] rounded-full bg-gradient-to-br from-electric-500/25 via-electric-500/15 to-electric-600/25 blur-[90px]" />
-    </div>
-  );
+  return <ContainerFallback />;
 }
 
 /**

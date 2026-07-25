@@ -3,10 +3,14 @@ import { Canvas, useFrame } from '@react-three/fiber';
 import { Float, Points, PointMaterial } from '@react-three/drei';
 import * as THREE from 'three';
 
-// Roasted-copper container: caramel body, dark-roast corrugation, walnut rails
-const ROAST = '#C07A34';
-const ROAST_DARK = '#6B3F19';
-const WALNUT = '#4A3423';
+// Cream container: latte body, warm sand shading, soft mocha rails
+const ROAST = '#F0E4D0';
+const ROAST_DARK = '#CBB393';
+const WALNUT = '#8A7357';
+
+// Roasted coffee beans
+const BEAN = '#6B4423';
+const BEAN_DARK = '#3A2416';
 
 /* ------------------------------------------------------------------ *
  *  Shipping container — built procedurally, no external assets
@@ -132,6 +136,73 @@ function Rig() {
 }
 
 /* ------------------------------------------------------------------ *
+ *  Coffee beans — ellipsoid body with the signature centre crease
+ * ------------------------------------------------------------------ */
+function Bean({
+  position,
+  scale = 1,
+  spin = 1,
+}: {
+  position: [number, number, number];
+  scale?: number;
+  spin?: number;
+}) {
+  const ref = useRef<THREE.Group>(null);
+
+  useFrame((_, delta) => {
+    if (!ref.current) return;
+    ref.current.rotation.x += delta * 0.28 * spin;
+    ref.current.rotation.y += delta * 0.42 * spin;
+  });
+
+  return (
+    <Float speed={1.5} rotationIntensity={0.9} floatIntensity={1.1}>
+      <group ref={ref} position={position} scale={scale}>
+        {/* Body */}
+        <mesh scale={[1, 0.66, 0.78]}>
+          <sphereGeometry args={[0.3, 24, 20]} />
+          <meshStandardMaterial color={BEAN} roughness={0.55} metalness={0.12} />
+        </mesh>
+        {/*
+          Crease sits flush in the face rather than proud of it — pushed out any
+          further it reads as a ring around the bean instead of a groove.
+        */}
+        {[0.2, -0.2].map((z, i) => (
+          <mesh key={i} position={[0, 0, z]} scale={[0.88, 0.085, 0.13]}>
+            <sphereGeometry args={[0.3, 16, 12]} />
+            <meshStandardMaterial color={BEAN_DARK} roughness={0.8} />
+          </mesh>
+        ))}
+      </group>
+    </Float>
+  );
+}
+
+function Beans() {
+  const beans = useMemo(
+    () =>
+      // Kept off the top centre so beans never collide with the navbar.
+      [
+        { position: [-3.9, 0.9, 1.4], scale: 1.15, spin: 1 },
+        { position: [3.6, 0.6, 0.8], scale: 0.9, spin: -0.8 },
+        { position: [-2.8, -2.1, 1.9], scale: 1, spin: 1.3 },
+        { position: [4.1, -1.8, 1.6], scale: 1.25, spin: -1.1 },
+        { position: [1.4, -2.6, 2.1], scale: 0.85, spin: 0.9 },
+        { position: [-4.6, -0.8, 0.4], scale: 0.95, spin: -1.4 },
+      ] as const,
+    []
+  );
+
+  return (
+    <>
+      {beans.map((b, i) => (
+        <Bean key={i} position={b.position as [number, number, number]} scale={b.scale} spin={b.spin} />
+      ))}
+    </>
+  );
+}
+
+/* ------------------------------------------------------------------ *
  *  Ambient dust motes
  * ------------------------------------------------------------------ */
 function Motes({ count = 900 }: { count?: number }) {
@@ -175,15 +246,14 @@ function Motes({ count = 900 }: { count?: number }) {
 function Scene() {
   return (
     <>
-      <ambientLight intensity={0.9} />
-      {/* Key light from above, like a floodlit dock */}
-      <directionalLight position={[3, 8, 4]} intensity={3.4} color="#FFF6E9" />
-      {/* Fill from camera side so the near face never goes muddy */}
-      <directionalLight position={[-2, 2, 7]} intensity={1.5} color="#E8CFA6" />
-      {/* Rim light picks out the top edge and corner castings */}
-      <directionalLight position={[-4, 5, -5]} intensity={2} color="#E3B778" />
-      <pointLight position={[-6, 2, 4]} intensity={55} color="#B87333" distance={24} />
-      <pointLight position={[6, -2, 3]} intensity={34} color="#E3B778" distance={20} />
+      {/* Softer key/fill than the dark build used — a cream body blows out fast */}
+      <ambientLight intensity={0.75} />
+      <directionalLight position={[3, 8, 4]} intensity={2.1} color="#FFF6E9" />
+      <directionalLight position={[-2, 2, 7]} intensity={1.1} color="#F5E4C8" />
+      {/* Warm rim separates the cream crate from the dark backdrop */}
+      <directionalLight position={[-4, 5, -5]} intensity={1.4} color="#D49A5A" />
+      <pointLight position={[-6, 2, 4]} intensity={28} color="#B87333" distance={24} />
+      <pointLight position={[6, -2, 3]} intensity={20} color="#E3B778" distance={20} />
 
       {/* Pushed toward the camera and scaled up so it reads as the foreground
           subject, with the wordmark sitting behind it. */}
@@ -194,6 +264,7 @@ function Scene() {
         </Float>
       </group>
 
+      <Beans />
       <Motes />
     </>
   );
