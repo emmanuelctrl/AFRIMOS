@@ -12,7 +12,7 @@ export function StatusBadge({
   className,
   tone = 'emerald',
 }: StatusBadgeProps) {
-  const dot = tone === 'emerald' ? 'bg-emerald-400' : 'bg-cyan-400';
+  const dot = tone === 'emerald' ? 'bg-electric-400' : 'bg-electric-300';
 
   return (
     <span

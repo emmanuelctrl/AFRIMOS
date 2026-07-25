@@ -9,7 +9,7 @@ const HeroScene = lazy(() => import('./HeroScene'));
 function SceneFallback() {
   return (
     <div aria-hidden="true" className="absolute inset-0 flex items-center justify-center">
-      <div className="h-[26rem] w-[26rem] max-w-[80vw] rounded-full bg-gradient-to-br from-cyan-500/25 via-neon-blue/15 to-neon-purple/25 blur-[90px]" />
+      <div className="h-[26rem] w-[26rem] max-w-[80vw] rounded-full bg-gradient-to-br from-electric-500/25 via-electric-500/15 to-electric-600/25 blur-[90px]" />
     </div>
   );
 }

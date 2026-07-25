@@ -4,6 +4,7 @@ import { ScrollProgress } from '@/components/ui/ScrollProgress';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 import { Hero } from '@/components/sections/Hero';
+import { WhyUs } from '@/components/sections/WhyUs';
 import { Stats } from '@/components/sections/Stats';
 import { Features } from '@/components/sections/Features';
 import { Services } from '@/components/sections/Services';
@@ -29,6 +30,7 @@ export default function Landing() {
 
       <main>
         <Hero />
+        <WhyUs />
         <Stats />
         <Features />
         <Services />

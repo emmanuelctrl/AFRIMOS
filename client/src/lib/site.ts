@@ -46,37 +46,37 @@ export const FEATURES: Feature[] = [
     icon: BadgeCheck,
     title: 'Verified exporters only',
     body: 'Every supplier passes document, licence and trade-history review before appearing in the directory.',
-    accent: 'from-cyan-400/25 to-transparent',
+    accent: 'from-electric-300/25 to-transparent',
   },
   {
     icon: MessagesSquare,
     title: 'Structured RFQs',
     body: 'Quantity, specs, incoterms and delivery dates arrive normalised — so quotes are comparable at a glance.',
-    accent: 'from-neon-purple/25 to-transparent',
+    accent: 'from-electric-600/25 to-transparent',
   },
   {
     icon: ChartBarIncreasing,
     title: 'Live trade intelligence',
     body: 'Category demand, response rates and inquiry velocity, updated continuously across the marketplace.',
-    accent: 'from-neon-blue/25 to-transparent',
+    accent: 'from-electric-500/25 to-transparent',
   },
   {
     icon: Globe,
     title: 'Direct global reach',
     body: 'Reach qualified importers across 203 countries without brokers taking a cut of every shipment.',
-    accent: 'from-neon-indigo/25 to-transparent',
+    accent: 'from-electric-700/25 to-transparent',
   },
   {
     icon: Ship,
     title: 'Logistics-ready terms',
     body: 'FOB, CIF and DDP terms, MOQs and lead times are captured up front and travel with every listing.',
-    accent: 'from-cyan-400/25 to-transparent',
+    accent: 'from-electric-300/25 to-transparent',
   },
   {
     icon: Sparkles,
     title: 'Intelligent matching',
     body: 'Broadcast an RFQ and it routes automatically to verified suppliers in the right category.',
-    accent: 'from-neon-purple/25 to-transparent',
+    accent: 'from-electric-600/25 to-transparent',
   },
 ];
 

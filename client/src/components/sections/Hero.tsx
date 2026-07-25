@@ -1,15 +1,27 @@
 import { useRef } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { ArrowRight, ChevronDown, ShieldCheck } from 'lucide-react';
+import { ArrowUpRight, ShieldCheck } from 'lucide-react';
 import { EASE } from '@/lib/motion';
-import { TRUST_BADGES } from '@/lib/site';
 import { useAuth } from '@/context/AuthContext';
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
 import { LazyHeroScene } from '@/components/three/LazyHeroScene';
-import { MagneticButton } from '@/components/ui/MagneticButton';
-import { StatusBadge } from '@/components/ui/StatusBadge';
-import { DashboardPreview } from './DashboardPreview';
+
+/** Small pulsing hotspot dot, as seen on the reference product shot. */
+function Hotspot({ className, delay = 0 }: { className: string; delay?: number }) {
+  return (
+    <span className={`absolute ${className}`} aria-hidden="true">
+      <span className="relative flex h-3.5 w-3.5 items-center justify-center">
+        <motion.span
+          className="absolute h-full w-full rounded-full bg-white/70"
+          animate={{ scale: [1, 2.1, 1], opacity: [0.5, 0, 0.5] }}
+          transition={{ duration: 2.6, repeat: Infinity, delay, ease: 'easeInOut' }}
+        />
+        <span className="relative h-2 w-2 rounded-full bg-white shadow-[0_0_12px_rgba(255,255,255,0.9)]" />
+      </span>
+    </span>
+  );
+}
 
 export function Hero() {
   const ref = useRef<HTMLElement>(null);
@@ -17,15 +29,14 @@ export function Hero() {
   const { user } = useAuth();
   const reduced = usePrefersReducedMotion();
 
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ['start start', 'end start'],
-  });
-
-  // Content recedes into the distance as the user scrolls away.
-  const y = useTransform(scrollYProgress, [0, 1], ['0%', '18%']);
-  const opacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.94]);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] });
+  // The wordmark drifts up and fades; the container hangs back a beat — the
+  // parallax split is what sells the depth as you scroll away.
+  const wordY = useTransform(scrollYProgress, [0, 1], ['0%', '-38%']);
+  const wordOpacity = useTransform(scrollYProgress, [0, 0.75], [1, 0]);
+  const sceneY = useTransform(scrollYProgress, [0, 1], ['0%', '14%']);
+  const sceneScale = useTransform(scrollYProgress, [0, 1], [1, 1.12]);
+  const uiOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
 
   const dashboardPath =
     user?.role === 'admin'
@@ -37,117 +48,117 @@ export function Hero() {
   return (
     <section
       ref={ref}
-      className="relative flex min-h-[100svh] items-center overflow-hidden pb-24 pt-32 sm:pt-36"
+      className="relative flex min-h-[100svh] flex-col justify-center overflow-hidden"
     >
-      {/* 3D backdrop — z-0 (not negative) so it stays above ancestor backgrounds */}
-      <LazyHeroScene className="absolute inset-0 z-0" />
-
-      {/* Scrim: keeps the headline legible over whatever the scene is doing */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-r from-base-900 via-base-900/85 to-transparent lg:via-base-900/60 lg:to-transparent"
-      />
-
+      {/* ---- Layer 1: giant silver wordmark ---- */}
       <motion.div
-        style={reduced ? undefined : { y, opacity, scale }}
-        className="relative z-10 mx-auto grid w-full max-w-7xl gap-16 px-5 sm:px-8 lg:grid-cols-[1.05fr_0.95fr] lg:items-center"
+        style={reduced ? undefined : { y: wordY, opacity: wordOpacity }}
+        className="pointer-events-none absolute inset-x-0 top-[18%] z-[1] flex justify-center px-4 sm:top-[16%]"
       >
-        {/* ---- Copy ---- */}
-        <div>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: EASE }}
-          >
-            <StatusBadge label="Live marketplace · 203 countries" tone="cyan" />
-          </motion.div>
-
-          <motion.h1
-            initial={{ opacity: 0, y: 28 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, delay: 0.08, ease: EASE }}
-            className="mt-7 font-display text-[3.25rem] font-semibold leading-[0.98] tracking-tighter text-white xs:text-6xl sm:text-7xl lg:text-[5.5rem]"
-          >
-            African trade,
-            <br />
-            <span className="text-gradient">intelligently direct.</span>
-          </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.18, ease: EASE }}
-            className="mt-7 max-w-xl text-lg leading-relaxed text-gray-400 sm:text-xl"
-          >
-            AFRIMOS connects verified African commodity exporters with international buyers.
-            Structured RFQs, live trade intelligence, direct negotiation — no middlemen.
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.26, ease: EASE }}
-            className="mt-10 flex flex-wrap items-center gap-4"
-          >
-            <MagneticButton onClick={() => navigate(user ? dashboardPath : '/signup')}>
-              {user ? 'Go to dashboard' : 'Start trading free'}
-              <ArrowRight className="h-4 w-4" />
-            </MagneticButton>
-            <Link to="/suppliers">
-              <MagneticButton variant="secondary">Explore suppliers</MagneticButton>
-            </Link>
-          </motion.div>
-
-          {/* Trust badges */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 0.4 }}
-            className="mt-12"
-          >
-            <p className="flex items-center gap-2 text-xs font-medium uppercase tracking-[0.2em] text-gray-500">
-              <ShieldCheck className="h-4 w-4 text-cyan-400" />
-              Certified supply
-            </p>
-            <div className="mt-4 flex flex-wrap gap-2.5">
-              {TRUST_BADGES.map((badge) => (
-                <span
-                  key={badge}
-                  className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-gray-400 backdrop-blur-md"
-                >
-                  {badge}
-                </span>
-              ))}
-            </div>
-          </motion.div>
-        </div>
-
-        {/* ---- Floating dashboard preview ---- */}
-        <motion.div
-          initial={{ opacity: 0, y: 48, rotateX: 12 }}
-          animate={{ opacity: 1, y: 0, rotateX: 0 }}
-          transition={{ duration: 1.1, delay: 0.3, ease: EASE }}
-          className="perspective-1000"
+        <motion.h1
+          initial={{ opacity: 0, scale: 1.06, filter: 'blur(14px)' }}
+          animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+          transition={{ duration: 1.5, ease: EASE }}
+          className="display-wordmark select-none text-center text-[22vw] leading-none sm:text-[19vw] lg:text-[17vw]"
         >
-          <DashboardPreview />
-        </motion.div>
+          AFRIMOS
+        </motion.h1>
       </motion.div>
 
-      {/* Scroll indicator */}
+      {/* ---- Layer 2: the container, in front of the letters ---- */}
       <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.2 }}
-        className="absolute inset-x-0 bottom-8 z-10 flex justify-center"
+        style={reduced ? undefined : { y: sceneY, scale: sceneScale }}
+        className="absolute inset-0 z-[2]"
       >
-        <motion.span
-          animate={reduced ? undefined : { y: [0, 8, 0] }}
-          transition={{ duration: 2.2, repeat: Infinity, ease: 'easeInOut' }}
-          className="flex flex-col items-center gap-2 text-[0.7rem] font-medium uppercase tracking-[0.24em] text-gray-500"
+        <motion.div
+          initial={{ opacity: 0, y: -70 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1.7, delay: 0.25, ease: EASE }}
+          className="h-full w-full"
         >
-          Scroll
-          <ChevronDown className="h-4 w-4" />
-        </motion.span>
+          <LazyHeroScene className="absolute inset-0" />
+        </motion.div>
+
+        {/* Hotspots pinned over the container */}
+        {!reduced && (
+          <div className="pointer-events-none absolute inset-0 hidden md:block">
+            <Hotspot className="left-[46%] top-[45%]" />
+            <Hotspot className="left-[52%] top-[52%]" delay={0.8} />
+            <Hotspot className="left-[64%] top-[58%]" delay={1.6} />
+          </div>
+        )}
+      </motion.div>
+
+      {/* Floor vignette — grounds the container in the scene */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 bottom-0 z-[3] h-1/3 bg-gradient-to-t from-base-900 via-base-900/70 to-transparent"
+      />
+
+      {/* ---- Layer 3: floating UI ---- */}
+      <motion.div
+        style={reduced ? undefined : { opacity: uiOpacity }}
+        className="relative z-10 mx-auto w-full max-w-7xl px-5 sm:px-8"
+      >
+        <div className="flex min-h-[100svh] flex-col justify-end pb-24 pt-32 sm:pb-28">
+          <div className="flex flex-col items-start justify-between gap-8 lg:flex-row lg:items-end">
+            {/* Left glass card */}
+            <motion.div
+              initial={{ opacity: 0, x: -36 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.9, delay: 0.8, ease: EASE }}
+              className="max-w-sm rounded-2xl border border-white/10 bg-base-800/60 p-6 shadow-glass backdrop-blur-xl"
+            >
+              <h2 className="font-display text-2xl font-medium leading-snug text-white sm:text-[1.75rem]">
+                Export effortlessly
+                <br />
+                in just days
+              </h2>
+              <button
+                type="button"
+                onClick={() => navigate(user ? dashboardPath : '/signup')}
+                className="group mt-6 flex w-full items-center justify-center gap-2 rounded-lg bg-electric-500 px-6 py-3.5 text-xs font-semibold uppercase tracking-[0.16em] text-white shadow-glow-blue transition-all duration-300 hover:bg-electric-400 hover:shadow-[0_0_50px_rgba(184,115,51,0.65)]"
+              >
+                {user ? 'Open dashboard' : 'Start trading'}
+                <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+              </button>
+            </motion.div>
+
+            {/* Right spec card */}
+            <motion.div
+              initial={{ opacity: 0, x: 36 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.9, delay: 0.95, ease: EASE }}
+              className="hidden w-52 rounded-2xl border border-white/10 bg-base-800/60 p-3 shadow-glass backdrop-blur-xl lg:block"
+            >
+              <div className="relative flex h-24 items-center justify-center overflow-hidden rounded-xl bg-gradient-to-br from-electric-500/25 via-base-700 to-base-800">
+                <ShieldCheck className="h-9 w-9 text-electric-300" strokeWidth={1.5} />
+              </div>
+              <ul className="mt-3 space-y-1.5 px-1 pb-1 text-xs text-gray-300">
+                {['Fully traceable', 'Quality assured', 'Export documented'].map((item) => (
+                  <li key={item} className="flex items-center gap-2">
+                    <span className="h-1 w-1 rounded-full bg-electric-400" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+          </div>
+        </div>
+      </motion.div>
+
+      {/* Floating "global support" chip, overlapping the wordmark like the brief */}
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 1.15, ease: EASE }}
+        style={reduced ? undefined : { opacity: uiOpacity }}
+        className="absolute left-[6%] top-[38%] z-10 hidden rounded-xl border border-white/10 bg-base-800/70 px-5 py-3 text-center shadow-glass backdrop-blur-xl lg:block"
+      >
+        <p className="text-[0.6rem] font-semibold uppercase tracking-[0.18em] text-gray-400">
+          Global reach
+        </p>
+        <p className="mt-1 font-display text-lg font-semibold text-white">203 countries</p>
       </motion.div>
     </section>
   );

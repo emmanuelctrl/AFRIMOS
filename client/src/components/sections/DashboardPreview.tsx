@@ -19,7 +19,7 @@ export function DashboardPreview() {
       {/* Ambient glow behind the panel */}
       <div
         aria-hidden="true"
-        className="absolute -inset-8 rounded-[2rem] bg-gradient-to-br from-cyan-500/15 via-transparent to-neon-purple/15 blur-3xl"
+        className="absolute -inset-8 rounded-[2rem] bg-gradient-to-br from-electric-500/15 via-transparent to-electric-600/15 blur-3xl"
       />
 
       <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-base-800/70 shadow-glass-lg backdrop-blur-2xl">
@@ -28,7 +28,7 @@ export function DashboardPreview() {
           <div className="flex items-center gap-2">
             <span className="h-2.5 w-2.5 rounded-full bg-red-400/70" />
             <span className="h-2.5 w-2.5 rounded-full bg-amber-400/70" />
-            <span className="h-2.5 w-2.5 rounded-full bg-emerald-400/70" />
+            <span className="h-2.5 w-2.5 rounded-full bg-electric-400/70" />
           </div>
           <span className="text-[0.7rem] font-medium uppercase tracking-[0.18em] text-gray-500">
             Trade desk
@@ -43,7 +43,7 @@ export function DashboardPreview() {
               <p className="mt-1 font-display text-2xl font-semibold text-white">
                 <AnimatedCounter value={248} />
               </p>
-              <p className="mt-1 flex items-center gap-1 text-xs text-emerald-400">
+              <p className="mt-1 flex items-center gap-1 text-xs text-electric-400">
                 <TrendingUp className="h-3 w-3" /> +18.2%
               </p>
             </div>
@@ -68,7 +68,7 @@ export function DashboardPreview() {
           <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
             <div className="flex items-center justify-between">
               <p className="text-xs text-gray-500">Inquiry volume · 10 weeks</p>
-              <ArrowUpRight className="h-3.5 w-3.5 text-cyan-400" />
+              <ArrowUpRight className="h-3.5 w-3.5 text-electric-300" />
             </div>
             <div className="mt-4 flex h-20 items-end gap-1.5">
               {SPARK.map((v, i) => (
@@ -78,7 +78,7 @@ export function DashboardPreview() {
                   whileInView={{ height: `${v}%` }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.7, delay: 0.15 + i * 0.05, ease: 'easeOut' }}
-                  className="flex-1 rounded-t bg-gradient-to-t from-cyan-500/30 to-cyan-400"
+                  className="flex-1 rounded-t bg-gradient-to-t from-electric-500/30 to-electric-300"
                 />
               ))}
             </div>
@@ -95,7 +95,7 @@ export function DashboardPreview() {
                   <p className="truncate text-xs font-medium text-white">{l.product}</p>
                   <p className="truncate text-[0.7rem] text-gray-500">{l.company}</p>
                 </div>
-                <span className="ml-3 shrink-0 rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[0.65rem] text-cyan-300">
+                <span className="ml-3 shrink-0 rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[0.65rem] text-electric-300">
                   {l.moq}
                 </span>
               </div>

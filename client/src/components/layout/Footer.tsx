@@ -73,7 +73,7 @@ export function Footer() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="you@company.com"
-                  className="w-full rounded-full border border-white/12 bg-white/5 px-4 py-2.5 text-sm text-white transition-all duration-300 placeholder:text-gray-500 focus:border-cyan-400/60 focus:outline-none focus:ring-2 focus:ring-cyan-400/25"
+                  className="w-full rounded-full border border-white/12 bg-white/5 px-4 py-2.5 text-sm text-white transition-all duration-300 placeholder:text-gray-500 focus:border-electric-300/60 focus:outline-none focus:ring-2 focus:ring-electric-300/25"
                 />
                 <motion.button
                   type="submit"
@@ -89,7 +89,7 @@ export function Footer() {
                 <motion.p
                   initial={{ opacity: 0, y: -4 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="mt-2 text-xs text-emerald-400"
+                  className="mt-2 text-xs text-electric-400"
                 >
                   Thanks — you're on the list.
                 </motion.p>
@@ -125,11 +125,11 @@ export function Footer() {
             href="mailto:admin@afrimos.et"
             className="flex items-center gap-2 transition-colors hover:text-white"
           >
-            <Mail className="h-4 w-4 text-cyan-400" />
+            <Mail className="h-4 w-4 text-electric-300" />
             admin@afrimos.et
           </a>
           <span className="flex items-center gap-2">
-            <MapPin className="h-4 w-4 text-cyan-400" />
+            <MapPin className="h-4 w-4 text-electric-300" />
             Addis Ababa, Ethiopia
           </span>
         </div>
@@ -154,7 +154,7 @@ export function Footer() {
                     aria-label={social.label}
                     whileHover={{ y: -3, scale: 1.08 }}
                     transition={{ type: 'spring', stiffness: 320, damping: 18 }}
-                    className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/5 text-gray-400 transition-colors hover:border-cyan-400/40 hover:text-white"
+                    className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/5 text-gray-400 transition-colors hover:border-electric-300/40 hover:text-white"
                   >
                     <Icon className="h-4 w-4" />
                   </motion.a>

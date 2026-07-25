@@ -13,49 +13,53 @@ export default {
     },
     extend: {
       colors: {
-        // Surfaces — dark-mode first
+        // Surfaces — dark roast espresso
         base: {
-          DEFAULT: '#090D16',
-          900: '#090D16',
-          800: '#111827',
-          700: '#161B26',
-          600: '#1D2333',
+          DEFAULT: '#120C08',
+          900: '#120C08',
+          800: '#1C1410',
+          700: '#261B14',
+          600: '#33251A',
         },
         ink: {
-          900: '#090D16',
-          800: '#111827',
-          700: '#161B26',
+          900: '#120C08',
+          800: '#1C1410',
+          700: '#261B14',
         },
-        // Accents — electric cyan / deep blue / neon purple / indigo
-        cyan: {
-          DEFAULT: '#22D3EE',
-          400: '#22D3EE',
-          500: '#06B6D4',
+        // Caramel / crema — the accent, used for CTAs and highlights
+        electric: {
+          300: '#E3B778',
+          400: '#D49A5A',
+          500: '#B87333',
+          600: '#96602A',
+          700: '#6F461F',
         },
-        neon: {
-          purple: '#A855F7',
-          violet: '#8B5CF6',
-          indigo: '#6366F1',
-          blue: '#3B82F6',
+        // Latte foam, for the display wordmark gradient
+        silver: {
+          100: '#FBF3E9',
+          200: '#F0E2D0',
+          300: '#D8C3A8',
+          400: '#B49B7D',
+          500: '#8A7357',
         },
         // `brand` stays mapped so existing app screens keep working.
         brand: {
-          50: '#ecfeff',
-          100: '#cffafe',
-          200: '#a5f3fc',
-          300: '#67e8f9',
-          400: '#22d3ee',
-          500: '#06b6d4',
-          600: '#0891b2',
-          700: '#0e7490',
-          800: '#155e75',
-          900: '#164e63',
-          950: '#083344',
+          50: '#fdf8f2',
+          100: '#f7ebdc',
+          200: '#eed6b9',
+          300: '#E3B778',
+          400: '#D49A5A',
+          500: '#B87333',
+          600: '#96602A',
+          700: '#6F461F',
+          800: '#4E3217',
+          900: '#33210F',
+          950: '#1C1108',
         },
         accent: {
-          400: '#A855F7',
-          500: '#8B5CF6',
-          600: '#6366F1',
+          400: '#D49A5A',
+          500: '#B87333',
+          600: '#96602A',
         },
       },
       fontFamily: {
@@ -68,12 +72,16 @@ export default {
       boxShadow: {
         glass: '0 8px 32px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.08)',
         'glass-lg': '0 20px 48px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.12)',
-        glow: '0 0 50px rgba(0, 255, 255, 0.08)',
-        'glow-cyan': '0 0 40px rgba(34, 211, 238, 0.25)',
-        'glow-purple': '0 0 40px rgba(168, 85, 247, 0.25)',
+        glow: '0 0 50px rgba(184, 115, 51, 0.14)',
+        'glow-cyan': '0 0 40px rgba(184, 115, 51, 0.35)',
+        'glow-purple': '0 0 40px rgba(212, 154, 90, 0.28)',
+        'glow-blue': '0 10px 40px rgba(184, 115, 51, 0.45)',
       },
       backgroundImage: {
-        'gradient-brand': 'linear-gradient(120deg, #22D3EE 0%, #3B82F6 50%, #A855F7 100%)',
+        'gradient-brand': 'linear-gradient(120deg, #E3B778 0%, #D49A5A 45%, #B87333 100%)',
+        // Latte-foam display gradient used by the giant wordmark
+        'gradient-silver':
+          'linear-gradient(180deg, #FFFAF3 0%, #F2E3CE 38%, #D2B48C 72%, #8A7357 100%)',
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         noise:
           "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E\")",

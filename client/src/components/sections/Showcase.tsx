@@ -28,12 +28,12 @@ const PROJECTS: Project[] = COMMODITIES.map((c, i) => ({
 }));
 
 const GRADIENTS = [
-  'from-cyan-500/30 via-neon-blue/10 to-transparent',
-  'from-neon-purple/30 via-neon-indigo/10 to-transparent',
-  'from-neon-blue/30 via-cyan-500/10 to-transparent',
-  'from-neon-indigo/30 via-neon-purple/10 to-transparent',
-  'from-cyan-400/30 via-neon-purple/10 to-transparent',
-  'from-neon-purple/30 via-cyan-500/10 to-transparent',
+  'from-electric-500/30 via-electric-500/10 to-transparent',
+  'from-electric-600/30 via-electric-700/10 to-transparent',
+  'from-electric-500/30 via-electric-500/10 to-transparent',
+  'from-electric-700/30 via-electric-600/10 to-transparent',
+  'from-electric-300/30 via-electric-600/10 to-transparent',
+  'from-electric-600/30 via-electric-500/10 to-transparent',
 ];
 
 /** Horizontally-scrolling commodity showcase; cards open a premium modal. */
@@ -117,8 +117,8 @@ export function Showcase() {
               onClick={(e) => e.stopPropagation()}
               className="relative w-full max-w-2xl overflow-hidden rounded-3xl border border-white/10 bg-base-800/90 shadow-glass-lg backdrop-blur-2xl"
             >
-              <div className="relative h-40 overflow-hidden bg-gradient-to-br from-cyan-500/25 via-neon-purple/15 to-transparent">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(34,211,238,0.35),transparent_60%)]" />
+              <div className="relative h-40 overflow-hidden bg-gradient-to-br from-electric-500/25 via-electric-600/15 to-transparent">
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(212,154,90,0.35),transparent_60%)]" />
                 <h3 className="absolute bottom-5 left-6 font-display text-4xl font-semibold tracking-tight text-white">
                   {active.name}
                 </h3>

@@ -14,13 +14,13 @@ export function AmbientBackground({ className }: { className?: string }) {
       )}
     >
       {/* Aurora glows */}
-      <div className="absolute -left-40 -top-48 h-[36rem] w-[36rem] animate-aurora rounded-full bg-cyan-500/10 blur-[120px]" />
+      <div className="absolute -left-40 -top-48 h-[36rem] w-[36rem] animate-aurora rounded-full bg-electric-500/10 blur-[120px]" />
       <div
-        className="absolute -right-40 top-1/4 h-[40rem] w-[40rem] animate-aurora rounded-full bg-neon-purple/10 blur-[130px]"
+        className="absolute -right-40 top-1/4 h-[40rem] w-[40rem] animate-aurora rounded-full bg-electric-600/10 blur-[130px]"
         style={{ animationDelay: '-7s' }}
       />
       <div
-        className="absolute bottom-[-14rem] left-1/3 h-[32rem] w-[32rem] animate-aurora rounded-full bg-neon-blue/10 blur-[120px]"
+        className="absolute bottom-[-14rem] left-1/3 h-[32rem] w-[32rem] animate-aurora rounded-full bg-electric-500/10 blur-[120px]"
         style={{ animationDelay: '-14s' }}
       />
 

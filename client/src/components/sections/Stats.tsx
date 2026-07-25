@@ -14,7 +14,7 @@ export function Stats() {
               {/* Hover glow */}
               <motion.span
                 aria-hidden="true"
-                className="pointer-events-none absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent via-cyan-400/60 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+                className="pointer-events-none absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent via-electric-300/60 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"
               />
               <p className="font-display text-4xl font-semibold tracking-tighter text-white sm:text-5xl">
                 <AnimatedCounter

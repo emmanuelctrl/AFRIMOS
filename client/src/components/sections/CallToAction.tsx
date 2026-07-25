@@ -35,7 +35,7 @@ export function CallToAction() {
     <section className="relative overflow-hidden px-5 py-32">
       {/* Ambient glow */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0">
-        <div className="absolute left-1/2 top-1/2 h-[28rem] w-[52rem] max-w-[92vw] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-to-r from-cyan-500/20 via-neon-blue/15 to-neon-purple/20 blur-[110px]" />
+        <div className="absolute left-1/2 top-1/2 h-[28rem] w-[52rem] max-w-[92vw] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-to-r from-electric-500/20 via-electric-500/15 to-electric-600/20 blur-[110px]" />
       </div>
 
       {/* Floating particles */}
@@ -53,7 +53,7 @@ export function CallToAction() {
                 ease: 'linear',
               }}
               style={{ left: p.left, width: p.size, height: p.size }}
-              className="absolute rounded-full bg-cyan-300/70"
+              className="absolute rounded-full bg-electric-300/70"
             />
           ))}
         </div>

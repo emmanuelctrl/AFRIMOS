@@ -14,7 +14,7 @@ interface MagneticButtonProps {
 
 const VARIANTS = {
   primary:
-    'bg-gradient-brand text-base-900 shadow-glow-cyan hover:shadow-[0_0_60px_rgba(34,211,238,0.45)]',
+    'bg-gradient-brand text-base-900 shadow-glow-cyan hover:shadow-[0_0_60px_rgba(212,154,90,0.45)]',
   secondary:
     'border border-white/15 bg-white/5 text-white backdrop-blur-xl hover:border-white/30 hover:bg-white/10',
   ghost: 'text-gray-300 hover:text-white',

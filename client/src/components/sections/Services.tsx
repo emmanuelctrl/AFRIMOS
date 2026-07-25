@@ -37,7 +37,7 @@ export function Services() {
                 transition={{ duration: 0.9, ease: EASE }}
                 className={cn(flipped && 'lg:order-2')}
               >
-                <span className="font-display text-sm font-semibold tracking-[0.2em] text-cyan-400">
+                <span className="font-display text-sm font-semibold tracking-[0.2em] text-electric-300">
                   {service.index}
                 </span>
                 <h3 className="mt-4 font-display text-3xl font-semibold tracking-tight text-white sm:text-4xl">
@@ -55,8 +55,8 @@ export function Services() {
                       transition={{ duration: 0.5, delay: 0.15 + pi * 0.08, ease: EASE }}
                       className="flex items-center gap-3 text-gray-300"
                     >
-                      <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-cyan-400/30 bg-cyan-400/10">
-                        <Check className="h-3 w-3 text-cyan-300" strokeWidth={3} />
+                      <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-electric-300/30 bg-electric-300/10">
+                        <Check className="h-3 w-3 text-electric-300" strokeWidth={3} />
                       </span>
                       {point}
                     </motion.li>

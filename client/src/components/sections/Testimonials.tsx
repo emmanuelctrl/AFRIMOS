@@ -55,7 +55,7 @@ function TestimonialCard({
         aria-hidden="true"
         className="gradient-border pointer-events-none absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-500 group-hover:opacity-100"
       />
-      <Quote className="h-6 w-6 text-cyan-400/50" />
+      <Quote className="h-6 w-6 text-electric-300/50" />
       <blockquote className="mt-4 text-sm leading-relaxed text-gray-300">{quote}</blockquote>
       <figcaption className="mt-5 flex items-center gap-3">
         <span className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-brand font-display text-sm font-semibold text-base-900">

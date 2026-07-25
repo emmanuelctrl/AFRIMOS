@@ -17,8 +17,8 @@ export function Logo({ className, size = 28, withWordmark = false }: LogoProps) 
       <svg viewBox="0 0 256 256" width={size} height={size} aria-hidden="true" className="shrink-0">
         <defs>
           <linearGradient id="afrimos-mark" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stopColor="#22D3EE" />
-            <stop offset="100%" stopColor="#A855F7" />
+            <stop offset="0%" stopColor="#E3B778" />
+            <stop offset="100%" stopColor="#B87333" />
           </linearGradient>
         </defs>
         <path d={LOGO_PATH} fill="url(#afrimos-mark)" />

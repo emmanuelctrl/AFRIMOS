@@ -36,7 +36,7 @@ export function Features() {
                     feature.accent
                   )}
                 >
-                  <Icon className="h-5 w-5 text-cyan-300" strokeWidth={1.75} />
+                  <Icon className="h-5 w-5 text-electric-300" strokeWidth={1.75} />
                 </motion.div>
 
                 <h3 className="mt-6 font-display text-xl font-semibold tracking-tight text-white">
@@ -53,7 +53,7 @@ export function Features() {
                       whileInView={{ height: h * 0.3 }}
                       viewport={{ once: true }}
                       transition={{ duration: 0.6, delay: i * 0.06, ease: 'easeOut' }}
-                      className="w-full rounded-sm bg-gradient-to-t from-white/5 to-cyan-400/40 transition-colors duration-500 group-hover:to-cyan-400/70"
+                      className="w-full rounded-sm bg-gradient-to-t from-white/5 to-electric-300/40 transition-colors duration-500 group-hover:to-electric-300/70"
                     />
                   ))}
                 </div>

@@ -4,9 +4,9 @@ import { viewportOnce } from '@/lib/motion';
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
 
 const PALETTES = [
-  { from: '#22D3EE', to: '#3B82F6' },
-  { from: '#A855F7', to: '#6366F1' },
-  { from: '#3B82F6', to: '#A855F7' },
+  { from: '#E3B778', to: '#E3B778' },
+  { from: '#B87333', to: '#96602A' },
+  { from: '#E3B778', to: '#B87333' },
 ];
 
 /**
