@@ -104,7 +104,7 @@ export function Showcase() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setActive(null)}
-            className="fixed inset-0 z-[70] flex items-center justify-center bg-base-900/80 p-5 backdrop-blur-xl"
+            className="fixed inset-0 z-[70] flex items-center justify-center bg-base-800/85 p-5 backdrop-blur-xl"
           >
             <motion.div
               role="dialog"
@@ -115,11 +115,11 @@ export function Showcase() {
               exit={{ opacity: 0, scale: 0.96, y: 16 }}
               transition={{ duration: 0.45, ease: EASE }}
               onClick={(e) => e.stopPropagation()}
-              className="relative w-full max-w-2xl overflow-hidden rounded-3xl border border-white/10 bg-base-800/90 shadow-glass-lg backdrop-blur-2xl"
+              className="relative w-full max-w-2xl overflow-hidden rounded-3xl border border-espresso-900/10 bg-white/85 shadow-glass-lg backdrop-blur-2xl"
             >
               <div className="relative h-40 overflow-hidden bg-gradient-to-br from-electric-500/25 via-electric-600/15 to-transparent">
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(212,154,90,0.35),transparent_60%)]" />
-                <h3 className="absolute bottom-5 left-6 font-display text-4xl font-semibold tracking-tight text-white">
+                <h3 className="absolute bottom-5 left-6 font-display text-4xl font-semibold tracking-tight text-espresso-900">
                   {active.name}
                 </h3>
               </div>
@@ -128,26 +128,26 @@ export function Showcase() {
                 type="button"
                 aria-label="Close"
                 onClick={() => setActive(null)}
-                className="absolute right-4 top-4 flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/10 text-white backdrop-blur-xl transition-colors hover:bg-white/20"
+                className="absolute right-4 top-4 flex h-9 w-9 items-center justify-center rounded-full border border-espresso-900/10 bg-white/70 text-espresso-900 backdrop-blur-xl transition-colors hover:bg-white/80"
               >
                 <X className="h-4 w-4" />
               </button>
 
               <div className="p-6">
-                <p className="text-sm leading-relaxed text-gray-400">{active.blurb}</p>
+                <p className="text-sm leading-relaxed text-espresso-600">{active.blurb}</p>
 
                 <dl className="mt-6 grid grid-cols-2 gap-3">
                   {active.specs.map((spec) => (
-                    <div key={spec.label} className="rounded-2xl border border-white/10 bg-white/5 p-4">
-                      <dt className="text-xs text-gray-500">{spec.label}</dt>
-                      <dd className="mt-1 font-display text-lg font-semibold text-white">
+                    <div key={spec.label} className="rounded-2xl border border-espresso-900/10 bg-white/55 p-4">
+                      <dt className="text-xs text-espresso-500">{spec.label}</dt>
+                      <dd className="mt-1 font-display text-lg font-semibold text-espresso-900">
                         {spec.value}
                       </dd>
                     </div>
                   ))}
                 </dl>
 
-                <div className="mt-6 h-1.5 overflow-hidden rounded-full bg-white/10">
+                <div className="mt-6 h-1.5 overflow-hidden rounded-full bg-white/70">
                   <motion.div
                     initial={{ width: 0 }}
                     animate={{ width: `${active.demand}%` }}
@@ -179,7 +179,7 @@ function ShowcaseCard({
       onClick={onOpen}
       whileHover={{ y: -10 }}
       transition={{ type: 'spring', stiffness: 240, damping: 22 }}
-      className="group relative h-[22rem] w-[19rem] shrink-0 overflow-hidden rounded-3xl border border-white/10 bg-base-800/60 p-7 text-left shadow-glass backdrop-blur-xl sm:h-[24rem] sm:w-[21rem]"
+      className="group relative h-[22rem] w-[19rem] shrink-0 overflow-hidden rounded-3xl border border-espresso-900/10 bg-white/70 p-7 text-left shadow-glass backdrop-blur-xl sm:h-[24rem] sm:w-[21rem]"
     >
       <div
         aria-hidden="true"
@@ -192,29 +192,29 @@ function ShowcaseCard({
 
       <div className="relative flex h-full flex-col justify-between">
         <div className="flex items-start justify-between">
-          <span className="rounded-full border border-white/15 bg-white/10 px-3 py-1 text-xs text-white/80 backdrop-blur-md">
+          <span className="rounded-full border border-espresso-900/15 bg-white/70 px-3 py-1 text-xs text-espresso-800 backdrop-blur-md">
             {project.listings}
           </span>
-          <ArrowUpRight className="h-5 w-5 text-white/50 transition-all duration-300 group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-white" />
+          <ArrowUpRight className="h-5 w-5 text-espresso-500 transition-all duration-300 group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-espresso-900" />
         </div>
 
         <div>
-          <h3 className="font-display text-3xl font-semibold tracking-tight text-white">
+          <h3 className="font-display text-3xl font-semibold tracking-tight text-espresso-900">
             {project.name}
           </h3>
-          <p className="mt-2 flex items-center gap-1.5 text-xs text-white/60">
+          <p className="mt-2 flex items-center gap-1.5 text-xs text-espresso-600">
             <MapPin className="h-3.5 w-3.5" />
             {project.origin}
           </p>
 
-          <div className="mt-5 flex items-center justify-between text-xs text-white/60">
+          <div className="mt-5 flex items-center justify-between text-xs text-espresso-600">
             <span className="flex items-center gap-1.5">
               <Package className="h-3.5 w-3.5" />
               Demand
             </span>
-            <span className="tabular-nums text-white">{project.demand}%</span>
+            <span className="tabular-nums text-espresso-900">{project.demand}%</span>
           </div>
-          <div className="mt-2 h-1 overflow-hidden rounded-full bg-white/15">
+          <div className="mt-2 h-1 overflow-hidden rounded-full bg-white/75">
             <motion.div
               initial={{ width: 0 }}
               whileInView={{ width: `${project.demand}%` }}

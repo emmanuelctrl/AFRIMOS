@@ -37,13 +37,13 @@ export function Services() {
                 transition={{ duration: 0.9, ease: EASE }}
                 className={cn(flipped && 'lg:order-2')}
               >
-                <span className="font-display text-sm font-semibold tracking-[0.2em] text-electric-300">
+                <span className="font-display text-sm font-semibold tracking-[0.2em] text-electric-500">
                   {service.index}
                 </span>
-                <h3 className="mt-4 font-display text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+                <h3 className="mt-4 font-display text-3xl font-semibold tracking-tight text-espresso-900 sm:text-4xl">
                   {service.title}
                 </h3>
-                <p className="mt-5 text-lg leading-relaxed text-gray-400">{service.body}</p>
+                <p className="mt-5 text-lg leading-relaxed text-espresso-600">{service.body}</p>
 
                 <ul className="mt-8 space-y-3">
                   {service.points.map((point, pi) => (
@@ -53,10 +53,10 @@ export function Services() {
                       whileInView={{ opacity: 1, x: 0 }}
                       viewport={viewportOnce}
                       transition={{ duration: 0.5, delay: 0.15 + pi * 0.08, ease: EASE }}
-                      className="flex items-center gap-3 text-gray-300"
+                      className="flex items-center gap-3 text-espresso-700"
                     >
                       <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-electric-300/30 bg-electric-300/10">
-                        <Check className="h-3 w-3 text-electric-300" strokeWidth={3} />
+                        <Check className="h-3 w-3 text-electric-500" strokeWidth={3} />
                       </span>
                       {point}
                     </motion.li>

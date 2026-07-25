@@ -55,7 +55,7 @@ export function Navbar() {
           className={cn(
             'mx-auto flex max-w-7xl items-center justify-between px-5 transition-all duration-500 sm:px-8',
             scrolled
-              ? 'my-3 rounded-2xl border border-white/10 bg-base-900/70 py-2.5 shadow-glass backdrop-blur-xl sm:mx-6'
+              ? 'my-3 rounded-2xl border border-espresso-900/10 bg-base-800/80 py-2.5 shadow-glass backdrop-blur-xl sm:mx-6'
               : 'py-5'
           )}
         >
@@ -68,7 +68,7 @@ export function Navbar() {
                 key={item.label}
                 to={item.to}
                 data-active={location.pathname === item.to}
-                className="link-underline text-sm font-medium text-gray-400 transition-colors duration-300 hover:text-white"
+                className="link-underline text-sm font-medium text-espresso-600 transition-colors duration-300 hover:text-espresso-900"
               >
                 {item.label}
               </Link>
@@ -79,7 +79,7 @@ export function Navbar() {
             {!user && (
               <Link
                 to="/login"
-                className="hidden text-sm font-medium text-gray-400 transition-colors duration-300 hover:text-white md:block"
+                className="hidden text-sm font-medium text-espresso-600 transition-colors duration-300 hover:text-espresso-900 md:block"
               >
                 Sign in
               </Link>
@@ -97,7 +97,7 @@ export function Navbar() {
               aria-label="Open menu"
               aria-expanded={open}
               onClick={() => setOpen(true)}
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white backdrop-blur-xl transition-colors hover:bg-white/10 md:hidden"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-espresso-900/10 bg-white/55 text-espresso-900 backdrop-blur-xl transition-colors hover:bg-white/70 md:hidden"
             >
               <Menu className="h-5 w-5" />
             </button>
@@ -113,7 +113,7 @@ export function Navbar() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-[60] flex flex-col bg-base-900/95 px-6 py-5 backdrop-blur-2xl md:hidden"
+            className="fixed inset-0 z-[60] flex flex-col bg-base-800/97 px-6 py-5 backdrop-blur-2xl md:hidden"
           >
             <div className="flex items-center justify-between">
               <Logo withWordmark />
@@ -124,7 +124,7 @@ export function Navbar() {
                 initial={{ rotate: -90, scale: 0.8, opacity: 0 }}
                 animate={{ rotate: 0, scale: 1, opacity: 1 }}
                 transition={{ duration: 0.45, ease: EASE }}
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white"
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-espresso-900/10 bg-white/55 text-espresso-900"
               >
                 <X className="h-5 w-5" />
               </motion.button>
@@ -141,7 +141,7 @@ export function Navbar() {
                   <Link
                     to={item.to}
                     onClick={() => setOpen(false)}
-                    className="block py-2 font-display text-4xl font-medium tracking-tight text-white/90"
+                    className="block py-2 font-display text-4xl font-medium tracking-tight text-espresso-900"
                   >
                     {item.label}
                   </Link>
@@ -163,7 +163,7 @@ export function Navbar() {
                 <Link
                   to="/login"
                   onClick={() => setOpen(false)}
-                  className="text-center text-sm font-medium text-gray-400 transition-colors hover:text-white"
+                  className="text-center text-sm font-medium text-espresso-600 transition-colors hover:text-espresso-900"
                 >
                   Already have an account? Sign in
                 </Link>

@@ -107,9 +107,9 @@ export function Hero() {
               initial={{ opacity: 0, x: -36 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.9, delay: 0.8, ease: EASE }}
-              className="max-w-sm rounded-2xl border border-white/10 bg-base-800/60 p-6 shadow-glass backdrop-blur-xl"
+              className="max-w-sm rounded-2xl border border-espresso-900/10 bg-white/70 p-6 shadow-glass backdrop-blur-xl"
             >
-              <h2 className="font-display text-2xl font-medium leading-snug text-white sm:text-[1.75rem]">
+              <h2 className="font-display text-2xl font-medium leading-snug text-espresso-900 sm:text-[1.75rem]">
                 Export effortlessly
                 <br />
                 in just days
@@ -117,7 +117,7 @@ export function Hero() {
               <button
                 type="button"
                 onClick={() => navigate(user ? dashboardPath : '/signup')}
-                className="group mt-6 flex w-full items-center justify-center gap-2 rounded-lg bg-electric-500 px-6 py-3.5 text-xs font-semibold uppercase tracking-[0.16em] text-white shadow-glow-blue transition-all duration-300 hover:bg-electric-400 hover:shadow-[0_0_50px_rgba(184,115,51,0.65)]"
+                className="group mt-6 flex w-full items-center justify-center gap-2 rounded-lg bg-espresso-900 px-6 py-3.5 text-xs font-semibold uppercase tracking-[0.16em] text-base-600 shadow-glow-blue transition-all duration-300 hover:bg-espresso-800 hover:shadow-[0_10px_34px_rgba(74,52,32,0.35)]"
               >
                 {user ? 'Open dashboard' : 'Start trading'}
                 <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
@@ -129,12 +129,12 @@ export function Hero() {
               initial={{ opacity: 0, x: 36 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.9, delay: 0.95, ease: EASE }}
-              className="hidden w-52 rounded-2xl border border-white/10 bg-base-800/60 p-3 shadow-glass backdrop-blur-xl lg:block"
+              className="hidden w-52 rounded-2xl border border-espresso-900/10 bg-white/70 p-3 shadow-glass backdrop-blur-xl lg:block"
             >
               <div className="relative flex h-24 items-center justify-center overflow-hidden rounded-xl bg-gradient-to-br from-electric-500/25 via-base-700 to-base-800">
-                <ShieldCheck className="h-9 w-9 text-electric-300" strokeWidth={1.5} />
+                <ShieldCheck className="h-9 w-9 text-electric-500" strokeWidth={1.5} />
               </div>
-              <ul className="mt-3 space-y-1.5 px-1 pb-1 text-xs text-gray-300">
+              <ul className="mt-3 space-y-1.5 px-1 pb-1 text-xs text-espresso-700">
                 {['Fully traceable', 'Quality assured', 'Export documented'].map((item) => (
                   <li key={item} className="flex items-center gap-2">
                     <span className="h-1 w-1 rounded-full bg-electric-400" />
@@ -153,12 +153,12 @@ export function Hero() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 1.15, ease: EASE }}
         style={reduced ? undefined : { opacity: uiOpacity }}
-        className="absolute left-[6%] top-[38%] z-10 hidden rounded-xl border border-white/10 bg-base-800/70 px-5 py-3 text-center shadow-glass backdrop-blur-xl lg:block"
+        className="absolute left-[6%] top-[38%] z-10 hidden rounded-xl border border-espresso-900/10 bg-white/70 px-5 py-3 text-center shadow-glass backdrop-blur-xl lg:block"
       >
-        <p className="text-[0.6rem] font-semibold uppercase tracking-[0.18em] text-gray-400">
+        <p className="text-[0.6rem] font-semibold uppercase tracking-[0.18em] text-espresso-600">
           Global reach
         </p>
-        <p className="mt-1 font-display text-lg font-semibold text-white">203 countries</p>
+        <p className="mt-1 font-display text-lg font-semibold text-espresso-900">203 countries</p>
       </motion.div>
     </section>
   );

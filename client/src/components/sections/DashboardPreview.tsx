@@ -22,15 +22,15 @@ export function DashboardPreview() {
         className="absolute -inset-8 rounded-[2rem] bg-gradient-to-br from-electric-500/15 via-transparent to-electric-600/15 blur-3xl"
       />
 
-      <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-base-800/70 shadow-glass-lg backdrop-blur-2xl">
+      <div className="relative overflow-hidden rounded-3xl border border-espresso-900/10 bg-white/70 shadow-glass-lg backdrop-blur-2xl">
         {/* Title bar */}
-        <div className="flex items-center justify-between border-b border-white/10 px-5 py-3.5">
+        <div className="flex items-center justify-between border-b border-espresso-900/10 px-5 py-3.5">
           <div className="flex items-center gap-2">
             <span className="h-2.5 w-2.5 rounded-full bg-red-400/70" />
             <span className="h-2.5 w-2.5 rounded-full bg-amber-400/70" />
             <span className="h-2.5 w-2.5 rounded-full bg-electric-400/70" />
           </div>
-          <span className="text-[0.7rem] font-medium uppercase tracking-[0.18em] text-gray-500">
+          <span className="text-[0.7rem] font-medium uppercase tracking-[0.18em] text-espresso-500">
             Trade desk
           </span>
         </div>
@@ -38,21 +38,21 @@ export function DashboardPreview() {
         <div className="space-y-5 p-5">
           {/* Metric row */}
           <div className="grid grid-cols-2 gap-3">
-            <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-              <p className="text-xs text-gray-500">Active inquiries</p>
-              <p className="mt-1 font-display text-2xl font-semibold text-white">
+            <div className="rounded-2xl border border-espresso-900/10 bg-white/55 p-4">
+              <p className="text-xs text-espresso-500">Active inquiries</p>
+              <p className="mt-1 font-display text-2xl font-semibold text-espresso-900">
                 <AnimatedCounter value={248} />
               </p>
-              <p className="mt-1 flex items-center gap-1 text-xs text-electric-400">
+              <p className="mt-1 flex items-center gap-1 text-xs text-electric-500">
                 <TrendingUp className="h-3 w-3" /> +18.2%
               </p>
             </div>
-            <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-              <p className="text-xs text-gray-500">Response rate</p>
-              <p className="mt-1 font-display text-2xl font-semibold text-white">
+            <div className="rounded-2xl border border-espresso-900/10 bg-white/55 p-4">
+              <p className="text-xs text-espresso-500">Response rate</p>
+              <p className="mt-1 font-display text-2xl font-semibold text-espresso-900">
                 <AnimatedCounter value={94} suffix="%" />
               </p>
-              <div className="mt-2.5 h-1.5 overflow-hidden rounded-full bg-white/10">
+              <div className="mt-2.5 h-1.5 overflow-hidden rounded-full bg-white/70">
                 <motion.div
                   initial={{ width: 0 }}
                   whileInView={{ width: '94%' }}
@@ -65,10 +65,10 @@ export function DashboardPreview() {
           </div>
 
           {/* Sparkline */}
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+          <div className="rounded-2xl border border-espresso-900/10 bg-white/55 p-4">
             <div className="flex items-center justify-between">
-              <p className="text-xs text-gray-500">Inquiry volume · 10 weeks</p>
-              <ArrowUpRight className="h-3.5 w-3.5 text-electric-300" />
+              <p className="text-xs text-espresso-500">Inquiry volume · 10 weeks</p>
+              <ArrowUpRight className="h-3.5 w-3.5 text-electric-500" />
             </div>
             <div className="mt-4 flex h-20 items-end gap-1.5">
               {SPARK.map((v, i) => (
@@ -89,13 +89,13 @@ export function DashboardPreview() {
             {LISTINGS.slice(0, 3).map((l) => (
               <div
                 key={l.product}
-                className="flex items-center justify-between rounded-xl border border-white/5 bg-white/[0.03] px-3.5 py-2.5"
+                className="flex items-center justify-between rounded-xl border border-espresso-900/8 bg-white/40 px-3.5 py-2.5"
               >
                 <div className="min-w-0">
-                  <p className="truncate text-xs font-medium text-white">{l.product}</p>
-                  <p className="truncate text-[0.7rem] text-gray-500">{l.company}</p>
+                  <p className="truncate text-xs font-medium text-espresso-900">{l.product}</p>
+                  <p className="truncate text-[0.7rem] text-espresso-500">{l.company}</p>
                 </div>
-                <span className="ml-3 shrink-0 rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[0.65rem] text-electric-300">
+                <span className="ml-3 shrink-0 rounded-full border border-espresso-900/10 bg-white/55 px-2 py-0.5 text-[0.65rem] text-electric-500">
                   {l.moq}
                 </span>
               </div>

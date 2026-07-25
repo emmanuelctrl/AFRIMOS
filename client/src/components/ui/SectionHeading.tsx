@@ -28,20 +28,20 @@ export function SectionHeading({
     >
       {eyebrow && (
         <Reveal>
-          <p className="mb-4 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.24em] text-electric-300">
+          <p className="mb-4 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.24em] text-electric-500">
             <span className="h-px w-6 bg-gradient-to-r from-electric-300 to-transparent" />
             {eyebrow}
           </p>
         </Reveal>
       )}
       <Reveal delay={0.06}>
-        <h2 className="font-display text-[2.5rem] font-semibold leading-[1.05] tracking-tighter text-white sm:text-5xl lg:text-[3.5rem]">
+        <h2 className="font-display text-[2.5rem] font-semibold leading-[1.05] tracking-tighter text-espresso-900 sm:text-5xl lg:text-[3.5rem]">
           {title}
         </h2>
       </Reveal>
       {description && (
         <Reveal delay={0.12}>
-          <p className="mt-5 text-lg leading-relaxed text-gray-400">{description}</p>
+          <p className="mt-5 text-lg leading-relaxed text-espresso-600">{description}</p>
         </Reveal>
       )}
     </div>
