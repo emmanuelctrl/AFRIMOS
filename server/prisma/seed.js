@@ -6,13 +6,15 @@ const prisma = new PrismaClient();
 
 async function main() {
   const password = await bcrypt.hash('Password123!', 10);
+  // Default admin login password (changeable from the admin settings page).
+  const adminPassword = await bcrypt.hash('0703', 10);
 
   const admin = await prisma.user.upsert({
     where: { email: 'admin@afrimos.et' },
-    update: {},
+    update: { password: adminPassword },
     create: {
       email: 'admin@afrimos.et',
-      password,
+      password: adminPassword,
       fullName: 'AFRIMOS Admin',
       role: 'admin',
       emailVerified: true,
@@ -115,8 +117,9 @@ async function main() {
   });
 
   console.log('Seed complete.');
-  console.log('Login accounts (password for all: Password123!):');
-  console.log(`  admin:    ${admin.email}`);
+  console.log('Admin: password-only login at /admin/login (default password: 0703)');
+  console.log('Other accounts (password: Password123!):');
+  console.log(`  admin email login: ${admin.email}`);
   console.log(`  buyer:    ${buyer.email}`);
   console.log('  supplier: yirga@example.et / humera@example.et / pulses@example.et');
 }

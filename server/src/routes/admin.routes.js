@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import bcrypt from 'bcryptjs';
 import { z } from 'zod';
 import { prisma } from '../lib/prisma.js';
 import { requireAuth, requireRole } from '../middleware/auth.js';
@@ -8,6 +9,27 @@ import { sendVerificationDecisionEmail } from '../lib/email.js';
 const router = Router();
 
 router.use(requireAuth, requireRole('admin'));
+
+const adminPasswordSchema = z.object({
+  currentPassword: z.string().min(1, 'Current password is required'),
+  newPassword: z.string().min(4, 'New password must be at least 4 characters'),
+});
+
+// PUT /api/admin/password - change the admin login password
+router.put('/password', validate(adminPasswordSchema), async (req, res, next) => {
+  try {
+    const admin = await prisma.user.findUnique({ where: { id: req.user.id } });
+    const ok = await bcrypt.compare(req.body.currentPassword, admin.password);
+    if (!ok) return res.status(401).json({ error: 'Current password is incorrect' });
+    await prisma.user.update({
+      where: { id: admin.id },
+      data: { password: await bcrypt.hash(req.body.newPassword, 10) },
+    });
+    res.json({ message: 'Admin password updated' });
+  } catch (err) {
+    next(err);
+  }
+});
 
 // GET /api/admin/suppliers?status=pending
 router.get('/suppliers', async (req, res, next) => {

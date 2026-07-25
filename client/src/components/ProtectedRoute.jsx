@@ -4,12 +4,12 @@ import Spinner from './Spinner';
 
 // `approved` gates a route to accounts an admin has verified (admins always
 // pass). Rejected accounts are locked out of every protected route.
-export default function ProtectedRoute({ roles, approved = false, children }) {
+export default function ProtectedRoute({ roles, approved = false, loginPath = '/login', children }) {
   const { user, loading } = useAuth();
   const location = useLocation();
 
   if (loading) return <Spinner />;
-  if (!user) return <Navigate to="/login" state={{ from: location.pathname }} replace />;
+  if (!user) return <Navigate to={loginPath} state={{ from: location.pathname }} replace />;
 
   if (user.verificationStatus === 'rejected') return <Navigate to="/account-status" replace />;
 

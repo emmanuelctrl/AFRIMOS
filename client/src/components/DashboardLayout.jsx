@@ -21,6 +21,7 @@ const MENUS = {
     ['/admin', 'Overview', true],
     ['/admin/suppliers', 'Supplier verification'],
     ['/admin/users', 'Users'],
+    ['/admin/settings', 'Settings'],
   ],
 };
 

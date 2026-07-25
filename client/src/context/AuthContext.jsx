@@ -45,6 +45,12 @@ export function AuthProvider({ children }) {
     return data.user;
   };
 
+  const adminLogin = async (password) => {
+    const { data } = await api.post('/auth/admin-login', { password });
+    storeSession(data);
+    return data.user;
+  };
+
   const logout = async () => {
     try {
       await api.post('/auth/logout');
@@ -57,7 +63,7 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, signup, logout, refreshUser }}>
+    <AuthContext.Provider value={{ user, loading, login, signup, adminLogin, logout, refreshUser }}>
       {children}
     </AuthContext.Provider>
   );

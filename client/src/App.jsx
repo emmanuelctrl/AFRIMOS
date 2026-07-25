@@ -27,9 +27,11 @@ import RfqList from './pages/shared/RfqList';
 import RfqDetail from './pages/shared/RfqDetail';
 import Messages from './pages/shared/Messages';
 
+import AdminLogin from './pages/admin/AdminLogin';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminSuppliers from './pages/admin/AdminSuppliers';
 import AdminUsers from './pages/admin/AdminUsers';
+import AdminSettings from './pages/admin/AdminSettings';
 
 export default function App() {
   return (
@@ -101,11 +103,12 @@ export default function App() {
               <Route path="messages" element={<Messages base="/dashboard/buyer/rfqs" />} />
             </Route>
 
-            {/* Admin */}
+            {/* Admin (password-only login) */}
+            <Route path="/admin/login" element={<AdminLogin />} />
             <Route
               path="/admin"
               element={
-                <ProtectedRoute roles={['admin']}>
+                <ProtectedRoute roles={['admin']} loginPath="/admin/login">
                   <DashboardLayout role="admin" />
                 </ProtectedRoute>
               }
@@ -113,6 +116,7 @@ export default function App() {
               <Route index element={<AdminDashboard />} />
               <Route path="suppliers" element={<AdminSuppliers />} />
               <Route path="users" element={<AdminUsers />} />
+              <Route path="settings" element={<AdminSettings />} />
             </Route>
 
             <Route path="/dashboard" element={<Navigate to="/login" replace />} />
