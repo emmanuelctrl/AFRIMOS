@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { z } from 'zod';
 import { prisma } from '../lib/prisma.js';
-import { requireAuth, requireVerifiedEmail } from '../middleware/auth.js';
+import { requireAuth, requireVerifiedEmail, requireApproved } from '../middleware/auth.js';
 import { validate } from '../middleware/validate.js';
 import { sendMessageNotification } from '../lib/email.js';
 
@@ -16,7 +16,7 @@ const messageSchema = z.object({
 });
 
 // POST /api/messages - send a message inside an RFQ thread
-router.post('/', requireAuth, requireVerifiedEmail, validate(messageSchema), async (req, res, next) => {
+router.post('/', requireAuth, requireApproved, requireVerifiedEmail, validate(messageSchema), async (req, res, next) => {
   try {
     const { rfqId, recipientId, subject, messageBody, attachments } = req.body;
     const rfq = await prisma.rfq.findUnique({
@@ -66,7 +66,7 @@ router.post('/', requireAuth, requireVerifiedEmail, validate(messageSchema), asy
 });
 
 // GET /api/messages/conversations - conversation list grouped by RFQ
-router.get('/conversations', requireAuth, async (req, res, next) => {
+router.get('/conversations', requireAuth, requireApproved, async (req, res, next) => {
   try {
     const messages = await prisma.message.findMany({
       where: { OR: [{ senderId: req.user.id }, { recipientId: req.user.id }] },
@@ -96,7 +96,7 @@ router.get('/conversations', requireAuth, async (req, res, next) => {
 });
 
 // GET /api/messages/:rfqId - full thread for an RFQ (marks incoming as read)
-router.get('/:rfqId', requireAuth, async (req, res, next) => {
+router.get('/:rfqId', requireAuth, requireApproved, async (req, res, next) => {
   try {
     const participantCount = await prisma.message.count({
       where: {
@@ -129,7 +129,7 @@ router.get('/:rfqId', requireAuth, async (req, res, next) => {
 });
 
 // PUT /api/messages/:messageId/read
-router.put('/:messageId/read', requireAuth, async (req, res, next) => {
+router.put('/:messageId/read', requireAuth, requireApproved, async (req, res, next) => {
   try {
     const msg = await prisma.message.findUnique({ where: { id: req.params.messageId } });
     if (!msg) return res.status(404).json({ error: 'Message not found' });
@@ -147,7 +147,7 @@ router.put('/:messageId/read', requireAuth, async (req, res, next) => {
 });
 
 // DELETE /api/messages/:messageId - sender only
-router.delete('/:messageId', requireAuth, async (req, res, next) => {
+router.delete('/:messageId', requireAuth, requireApproved, async (req, res, next) => {
   try {
     const msg = await prisma.message.findUnique({ where: { id: req.params.messageId } });
     if (!msg) return res.status(404).json({ error: 'Message not found' });

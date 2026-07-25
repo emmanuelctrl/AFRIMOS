@@ -40,19 +40,19 @@ export default function VerifyEmail() {
 
   return (
     <div className="mx-auto max-w-md px-4 py-24 text-center">
-      {state === 'verifying' && <p className="text-gray-600">Verifying your email…</p>}
+      {state === 'verifying' && <p className="text-gray-300">Verifying your email…</p>}
       {state === 'done' && (
         <>
           <p className="text-4xl">✅</p>
-          <h1 className="mt-4 text-2xl font-bold text-gray-900">Email verified!</h1>
-          <p className="mt-2 text-gray-600">Redirecting you to your dashboard…</p>
+          <h1 className="mt-4 text-2xl font-bold text-white">Email verified!</h1>
+          <p className="mt-2 text-gray-300">Redirecting you to your dashboard…</p>
         </>
       )}
       {state === 'error' && (
         <>
           <p className="text-4xl">⚠️</p>
-          <h1 className="mt-4 text-2xl font-bold text-gray-900">Verification failed</h1>
-          <p className="mt-2 text-gray-600">{message}</p>
+          <h1 className="mt-4 text-2xl font-bold text-white">Verification failed</h1>
+          <p className="mt-2 text-gray-300">{message}</p>
           <button className="btn-primary mt-6" onClick={resend}>
             Resend verification email
           </button>
@@ -61,16 +61,16 @@ export default function VerifyEmail() {
       {state === 'waiting' && (
         <>
           <p className="text-4xl">📬</p>
-          <h1 className="mt-4 text-2xl font-bold text-gray-900">Check your email</h1>
-          <p className="mt-2 text-gray-600">
+          <h1 className="mt-4 text-2xl font-bold text-white">Check your email</h1>
+          <p className="mt-2 text-gray-300">
             We sent a verification link to your inbox. Click it to activate your account.
           </p>
-          {message && <p className="mt-4 text-sm text-brand-700">{message}</p>}
+          {message && <p className="mt-4 text-sm text-brand-400">{message}</p>}
           <button className="btn-secondary mt-6" onClick={resend}>
             Resend email
           </button>
-          <p className="mt-6 text-sm text-gray-500">
-            Wrong account? <Link className="text-brand-700 underline" to="/login">Log in again</Link>
+          <p className="mt-6 text-sm text-gray-400">
+            Wrong account? <Link className="text-brand-400 underline" to="/login">Log in again</Link>
           </p>
         </>
       )}

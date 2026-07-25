@@ -32,7 +32,7 @@ export default function RfqDetail() {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages.length]);
 
-  if (error) return <p className="py-16 text-center text-gray-500">{error}</p>;
+  if (error) return <p className="py-16 text-center text-gray-400">{error}</p>;
   if (!rfq) return <Spinner />;
 
   // Work out who receives our reply
@@ -72,8 +72,8 @@ export default function RfqDetail() {
       <div className="card">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
-            <h1 className="text-xl font-bold text-gray-900">{rfq.title}</h1>
-            <p className="mt-1 text-sm text-gray-500">
+            <h1 className="text-xl font-bold text-white">{rfq.title}</h1>
+            <p className="mt-1 text-sm text-gray-400">
               From {rfq.buyer.fullName}
               {rfq.supplier ? ` to ${rfq.supplier.companyName}` : ' (broadcast to category)'} ·{' '}
               {new Date(rfq.createdAt).toLocaleDateString()}
@@ -98,19 +98,19 @@ export default function RfqDetail() {
           ].map(([k, v]) => (
             <div key={k}>
               <dt className="text-xs uppercase text-gray-400">{k}</dt>
-              <dd className="font-medium text-gray-900">{v}</dd>
+              <dd className="font-medium text-white">{v}</dd>
             </div>
           ))}
         </dl>
         {rfq.description && (
-          <p className="mt-4 whitespace-pre-line rounded-xl border border-white/40 bg-white/40 p-4 text-sm text-gray-700">
+          <p className="mt-4 whitespace-pre-line rounded-xl border border-white/10 bg-white/5 p-4 text-sm text-gray-200">
             {rfq.description}
           </p>
         )}
       </div>
 
       <div className="card flex h-[28rem] flex-col p-0">
-        <p className="border-b border-white/40 px-6 py-3 font-semibold text-gray-900">Conversation</p>
+        <p className="border-b border-white/10 px-6 py-3 font-semibold text-white">Conversation</p>
         <div className="flex-1 space-y-3 overflow-y-auto px-6 py-4">
           {messages.length === 0 && (
             <p className="py-10 text-center text-sm text-gray-400">
@@ -123,7 +123,7 @@ export default function RfqDetail() {
               <div key={m.id} className={`flex ${mine ? 'justify-end' : 'justify-start'}`}>
                 <div
                   className={`max-w-[75%] rounded-2xl px-4 py-2.5 text-sm ${
-                    mine ? 'bg-brand-600 text-white shadow-md shadow-brand-900/20' : 'border border-white/50 bg-white/60 text-gray-800 backdrop-blur-sm'
+                    mine ? 'bg-brand-600 text-white shadow-md shadow-brand-900/20' : 'border border-white/10 bg-white/10 text-gray-100 backdrop-blur-sm'
                   }`}
                 >
                   <p className="whitespace-pre-line">{m.messageBody}</p>
@@ -137,8 +137,8 @@ export default function RfqDetail() {
           })}
           <div ref={bottomRef} />
         </div>
-        {error && <p className="px-6 pb-2 text-sm text-red-600">{error}</p>}
-        <form onSubmit={send} className="flex gap-3 border-t border-white/40 p-4">
+        {error && <p className="px-6 pb-2 text-sm text-red-300">{error}</p>}
+        <form onSubmit={send} className="flex gap-3 border-t border-white/10 p-4">
           <input
             className="input"
             placeholder={

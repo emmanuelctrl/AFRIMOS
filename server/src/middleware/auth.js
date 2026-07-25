@@ -32,6 +32,23 @@ export function requireRole(...roles) {
   };
 }
 
+// Gate for "real" marketplace data: only accounts an admin has approved
+// (verificationStatus === 'verified') — or admins themselves — may pass.
+// Pending accounts are held back until approval; rejected accounts are already
+// stopped in requireAuth. Use AFTER requireAuth.
+export function requireApproved(req, res, next) {
+  if (!req.user) return res.status(401).json({ error: 'Authentication required' });
+  if (req.user.role === 'admin') return next();
+  if (req.user.verificationStatus === 'verified') return next();
+  return res.status(403).json({
+    error:
+      req.user.verificationStatus === 'pending'
+        ? 'Your account is pending approval. An administrator must approve it before you can access this.'
+        : 'Your account is not approved to access this.',
+    verificationStatus: req.user.verificationStatus,
+  });
+}
+
 export function requireVerifiedEmail(req, res, next) {
   if (!req.user.emailVerified) {
     return res.status(403).json({ error: 'Please verify your email address first' });

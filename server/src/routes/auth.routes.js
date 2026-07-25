@@ -49,6 +49,9 @@ router.post('/signup', validate(signupSchema), async (req, res, next) => {
         role,
         userType,
         emailVerifyToken,
+        // Suppliers (exporters) are manually vetted before they can access the
+        // marketplace, so they start "pending". Buyers are approved on signup.
+        verificationStatus: role === 'supplier' ? 'pending' : 'verified',
         ...(role === 'supplier'
           ? { supplierProfile: { create: { companyName } } }
           : {}),
@@ -101,6 +104,34 @@ router.post('/login', validate(loginSchema), async (req, res, next) => {
   }
 });
 
+const adminLoginSchema = z.object({ password: z.string().min(1, 'Password is required') });
+
+// Password-only admin login. Authenticates against the admin account's stored
+// (bcrypt-hashed) password — default "0703", changeable from admin settings.
+// NOTE: a short numeric password is easy to brute force; there is no rate
+// limiting here, so set a stronger one via the admin settings page in anything
+// beyond a trusted/internal deployment.
+router.post('/admin-login', validate(adminLoginSchema), async (req, res, next) => {
+  try {
+    const admin = await prisma.user.findFirst({
+      where: { role: 'admin' },
+      orderBy: { createdAt: 'asc' },
+      include: { supplierProfile: { select: { id: true } } },
+    });
+    if (!admin) return res.status(500).json({ error: 'No admin account is configured' });
+    const ok = await bcrypt.compare(req.body.password, admin.password);
+    if (!ok) return res.status(401).json({ error: 'Incorrect password' });
+    res.json({
+      userId: admin.id,
+      token: signAccessToken(admin),
+      refreshToken: signRefreshToken(admin),
+      user: publicUser(admin),
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
 router.post('/logout', (req, res) => {
   // Stateless JWT: the client discards its tokens.
   res.json({ message: 'Logged out' });
@@ -145,6 +176,9 @@ router.post('/refresh-token', async (req, res) => {
     const payload = verifyRefreshToken(refreshToken);
     const user = await prisma.user.findUnique({ where: { id: payload.sub } });
     if (!user) return res.status(401).json({ error: 'User no longer exists' });
+    if (user.verificationStatus === 'rejected') {
+      return res.status(403).json({ error: 'Your account has been rejected.' });
+    }
     res.json({ token: signAccessToken(user), refreshToken: signRefreshToken(user) });
   } catch {
     res.status(401).json({ error: 'Invalid refresh token' });

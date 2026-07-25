@@ -33,7 +33,7 @@ export default function AdminUsers() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold text-gray-900">Users</h1>
+      <h1 className="text-2xl font-bold text-white">Users</h1>
 
       <div className="flex flex-wrap items-center gap-3">
         <form
@@ -71,14 +71,14 @@ export default function AdminUsers() {
               <th className="px-6 py-3">Status</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-white/40">
+          <tbody className="divide-y divide-white/10">
             {data.users.map((u) => (
               <tr key={u.id} className="row-hover">
-                <td className="px-6 py-3 font-medium text-gray-900">{u.fullName}</td>
-                <td className="px-6 py-3 text-gray-600">{u.email}</td>
-                <td className="px-6 py-3 capitalize text-gray-600">{u.role}</td>
-                <td className="px-6 py-3 text-gray-600">{u.supplierProfile?.companyName || '—'}</td>
-                <td className="px-6 py-3 text-gray-500">{new Date(u.createdAt).toLocaleDateString()}</td>
+                <td className="px-6 py-3 font-medium text-white">{u.fullName}</td>
+                <td className="px-6 py-3 text-gray-300">{u.email}</td>
+                <td className="px-6 py-3 capitalize text-gray-300">{u.role}</td>
+                <td className="px-6 py-3 text-gray-300">{u.supplierProfile?.companyName || '—'}</td>
+                <td className="px-6 py-3 text-gray-400">{new Date(u.createdAt).toLocaleDateString()}</td>
                 <td className="px-6 py-3">
                   {u.role === 'supplier' ? (
                     <Badge tone={u.verificationStatus}>{u.verificationStatus}</Badge>

@@ -29,7 +29,7 @@ export default function BuyerDashboard() {
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-2xl font-bold text-gray-900">Welcome, {user.fullName}</h1>
+        <h1 className="text-2xl font-bold text-white">Welcome, {user.fullName}</h1>
         <div className="flex gap-2">
           <Link to="/dashboard/buyer/rfqs/new" className="btn-primary">
             + Create RFQ
@@ -48,17 +48,17 @@ export default function BuyerDashboard() {
 
       <section className="card">
         <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-gray-900">Recent RFQs</h2>
-          <Link to="/dashboard/buyer/rfqs" className="text-sm font-medium text-brand-700 underline">
+          <h2 className="text-lg font-semibold text-white">Recent RFQs</h2>
+          <Link to="/dashboard/buyer/rfqs" className="text-sm font-medium text-brand-400 underline">
             View all
           </Link>
         </div>
         {rfqs.length === 0 ? (
-          <p className="py-6 text-center text-sm text-gray-500">
-            No RFQs yet. <Link to="/dashboard/buyer/rfqs/new" className="text-brand-700 underline">Create your first one</Link>.
+          <p className="py-6 text-center text-sm text-gray-400">
+            No RFQs yet. <Link to="/dashboard/buyer/rfqs/new" className="text-brand-400 underline">Create your first one</Link>.
           </p>
         ) : (
-          <div className="divide-y divide-white/40">
+          <div className="divide-y divide-white/10">
             {rfqs.slice(0, 5).map((r) => (
               <Link
                 key={r.id}
@@ -66,8 +66,8 @@ export default function BuyerDashboard() {
                 className="flex items-center justify-between gap-4 py-3 row-hover"
               >
                 <div>
-                  <p className="font-medium text-gray-900">{r.title}</p>
-                  <p className="text-xs text-gray-500">
+                  <p className="font-medium text-white">{r.title}</p>
+                  <p className="text-xs text-gray-400">
                     {r.supplier?.companyName || 'Broadcast'} · {r.quantity} {r.unit} ·{' '}
                     {new Date(r.createdAt).toLocaleDateString()}
                   </p>

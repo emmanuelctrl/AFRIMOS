@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { z } from 'zod';
 import { prisma } from '../lib/prisma.js';
-import { requireAuth, requireRole, requireVerifiedEmail } from '../middleware/auth.js';
+import { requireAuth, requireRole, requireVerifiedEmail, requireApproved } from '../middleware/auth.js';
 import { validate } from '../middleware/validate.js';
 import { sendRfqNotification } from '../lib/email.js';
 
@@ -23,6 +23,7 @@ const rfqSchema = z.object({
 router.post(
   '/',
   requireAuth,
+  requireApproved,
   requireRole('buyer'),
   requireVerifiedEmail,
   validate(rfqSchema),
@@ -66,7 +67,7 @@ router.post(
 );
 
 // GET /api/rfqs - list RFQs relevant to the current user
-router.get('/', requireAuth, async (req, res, next) => {
+router.get('/', requireAuth, requireApproved, async (req, res, next) => {
   try {
     const page = Math.max(1, parseInt(req.query.page) || 1);
     const limit = Math.min(50, Math.max(1, parseInt(req.query.limit) || 20));
@@ -132,7 +133,7 @@ async function canAccessRfq(user, rfq) {
 }
 
 // GET /api/rfqs/:rfqId
-router.get('/:rfqId', requireAuth, async (req, res, next) => {
+router.get('/:rfqId', requireAuth, requireApproved, async (req, res, next) => {
   try {
     const rfq = await prisma.rfq.findUnique({
       where: { id: req.params.rfqId },
@@ -152,7 +153,7 @@ router.get('/:rfqId', requireAuth, async (req, res, next) => {
 });
 
 // GET /api/rfqs/:rfqId/messages
-router.get('/:rfqId/messages', requireAuth, async (req, res, next) => {
+router.get('/:rfqId/messages', requireAuth, requireApproved, async (req, res, next) => {
   try {
     const rfq = await prisma.rfq.findUnique({ where: { id: req.params.rfqId } });
     if (!rfq) return res.status(404).json({ error: 'RFQ not found' });
@@ -184,7 +185,7 @@ const rfqUpdateSchema = z.object({
 });
 
 // PUT /api/rfqs/:rfqId - update status or details
-router.put('/:rfqId', requireAuth, validate(rfqUpdateSchema), async (req, res, next) => {
+router.put('/:rfqId', requireAuth, requireApproved, validate(rfqUpdateSchema), async (req, res, next) => {
   try {
     const rfq = await prisma.rfq.findUnique({ where: { id: req.params.rfqId } });
     if (!rfq) return res.status(404).json({ error: 'RFQ not found' });
@@ -201,7 +202,7 @@ router.put('/:rfqId', requireAuth, validate(rfqUpdateSchema), async (req, res, n
 });
 
 // DELETE /api/rfqs/:rfqId - buyer deletes own RFQ
-router.delete('/:rfqId', requireAuth, async (req, res, next) => {
+router.delete('/:rfqId', requireAuth, requireApproved, async (req, res, next) => {
   try {
     const rfq = await prisma.rfq.findUnique({ where: { id: req.params.rfqId } });
     if (!rfq) return res.status(404).json({ error: 'RFQ not found' });

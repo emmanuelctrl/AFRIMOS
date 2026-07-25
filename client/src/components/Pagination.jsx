@@ -6,7 +6,7 @@ export default function Pagination({ page, total, limit, onPage }) {
       <button className="btn-secondary" disabled={page <= 1} onClick={() => onPage(page - 1)}>
         Previous
       </button>
-      <span className="text-sm text-gray-600">
+      <span className="text-sm text-gray-300">
         Page {page} of {pages}
       </span>
       <button className="btn-secondary" disabled={page >= pages} onClick={() => onPage(page + 1)}>

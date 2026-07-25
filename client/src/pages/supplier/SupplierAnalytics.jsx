@@ -24,7 +24,7 @@ export default function SupplierAnalytics() {
   }, []);
 
   if (loading) return <Spinner />;
-  if (!data) return <p className="text-gray-500">Analytics unavailable.</p>;
+  if (!data) return <p className="text-gray-400">Analytics unavailable.</p>;
 
   const exportCsv = () => {
     const rows = [['date', 'inquiries'], ...data.inquiriesByDay.map((d) => [d.date, d.count])];
@@ -39,7 +39,7 @@ export default function SupplierAnalytics() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-gray-900">Analytics</h1>
+        <h1 className="text-2xl font-bold text-white">Analytics</h1>
         <button className="btn-secondary" onClick={exportCsv}>
           Export CSV
         </button>
@@ -53,28 +53,32 @@ export default function SupplierAnalytics() {
       </div>
 
       <section className="card">
-        <h2 className="mb-4 text-lg font-semibold text-gray-900">Inquiries - last 30 days</h2>
+        <h2 className="mb-4 text-lg font-semibold text-white">Inquiries - last 30 days</h2>
         <div className="h-72">
           <ResponsiveContainer>
             <AreaChart data={data.inquiriesByDay} margin={{ left: -20, right: 8, top: 8 }}>
               <defs>
                 <linearGradient id="inq" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#356d51" stopOpacity={0.35} />
-                  <stop offset="100%" stopColor="#356d51" stopOpacity={0} />
+                  <stop offset="0%" stopColor="#e11d3a" stopOpacity={0.35} />
+                  <stop offset="100%" stopColor="#e11d3a" stopOpacity={0} />
                 </linearGradient>
               </defs>
-              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
+              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#27272a" />
               <XAxis
                 dataKey="date"
-                tick={{ fontSize: 11, fill: '#6b7280' }}
+                tick={{ fontSize: 11, fill: '#a1a1aa' }}
                 tickFormatter={(d) => d.slice(5)}
                 interval={4}
                 axisLine={false}
                 tickLine={false}
               />
-              <YAxis tick={{ fontSize: 11, fill: '#6b7280' }} allowDecimals={false} axisLine={false} tickLine={false} />
-              <Tooltip />
-              <Area type="monotone" dataKey="count" name="Inquiries" stroke="#356d51" strokeWidth={2} fill="url(#inq)" />
+              <YAxis tick={{ fontSize: 11, fill: '#a1a1aa' }} allowDecimals={false} axisLine={false} tickLine={false} />
+              <Tooltip
+                contentStyle={{ background: '#101012', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '0.75rem', color: '#e5e7eb' }}
+                labelStyle={{ color: '#e5e7eb' }}
+                cursor={{ stroke: 'rgba(255,255,255,0.15)' }}
+              />
+              <Area type="monotone" dataKey="count" name="Inquiries" stroke="#e11d3a" strokeWidth={2} fill="url(#inq)" />
             </AreaChart>
           </ResponsiveContainer>
         </div>

@@ -25,14 +25,14 @@ function ReviewModal({ supplier, onClose, onDecided }) {
 
   return (
     <div className="fixed inset-0 z-30 flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm">
-      <div className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-2xl border border-white/50 bg-white/80 p-6 shadow-glass-lg backdrop-blur-md sm:backdrop-blur-lg">
+      <div className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-2xl border border-white/10 bg-white/80 p-6 shadow-glass-lg backdrop-blur-md sm:backdrop-blur-lg">
         <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-gray-900">Review supplier</h2>
-          <button onClick={onClose} className="text-gray-400 hover:text-gray-700" aria-label="Close">
+          <h2 className="text-lg font-semibold text-white">Review supplier</h2>
+          <button onClick={onClose} className="text-gray-400 hover:text-gray-200" aria-label="Close">
             ✕
           </button>
         </div>
-        {error && <p className="mb-3 rounded-lg border border-red-200/60 bg-red-50/80 px-4 py-2 text-sm text-red-700">{error}</p>}
+        {error && <p className="mb-3 rounded-lg border border-red-400/20 bg-red-500/10 px-4 py-2 text-sm text-red-300">{error}</p>}
         <dl className="space-y-2 text-sm">
           {[
             ['Company', p?.companyName],
@@ -48,13 +48,13 @@ function ReviewModal({ supplier, onClose, onDecided }) {
             ['Applied', new Date(supplier.createdAt).toLocaleDateString()],
           ].map(([k, v]) => (
             <div key={k} className="flex justify-between gap-4">
-              <dt className="text-gray-500">{k}</dt>
-              <dd className="text-right font-medium text-gray-900">{v}</dd>
+              <dt className="text-gray-400">{k}</dt>
+              <dd className="text-right font-medium text-white">{v}</dd>
             </div>
           ))}
         </dl>
         {p?.description && (
-          <p className="mt-4 rounded-xl border border-white/40 bg-white/40 p-3 text-sm text-gray-700">{p.description}</p>
+          <p className="mt-4 rounded-xl border border-white/10 bg-white/5 p-3 text-sm text-gray-200">{p.description}</p>
         )}
         <div className="mt-4">
           <label className="label">Verification notes</label>
@@ -95,7 +95,7 @@ export default function AdminSuppliers() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold text-gray-900">Supplier verification</h1>
+      <h1 className="text-2xl font-bold text-white">Supplier verification</h1>
 
       <div className="flex gap-2">
         {['', 'pending', 'verified', 'rejected'].map((s) => (
@@ -109,7 +109,7 @@ export default function AdminSuppliers() {
               setParams(next);
             }}
             className={`rounded-full px-4 py-1.5 text-sm font-medium capitalize ${
-              status === s ? 'bg-brand-600 text-white shadow-md shadow-brand-900/20' : 'border border-white/50 bg-white/50 text-gray-700 backdrop-blur-sm hover:bg-white/70'
+              status === s ? 'bg-brand-600 text-white shadow-md shadow-brand-900/20' : 'border border-white/10 bg-white/5 text-gray-200 backdrop-blur-sm hover:bg-white/10'
             }`}
           >
             {s || 'All'}
@@ -129,24 +129,24 @@ export default function AdminSuppliers() {
               <th className="px-6 py-3 text-right">Actions</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-white/40">
+          <tbody className="divide-y divide-white/10">
             {data.suppliers.map((s) => (
               <tr key={s.id} className="row-hover">
-                <td className="px-6 py-3 font-medium text-gray-900">
+                <td className="px-6 py-3 font-medium text-white">
                   {s.supplierProfile?.companyName || '—'}
                 </td>
-                <td className="px-6 py-3 text-gray-600">
+                <td className="px-6 py-3 text-gray-300">
                   {s.fullName}
                   <p className="text-xs text-gray-400">{s.email}</p>
                 </td>
-                <td className="px-6 py-3 text-gray-500">{new Date(s.createdAt).toLocaleDateString()}</td>
-                <td className="px-6 py-3 text-gray-600">{s.supplierProfile?._count?.products ?? 0}</td>
+                <td className="px-6 py-3 text-gray-400">{new Date(s.createdAt).toLocaleDateString()}</td>
+                <td className="px-6 py-3 text-gray-300">{s.supplierProfile?._count?.products ?? 0}</td>
                 <td className="px-6 py-3">
                   <Badge tone={s.verificationStatus}>{s.verificationStatus}</Badge>
                 </td>
                 <td className="px-6 py-3 text-right">
                   <button
-                    className="text-sm font-medium text-brand-700 hover:underline"
+                    className="text-sm font-medium text-brand-400 hover:underline"
                     onClick={() => setSelected(s)}
                   >
                     Review
@@ -156,7 +156,7 @@ export default function AdminSuppliers() {
             ))}
             {data.suppliers.length === 0 && (
               <tr>
-                <td colSpan="6" className="px-6 py-12 text-center text-gray-500">
+                <td colSpan="6" className="px-6 py-12 text-center text-gray-400">
                   No suppliers found.
                 </td>
               </tr>

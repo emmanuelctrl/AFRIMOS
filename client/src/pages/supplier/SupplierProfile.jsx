@@ -81,18 +81,18 @@ export default function SupplierProfile() {
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-2xl font-bold text-gray-900">Company profile</h1>
+        <h1 className="text-2xl font-bold text-white">Company profile</h1>
         <div className="flex items-center gap-3 text-sm">
           <Badge tone={status}>{status}</Badge>
-          <span className="text-gray-600">Completeness: {completeness}%</span>
+          <span className="text-gray-300">Completeness: {completeness}%</span>
         </div>
       </div>
 
-      {flash && <p className="rounded-xl border border-brand-200/60 bg-brand-50/80 px-4 py-3 backdrop-blur-sm text-sm text-brand-800">{flash}</p>}
+      {flash && <p className="rounded-xl border border-brand-200/60 bg-brand-50/80 px-4 py-3 backdrop-blur-sm text-sm text-brand-300">{flash}</p>}
 
       <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
         <section className="card space-y-4">
-          <h2 className="text-lg font-semibold text-gray-900">Company information</h2>
+          <h2 className="text-lg font-semibold text-white">Company information</h2>
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
               <label className="label">Company name *</label>
@@ -126,7 +126,7 @@ export default function SupplierProfile() {
         </section>
 
         <section className="card space-y-4">
-          <h2 className="text-lg font-semibold text-gray-900">About your company</h2>
+          <h2 className="text-lg font-semibold text-white">About your company</h2>
           <textarea
             className="input min-h-32"
             {...register('description')}
@@ -135,10 +135,10 @@ export default function SupplierProfile() {
         </section>
 
         <section className="card space-y-4">
-          <h2 className="text-lg font-semibold text-gray-900">Certifications</h2>
+          <h2 className="text-lg font-semibold text-white">Certifications</h2>
           <div className="flex flex-wrap gap-4">
             {CERTIFICATIONS.map((c) => (
-              <label key={c} className="flex items-center gap-2 text-sm text-gray-700">
+              <label key={c} className="flex items-center gap-2 text-sm text-gray-200">
                 <input type="checkbox" value={c} {...register('certifications')} className="rounded" />
                 {c}
               </label>
@@ -163,12 +163,12 @@ export default function SupplierProfile() {
         </section>
 
         <section className="card space-y-3">
-          <h2 className="text-lg font-semibold text-gray-900">Company logo</h2>
+          <h2 className="text-lg font-semibold text-white">Company logo</h2>
           <div className="flex items-center gap-4">
             {logo ? (
               <img src={logo} alt="Logo" className="h-16 w-16 rounded-lg object-cover" />
             ) : (
-              <div className="flex h-16 w-16 items-center justify-center rounded-xl border border-white/40 bg-white/40 text-gray-500">
+              <div className="flex h-16 w-16 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-gray-400">
                 —
               </div>
             )}
@@ -176,7 +176,7 @@ export default function SupplierProfile() {
               Upload logo
               <input type="file" accept="image/jpeg,image/png,image/webp" className="hidden" onChange={uploadLogo} />
             </label>
-            <span className="text-xs text-gray-500">JPG, PNG or WebP, max 5MB</span>
+            <span className="text-xs text-gray-400">JPG, PNG or WebP, max 5MB</span>
           </div>
         </section>
 

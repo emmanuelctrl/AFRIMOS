@@ -2,25 +2,28 @@ import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 
+const LOGO_PATH =
+  'M 256 64 L 256 128 L 192.5 128 L 160 95 L 128 64 L 96 95 L 63.5 128 L 64 128 L 128 192 L 128 256 L 64.5 256 L 32 223 L 0 192 L 0 64 L 64 0 L 192 0 Z M 256 192 L 256 256 L 192.5 256 L 160 223 L 128 192 L 128 128 L 192 128 Z';
+
 function Logo() {
   return (
     <Link to="/" className="flex items-center gap-2">
-      <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand-600 font-bold text-white shadow-md shadow-brand-900/30">
-        A
-      </span>
-      <span className="text-lg font-bold tracking-tight text-gray-900">AFRIMOS</span>
+      <svg viewBox="0 0 256 256" width="26" height="26" fill="white" aria-hidden="true">
+        <path d={LOGO_PATH} />
+      </svg>
+      <span className="text-lg font-bold tracking-tight text-white">AFRIMOS</span>
     </Link>
   );
 }
 
-/* Fixed gradient-mesh backdrop the glass surfaces refract against */
+/* Fixed dark backdrop with crimson glows that the glass surfaces refract against */
 function BackgroundMesh() {
   return (
-    <div aria-hidden="true" className="pointer-events-none fixed inset-0 -z-10 overflow-hidden bg-[#edf3ee]">
-      <div className="absolute -left-40 -top-40 h-[30rem] w-[30rem] rounded-full bg-brand-400/40 blur-3xl" />
-      <div className="absolute -right-48 top-1/4 h-[34rem] w-[34rem] rounded-full bg-accent-400/25 blur-3xl" />
-      <div className="absolute bottom-[-10rem] left-1/4 h-[26rem] w-[26rem] rounded-full bg-brand-600/25 blur-3xl" />
-      <div className="absolute bottom-1/3 right-1/3 h-72 w-72 rounded-full bg-accent-500/15 blur-3xl" />
+    <div aria-hidden="true" className="pointer-events-none fixed inset-0 -z-10 overflow-hidden bg-ink-900">
+      <div className="absolute -left-40 -top-40 h-[30rem] w-[30rem] rounded-full bg-brand-600/25 blur-3xl" />
+      <div className="absolute -right-48 top-1/4 h-[34rem] w-[34rem] rounded-full bg-brand-800/30 blur-3xl" />
+      <div className="absolute bottom-[-10rem] left-1/4 h-[26rem] w-[26rem] rounded-full bg-brand-500/15 blur-3xl" />
+      <div className="absolute bottom-1/3 right-1/3 h-72 w-72 rounded-full bg-rose-500/10 blur-3xl" />
     </div>
   );
 }
@@ -43,7 +46,7 @@ export default function Layout() {
 
   const navLink = ({ isActive }) =>
     `text-sm font-medium transition-colors duration-150 ${
-      isActive ? 'text-brand-700' : 'text-gray-700 hover:text-gray-900'
+      isActive ? 'text-brand-400' : 'text-gray-200 hover:text-white'
     }`;
 
   return (
@@ -53,8 +56,8 @@ export default function Layout() {
       <header
         className={`sticky top-0 z-20 border-b transition-all duration-200 ${
           scrolled
-            ? 'border-white/40 bg-white/70 shadow-glass backdrop-blur-md sm:backdrop-blur-lg'
-            : 'border-white/30 bg-white/40 backdrop-blur-sm sm:backdrop-blur-md'
+            ? 'border-white/10 bg-white/10 shadow-glass backdrop-blur-md sm:backdrop-blur-lg'
+            : 'border-white/10 bg-white/5 backdrop-blur-sm sm:backdrop-blur-md'
         }`}
       >
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6">
@@ -100,7 +103,7 @@ export default function Layout() {
             )}
           </div>
           <button
-            className="rounded-xl border border-white/50 bg-white/50 p-2 backdrop-blur-sm md:hidden"
+            className="rounded-xl border border-white/10 bg-white/5 p-2 backdrop-blur-sm md:hidden"
             onClick={() => setOpen(!open)}
             aria-label="Toggle menu"
           >
@@ -110,7 +113,7 @@ export default function Layout() {
           </button>
         </div>
         {open && (
-          <nav className="space-y-1 border-t border-white/40 bg-white/70 px-4 py-3 backdrop-blur-md md:hidden">
+          <nav className="space-y-1 border-t border-white/10 bg-white/10 px-4 py-3 backdrop-blur-md md:hidden">
             {[
               ['/suppliers', 'Find Suppliers'],
               ['/pricing', 'Pricing'],
@@ -121,14 +124,14 @@ export default function Layout() {
                 key={to}
                 to={to}
                 onClick={() => setOpen(false)}
-                className="block rounded-xl px-3 py-2 text-sm font-medium text-gray-800 transition-colors duration-150 hover:bg-white/60"
+                className="block rounded-xl px-3 py-2 text-sm font-medium text-gray-100 transition-colors duration-150 hover:bg-white/10"
               >
                 {label}
               </Link>
             ))}
             {user && (
               <button
-                className="block w-full rounded-xl px-3 py-2 text-left text-sm font-medium text-red-600 transition-colors duration-150 hover:bg-white/60"
+                className="block w-full rounded-xl px-3 py-2 text-left text-sm font-medium text-red-300 transition-colors duration-150 hover:bg-white/10"
                 onClick={async () => {
                   await logout();
                   setOpen(false);
@@ -146,34 +149,34 @@ export default function Layout() {
         <Outlet />
       </main>
 
-      <footer className="border-t border-white/40 bg-white/50 backdrop-blur-sm sm:backdrop-blur-md">
+      <footer className="border-t border-white/10 bg-white/5 backdrop-blur-sm sm:backdrop-blur-md">
         <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6">
           <div className="flex flex-col items-start justify-between gap-6 md:flex-row">
             <div>
               <Logo />
-              <p className="mt-2 max-w-xs text-sm text-gray-600">
+              <p className="mt-2 max-w-xs text-sm text-gray-300">
                 Connecting African commodity exporters with international buyers. No middlemen.
               </p>
             </div>
             <div className="grid grid-cols-2 gap-8 text-sm sm:grid-cols-3">
               <div>
-                <p className="font-semibold text-gray-900">Platform</p>
-                <ul className="mt-2 space-y-1 text-gray-600">
-                  <li><Link to="/suppliers" className="hover:text-gray-900">Supplier directory</Link></li>
-                  <li><Link to="/pricing" className="hover:text-gray-900">Pricing</Link></li>
-                  <li><Link to="/signup" className="hover:text-gray-900">Become a supplier</Link></li>
+                <p className="font-semibold text-white">Platform</p>
+                <ul className="mt-2 space-y-1 text-gray-300">
+                  <li><Link to="/suppliers" className="hover:text-white">Supplier directory</Link></li>
+                  <li><Link to="/pricing" className="hover:text-white">Pricing</Link></li>
+                  <li><Link to="/signup" className="hover:text-white">Become a supplier</Link></li>
                 </ul>
               </div>
               <div>
-                <p className="font-semibold text-gray-900">Company</p>
-                <ul className="mt-2 space-y-1 text-gray-600">
-                  <li><Link to="/about" className="hover:text-gray-900">About us</Link></li>
-                  <li><a href="mailto:admin@afrimos.et" className="hover:text-gray-900">Contact</a></li>
+                <p className="font-semibold text-white">Company</p>
+                <ul className="mt-2 space-y-1 text-gray-300">
+                  <li><Link to="/about" className="hover:text-white">About us</Link></li>
+                  <li><a href="mailto:admin@afrimos.et" className="hover:text-white">Contact</a></li>
                 </ul>
               </div>
             </div>
           </div>
-          <p className="mt-8 text-xs text-gray-500">
+          <p className="mt-8 text-xs text-gray-400">
             © {new Date().getFullYear()} AFRIMOS · Addis Ababa, Ethiopia
           </p>
         </div>

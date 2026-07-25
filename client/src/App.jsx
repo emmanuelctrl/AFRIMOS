@@ -12,6 +12,7 @@ import About from './pages/About';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
 import VerifyEmail from './pages/VerifyEmail';
+import AccountStatus from './pages/AccountStatus';
 import NotFound from './pages/NotFound';
 
 import SupplierDashboard from './pages/supplier/SupplierDashboard';
@@ -26,25 +27,46 @@ import RfqList from './pages/shared/RfqList';
 import RfqDetail from './pages/shared/RfqDetail';
 import Messages from './pages/shared/Messages';
 
+import AdminLogin from './pages/admin/AdminLogin';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminSuppliers from './pages/admin/AdminSuppliers';
 import AdminUsers from './pages/admin/AdminUsers';
+import AdminSettings from './pages/admin/AdminSettings';
 
 export default function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
         <Routes>
+          {/* Fullscreen landing hero — rendered standalone, no shared chrome */}
+          <Route path="/" element={<Home />} />
+
           <Route element={<Layout />}>
+            {/* Marketplace data — real info, approved accounts only */}
+            <Route
+              path="/suppliers"
+              element={
+                <ProtectedRoute approved>
+                  <SuppliersDirectory />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/suppliers/:id"
+              element={
+                <ProtectedRoute approved>
+                  <SupplierDetail />
+                </ProtectedRoute>
+              }
+            />
+
             {/* Public */}
-            <Route path="/" element={<Home />} />
-            <Route path="/suppliers" element={<SuppliersDirectory />} />
-            <Route path="/suppliers/:id" element={<SupplierDetail />} />
             <Route path="/pricing" element={<Pricing />} />
             <Route path="/about" element={<About />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/login" element={<Login />} />
             <Route path="/verify-email" element={<VerifyEmail />} />
+            <Route path="/account-status" element={<AccountStatus />} />
 
             {/* Supplier dashboard */}
             <Route
@@ -68,7 +90,7 @@ export default function App() {
             <Route
               path="/dashboard/buyer"
               element={
-                <ProtectedRoute roles={['buyer']}>
+                <ProtectedRoute roles={['buyer']} approved>
                   <DashboardLayout role="buyer" />
                 </ProtectedRoute>
               }
@@ -81,11 +103,12 @@ export default function App() {
               <Route path="messages" element={<Messages base="/dashboard/buyer/rfqs" />} />
             </Route>
 
-            {/* Admin */}
+            {/* Admin (password-only login) */}
+            <Route path="/admin/login" element={<AdminLogin />} />
             <Route
               path="/admin"
               element={
-                <ProtectedRoute roles={['admin']}>
+                <ProtectedRoute roles={['admin']} loginPath="/admin/login">
                   <DashboardLayout role="admin" />
                 </ProtectedRoute>
               }
@@ -93,6 +116,7 @@ export default function App() {
               <Route index element={<AdminDashboard />} />
               <Route path="suppliers" element={<AdminSuppliers />} />
               <Route path="users" element={<AdminUsers />} />
+              <Route path="settings" element={<AdminSettings />} />
             </Route>
 
             <Route path="/dashboard" element={<Navigate to="/login" replace />} />

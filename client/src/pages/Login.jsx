@@ -29,9 +29,9 @@ export default function Login() {
 
   return (
     <div className="mx-auto max-w-md px-4 py-16">
-      <h1 className="text-center text-3xl font-bold text-gray-900">Welcome back</h1>
+      <h1 className="text-center text-3xl font-bold text-white">Welcome back</h1>
       <form className="card mt-10 space-y-4" onSubmit={handleSubmit(onSubmit)}>
-        {error && <p className="rounded-lg border border-red-200/60 bg-red-50/80 px-4 py-2 text-sm text-red-700">{error}</p>}
+        {error && <p className="rounded-lg border border-red-400/20 bg-red-500/10 px-4 py-2 text-sm text-red-300">{error}</p>}
         <div>
           <label className="label">Email</label>
           <input className="input" type="email" {...register('email', { required: 'Email is required' })} />
@@ -50,9 +50,9 @@ export default function Login() {
           {isSubmitting ? 'Logging in…' : 'Log in'}
         </button>
       </form>
-      <p className="mt-6 text-center text-sm text-gray-600">
+      <p className="mt-6 text-center text-sm text-gray-300">
         Don't have an account?{' '}
-        <Link to="/signup" className="font-medium text-brand-700 underline">
+        <Link to="/signup" className="font-medium text-brand-400 underline">
           Sign up
         </Link>
       </p>
