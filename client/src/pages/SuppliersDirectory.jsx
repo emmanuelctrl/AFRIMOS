@@ -58,8 +58,8 @@ export default function SuppliersDirectory() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6">
-      <h1 className="text-3xl font-bold text-gray-900">Supplier directory</h1>
-      <p className="mt-1 text-gray-600">
+      <h1 className="text-3xl font-bold text-white">Supplier directory</h1>
+      <p className="mt-1 text-gray-300">
         {data.total} verified Ethiopian exporter{data.total === 1 ? '' : 's'}
       </p>
 
@@ -105,7 +105,7 @@ export default function SuppliersDirectory() {
           {loading ? (
             <Spinner />
           ) : data.suppliers.length === 0 ? (
-            <div className="card py-16 text-center text-gray-500">
+            <div className="card py-16 text-center text-gray-400">
               No suppliers match your filters yet. Try clearing some filters.
             </div>
           ) : (

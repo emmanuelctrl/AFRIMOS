@@ -14,11 +14,9 @@ const LOGO_PATH =
   'M 256 64 L 256 128 L 192.5 128 L 160 95 L 128 64 L 96 95 L 63.5 128 L 64 128 L 128 192 L 128 256 L 64.5 256 L 32 223 L 0 192 L 0 64 L 64 0 L 192 0 Z M 256 192 L 256 256 L 192.5 256 L 160 223 L 128 192 L 128 128 L 192 128 Z';
 
 const NAV_ITEMS = [
-  { label: 'Device', to: '/about' },
-  { label: 'Real Stories', to: '/about' },
-  { label: 'Science', to: '/about' },
-  { label: 'Plans', to: '/pricing' },
-  { label: 'Reach Us', to: '/about' },
+  { label: 'Suppliers', to: '/suppliers' },
+  { label: 'Pricing', to: '/pricing' },
+  { label: 'About', to: '/about' },
 ];
 
 const EASE = 'cubic-bezier(0.77, 0, 0.18, 1)';
@@ -177,7 +175,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="bg-white">
+    <div className="bg-ink-900">
       {/* ---- Fixed navigation (z-50) ---------------------------------- */}
       <nav className="fixed inset-x-0 top-0 z-50">
         <div className="relative flex items-center justify-between px-5 py-5 sm:px-8">
@@ -216,7 +214,7 @@ export default function Home() {
               className="liquid-glass hidden items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium text-white md:flex"
             >
               <span className="h-2 w-2 rounded-full bg-green-400" />
-              {user ? 'Enter' : 'Reserve Yours'}
+              {user ? 'Enter' : 'Get started'}
             </button>
 
             {/* Mobile hamburger */}
@@ -288,7 +286,7 @@ export default function Home() {
               className="liquid-glass flex items-center gap-2 rounded-full px-7 py-3.5 text-base font-medium text-white"
             >
               <span className="h-2 w-2 rounded-full bg-green-400" />
-              {user ? 'Enter' : 'Reserve Yours'}
+              {user ? 'Enter' : 'Get started'}
             </button>
             {!user && (
               <Link
@@ -334,7 +332,7 @@ export default function Home() {
             className="select-none text-center text-[4.5rem] uppercase leading-[0.9] text-white xs:text-[5.5rem] sm:text-[10rem] md:text-[13rem] lg:text-[16rem]"
             style={{ fontFamily: "'Instrument Serif', serif" }}
           >
-            Measured
+            AFRIMOS
           </h1>
         </div>
 

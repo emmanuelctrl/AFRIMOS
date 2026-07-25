@@ -30,7 +30,7 @@ export default function RfqList({ base }) {
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-2xl font-bold text-gray-900">
+        <h1 className="text-2xl font-bold text-white">
           {isSupplier ? 'Incoming inquiries' : 'My RFQs'}
         </h1>
         {!isSupplier && (
@@ -52,7 +52,7 @@ export default function RfqList({ base }) {
               setParams(next);
             }}
             className={`rounded-full px-4 py-1.5 text-sm font-medium ${
-              status === s ? 'bg-brand-600 text-white shadow-md shadow-brand-900/20' : 'border border-white/50 bg-white/50 text-gray-700 backdrop-blur-sm hover:bg-white/70'
+              status === s ? 'bg-brand-600 text-white shadow-md shadow-brand-900/20' : 'border border-white/10 bg-white/5 text-gray-200 backdrop-blur-sm hover:bg-white/10'
             }`}
           >
             {s || 'All'}
@@ -63,7 +63,7 @@ export default function RfqList({ base }) {
       {loading ? (
         <Spinner />
       ) : data.rfqs.length === 0 ? (
-        <div className="card py-16 text-center text-gray-500">
+        <div className="card py-16 text-center text-gray-400">
           {isSupplier
             ? 'No inquiries yet. Complete your profile and add products to attract buyers.'
             : 'No RFQs yet. Create one to start sourcing.'}
@@ -81,23 +81,23 @@ export default function RfqList({ base }) {
                 <th className="px-6 py-3">Status</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-white/40">
+            <tbody className="divide-y divide-white/10">
               {data.rfqs.map((r) => (
                 <tr key={r.id} className="row-hover">
-                  <td className="px-6 py-3 text-gray-700">
+                  <td className="px-6 py-3 text-gray-200">
                     {isSupplier ? r.buyer.fullName : r.supplier?.companyName || 'Broadcast'}
                   </td>
                   <td className="px-6 py-3">
-                    <Link to={`${base}/${r.id}`} className="font-medium text-brand-700 hover:underline">
+                    <Link to={`${base}/${r.id}`} className="font-medium text-brand-400 hover:underline">
                       {r.title}
                     </Link>
-                    <p className="text-xs text-gray-500">{r.productCategory}</p>
+                    <p className="text-xs text-gray-400">{r.productCategory}</p>
                   </td>
-                  <td className="px-6 py-3 text-gray-700">
+                  <td className="px-6 py-3 text-gray-200">
                     {r.quantity} {r.unit}
                   </td>
-                  <td className="px-6 py-3 text-gray-500">{new Date(r.createdAt).toLocaleDateString()}</td>
-                  <td className="px-6 py-3 text-gray-700">{r._count.messages}</td>
+                  <td className="px-6 py-3 text-gray-400">{new Date(r.createdAt).toLocaleDateString()}</td>
+                  <td className="px-6 py-3 text-gray-200">{r._count.messages}</td>
                   <td className="px-6 py-3">
                     <Badge>{r.status}</Badge>
                   </td>

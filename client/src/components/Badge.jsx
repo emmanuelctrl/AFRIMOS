@@ -1,13 +1,13 @@
 const STYLES = {
-  verified: 'bg-brand-100 text-brand-800',
-  pending: 'bg-yellow-100 text-yellow-800',
-  rejected: 'bg-red-100 text-red-700',
-  Sent: 'bg-blue-100 text-blue-800',
-  Responded: 'bg-brand-100 text-brand-800',
-  Negotiating: 'bg-purple-100 text-purple-800',
-  Closed: 'bg-gray-200/80 text-gray-700',
-  Draft: 'bg-white/60 text-gray-600 border border-white/50',
-  gray: 'bg-white/60 text-gray-700 border border-white/50',
+  verified: 'bg-brand-500/20 text-brand-300',
+  pending: 'bg-amber-500/20 text-amber-300',
+  rejected: 'bg-red-500/20 text-red-300',
+  Sent: 'bg-blue-500/20 text-blue-300',
+  Responded: 'bg-brand-500/20 text-brand-300',
+  Negotiating: 'bg-purple-500/20 text-purple-300',
+  Closed: 'bg-white/10 text-gray-300',
+  Draft: 'bg-white/10 text-gray-300 border border-white/10',
+  gray: 'bg-white/10 text-gray-200 border border-white/10',
 };
 
 export default function Badge({ children, tone }) {
@@ -21,7 +21,7 @@ export default function Badge({ children, tone }) {
 
 export function VerifiedBadge() {
   return (
-    <span className="inline-flex items-center gap-1 rounded-full bg-brand-100 px-2.5 py-0.5 text-xs font-semibold text-brand-800">
+    <span className="inline-flex items-center gap-1 rounded-full bg-brand-500/20 px-2.5 py-0.5 text-xs font-semibold text-brand-300">
       <svg className="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor">
         <path
           fillRule="evenodd"

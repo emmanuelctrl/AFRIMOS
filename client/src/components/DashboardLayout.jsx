@@ -44,7 +44,7 @@ export default function DashboardLayout({ role }) {
                 end={!!end}
                 className={({ isActive }) =>
                   `whitespace-nowrap rounded-xl px-3 py-2 text-sm font-medium transition-colors duration-150 ${
-                    isActive ? 'bg-white/70 text-brand-800 shadow-sm' : 'text-gray-700 hover:bg-white/50'
+                    isActive ? 'bg-white/10 text-brand-300 shadow-sm' : 'text-gray-200 hover:bg-white/5'
                   }`
                 }
               >

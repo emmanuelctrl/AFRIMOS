@@ -19,7 +19,7 @@ export default function SupplierDetail() {
       .catch(() => setError('Supplier not found'));
   }, [id]);
 
-  if (error) return <div className="py-20 text-center text-gray-500">{error}</div>;
+  if (error) return <div className="py-20 text-center text-gray-400">{error}</div>;
   if (!supplier) return <Spinner />;
 
   const sendInquiry = () => {
@@ -39,13 +39,13 @@ export default function SupplierDetail() {
           {supplier.logoBanner ? (
             <img src={supplier.logoBanner} alt="" className="h-16 w-16 rounded-xl object-cover" />
           ) : (
-            <div className="flex h-16 w-16 items-center justify-center rounded-xl bg-brand-100 text-2xl font-bold text-brand-700">
+            <div className="flex h-16 w-16 items-center justify-center rounded-xl bg-brand-500/20 text-2xl font-bold text-brand-400">
               {supplier.companyName[0]}
             </div>
           )}
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">{supplier.companyName}</h1>
-            <p className="text-sm text-gray-500">
+            <h1 className="text-2xl font-bold text-white">{supplier.companyName}</h1>
+            <p className="text-sm text-gray-400">
               {[supplier.city, supplier.country].filter(Boolean).join(', ')}
             </p>
             <div className="mt-2 flex flex-wrap items-center gap-2">
@@ -69,31 +69,31 @@ export default function SupplierDetail() {
         <div className="space-y-6 lg:col-span-2">
           {/* About */}
           <section className="card">
-            <h2 className="mb-3 text-lg font-semibold text-gray-900">About</h2>
-            <p className="whitespace-pre-line text-sm text-gray-700">
+            <h2 className="mb-3 text-lg font-semibold text-white">About</h2>
+            <p className="whitespace-pre-line text-sm text-gray-200">
               {supplier.description || 'No description provided yet.'}
             </p>
           </section>
 
           {/* Products */}
           <section className="card">
-            <h2 className="mb-3 text-lg font-semibold text-gray-900">
+            <h2 className="mb-3 text-lg font-semibold text-white">
               Products ({supplier.products.length})
             </h2>
             {supplier.products.length === 0 ? (
-              <p className="text-sm text-gray-500">No products listed yet.</p>
+              <p className="text-sm text-gray-400">No products listed yet.</p>
             ) : (
-              <div className="divide-y divide-white/40">
+              <div className="divide-y divide-white/10">
                 {supplier.products.map((p) => (
                   <div key={p.id} className="flex items-center justify-between gap-4 py-3">
                     <div>
-                      <p className="font-medium text-gray-900">{p.name}</p>
-                      <p className="text-xs text-gray-500">
+                      <p className="font-medium text-white">{p.name}</p>
+                      <p className="text-xs text-gray-400">
                         {p.category} · {p.quality} · MOQ {p.minimumOrderQuantity} {p.unit}
                         {p.origin ? ` · Origin: ${p.origin}` : ''}
                       </p>
                     </div>
-                    <p className="whitespace-nowrap font-semibold text-brand-700">
+                    <p className="whitespace-nowrap font-semibold text-brand-400">
                       ${p.pricePerUnit.toLocaleString()} / {p.unit}
                     </p>
                   </div>
@@ -104,17 +104,17 @@ export default function SupplierDetail() {
 
           {/* Reviews */}
           <section className="card">
-            <h2 className="mb-3 text-lg font-semibold text-gray-900">
+            <h2 className="mb-3 text-lg font-semibold text-white">
               Reviews {supplier.reviews.length > 0 && `· ★ ${avgRating.toFixed(1)}`}
             </h2>
             {supplier.reviews.length === 0 ? (
-              <p className="text-sm text-gray-500">No reviews yet.</p>
+              <p className="text-sm text-gray-400">No reviews yet.</p>
             ) : (
               <div className="space-y-4">
                 {supplier.reviews.map((r) => (
-                  <div key={r.id} className="rounded-xl border border-white/40 bg-white/40 p-4">
-                    <p className="text-sm font-medium text-amber-600">{'★'.repeat(r.rating)}</p>
-                    {r.comment && <p className="mt-1 text-sm text-gray-700">{r.comment}</p>}
+                  <div key={r.id} className="rounded-xl border border-white/10 bg-white/5 p-4">
+                    <p className="text-sm font-medium text-amber-300">{'★'.repeat(r.rating)}</p>
+                    {r.comment && <p className="mt-1 text-sm text-gray-200">{r.comment}</p>}
                     <p className="mt-2 text-xs text-gray-400">
                       {r.fromUser.fullName} · {new Date(r.createdAt).toLocaleDateString()}
                     </p>
@@ -128,7 +128,7 @@ export default function SupplierDetail() {
         {/* Sidebar facts */}
         <aside className="space-y-6">
           <div className="card text-sm">
-            <h2 className="mb-3 text-lg font-semibold text-gray-900">Trade details</h2>
+            <h2 className="mb-3 text-lg font-semibold text-white">Trade details</h2>
             <dl className="space-y-2">
               {[
                 ['Shipping terms', supplier.shippingTerms],
@@ -138,7 +138,7 @@ export default function SupplierDetail() {
                 [
                   'Website',
                   supplier.website && (
-                    <a href={supplier.website} className="text-brand-700 underline" target="_blank" rel="noreferrer">
+                    <a href={supplier.website} className="text-brand-400 underline" target="_blank" rel="noreferrer">
                       {supplier.website.replace(/^https?:\/\//, '')}
                     </a>
                   ),
@@ -149,8 +149,8 @@ export default function SupplierDetail() {
                 .filter(([, v]) => v !== null && v !== undefined && v !== '')
                 .map(([k, v]) => (
                   <div key={k} className="flex justify-between gap-4">
-                    <dt className="text-gray-500">{k}</dt>
-                    <dd className="text-right font-medium text-gray-900">{v}</dd>
+                    <dt className="text-gray-400">{k}</dt>
+                    <dd className="text-right font-medium text-white">{v}</dd>
                   </div>
                 ))}
             </dl>

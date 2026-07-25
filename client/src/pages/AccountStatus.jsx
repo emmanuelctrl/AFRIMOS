@@ -23,7 +23,7 @@ export default function AccountStatus() {
       <div className="card text-center">
         <div
           className={`mx-auto flex h-14 w-14 items-center justify-center rounded-2xl ${
-            rejected ? 'bg-red-100 text-red-600' : 'bg-amber-100 text-amber-600'
+            rejected ? 'bg-red-500/20 text-red-300' : 'bg-amber-500/20 text-amber-300'
           }`}
         >
           {rejected ? (
@@ -37,16 +37,16 @@ export default function AccountStatus() {
           )}
         </div>
 
-        <h1 className="mt-6 text-2xl font-bold text-gray-900">
+        <h1 className="mt-6 text-2xl font-bold text-white">
           {rejected ? 'Account not approved' : 'Your account is under review'}
         </h1>
 
-        <p className="mt-3 text-gray-600">
+        <p className="mt-3 text-gray-300">
           {rejected ? (
             <>
               Your account was not approved for access to the marketplace. If you believe this is a
               mistake, contact{' '}
-              <a href="mailto:admin@afrimos.et" className="font-medium text-brand-700 underline">
+              <a href="mailto:admin@afrimos.et" className="font-medium text-brand-400 underline">
                 admin@afrimos.et
               </a>
               .
@@ -61,7 +61,7 @@ export default function AccountStatus() {
         </p>
 
         {!rejected && user.role === 'supplier' && (
-          <p className="mt-4 rounded-xl border border-white/50 bg-white/50 px-4 py-3 text-sm text-gray-600 backdrop-blur-sm">
+          <p className="mt-4 rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-gray-300 backdrop-blur-sm">
             In the meantime you can finish setting up your company profile and product catalogue so
             you&apos;re ready to trade the moment you&apos;re approved.
           </p>

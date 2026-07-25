@@ -25,12 +25,12 @@ export default function AdminDashboard() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold text-gray-900">Platform overview</h1>
+      <h1 className="text-2xl font-bold text-white">Platform overview</h1>
 
       {data.pendingVerifications > 0 && (
         <Link
           to="/admin/suppliers?status=pending"
-          className="block rounded-xl border border-yellow-200/60 bg-yellow-50/70 px-4 py-3 backdrop-blur-sm text-sm font-medium text-yellow-800 hover:bg-yellow-100"
+          className="block rounded-xl border border-amber-400/20 bg-amber-500/10 px-4 py-3 backdrop-blur-sm text-sm font-medium text-amber-300 hover:bg-amber-500/20"
         >
           ⚠ {data.pendingVerifications} supplier{data.pendingVerifications === 1 ? '' : 's'} awaiting
           verification - review now
@@ -45,24 +45,28 @@ export default function AdminDashboard() {
       </div>
 
       <section className="card">
-        <h2 className="mb-4 text-lg font-semibold text-gray-900">Growth - last 12 weeks</h2>
+        <h2 className="mb-4 text-lg font-semibold text-white">Growth - last 12 weeks</h2>
         <div className="h-80">
           <ResponsiveContainer>
             <BarChart data={data.growth} margin={{ left: -20, right: 8, top: 8 }}>
-              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
+              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#27272a" />
               <XAxis
                 dataKey="week"
-                tick={{ fontSize: 11, fill: '#6b7280' }}
+                tick={{ fontSize: 11, fill: '#a1a1aa' }}
                 tickFormatter={(d) => d.slice(5)}
                 axisLine={false}
                 tickLine={false}
               />
-              <YAxis tick={{ fontSize: 11, fill: '#6b7280' }} allowDecimals={false} axisLine={false} tickLine={false} />
-              <Tooltip />
+              <YAxis tick={{ fontSize: 11, fill: '#a1a1aa' }} allowDecimals={false} axisLine={false} tickLine={false} />
+              <Tooltip
+                contentStyle={{ background: '#101012', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '0.75rem', color: '#e5e7eb' }}
+                labelStyle={{ color: '#e5e7eb' }}
+                cursor={{ fill: 'rgba(255,255,255,0.05)' }}
+              />
               <Legend />
-              <Bar dataKey="suppliers" name="New suppliers" fill="#356d51" radius={[3, 3, 0, 0]} />
-              <Bar dataKey="buyers" name="New buyers" fill="#68a584" radius={[3, 3, 0, 0]} />
-              <Bar dataKey="rfqs" name="RFQs" fill="#de911d" radius={[3, 3, 0, 0]} />
+              <Bar dataKey="suppliers" name="New suppliers" fill="#e11d3a" radius={[3, 3, 0, 0]} />
+              <Bar dataKey="buyers" name="New buyers" fill="#f65f6f" radius={[3, 3, 0, 0]} />
+              <Bar dataKey="rfqs" name="RFQs" fill="#f0b429" radius={[3, 3, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>

@@ -28,17 +28,17 @@ export default function Signup() {
 
   return (
     <div className="mx-auto max-w-md px-4 py-16">
-      <h1 className="text-center text-3xl font-bold text-gray-900">Create your account</h1>
+      <h1 className="text-center text-3xl font-bold text-white">Create your account</h1>
 
       {!role ? (
         <div className="mt-10 space-y-4">
-          <p className="text-center text-gray-600">I want to…</p>
+          <p className="text-center text-gray-300">I want to…</p>
           <button
             className="card card-hover w-full text-left hover:border-brand-400"
             onClick={() => setRole('supplier')}
           >
-            <p className="font-semibold text-gray-900">Sell my products (Supplier)</p>
-            <p className="mt-1 text-sm text-gray-600">
+            <p className="font-semibold text-white">Sell my products (Supplier)</p>
+            <p className="mt-1 text-sm text-gray-300">
               I'm an Ethiopian exporter looking for international buyers.
             </p>
           </button>
@@ -46,21 +46,21 @@ export default function Signup() {
             className="card card-hover w-full text-left hover:border-brand-400"
             onClick={() => setRole('buyer')}
           >
-            <p className="font-semibold text-gray-900">Source products (Buyer)</p>
-            <p className="mt-1 text-sm text-gray-600">
+            <p className="font-semibold text-white">Source products (Buyer)</p>
+            <p className="mt-1 text-sm text-gray-300">
               I'm an importer looking for verified African suppliers.
             </p>
           </button>
         </div>
       ) : (
         <form className="card mt-10 space-y-4" onSubmit={handleSubmit(onSubmit)}>
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-gray-400">
             Signing up as <strong className="capitalize">{role}</strong>{' '}
-            <button type="button" className="text-brand-700 underline" onClick={() => setRole('')}>
+            <button type="button" className="text-brand-400 underline" onClick={() => setRole('')}>
               change
             </button>
           </p>
-          {error && <p className="rounded-lg border border-red-200/60 bg-red-50/80 px-4 py-2 text-sm text-red-700">{error}</p>}
+          {error && <p className="rounded-lg border border-red-400/20 bg-red-500/10 px-4 py-2 text-sm text-red-300">{error}</p>}
           <div>
             <label className="label">Full name</label>
             <input className="input" {...register('fullName', { required: 'Your name is required', minLength: { value: 2, message: 'Too short' } })} />
@@ -103,9 +103,9 @@ export default function Signup() {
         </form>
       )}
 
-      <p className="mt-6 text-center text-sm text-gray-600">
+      <p className="mt-6 text-center text-sm text-gray-300">
         Already have an account?{' '}
-        <Link to="/login" className="font-medium text-brand-700 underline">
+        <Link to="/login" className="font-medium text-brand-400 underline">
           Log in
         </Link>
       </p>

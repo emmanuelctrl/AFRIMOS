@@ -59,16 +59,16 @@ function ProductModal({ product, supplierId, onClose, onSaved }) {
 
   return (
     <div className="fixed inset-0 z-30 flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm">
-      <div className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-2xl border border-white/50 bg-white/80 p-6 shadow-glass-lg backdrop-blur-md sm:backdrop-blur-lg">
+      <div className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-2xl border border-white/10 bg-white/80 p-6 shadow-glass-lg backdrop-blur-md sm:backdrop-blur-lg">
         <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-gray-900">
+          <h2 className="text-lg font-semibold text-white">
             {product ? 'Edit product' : 'Add product'}
           </h2>
-          <button onClick={onClose} className="text-gray-400 hover:text-gray-700" aria-label="Close">
+          <button onClick={onClose} className="text-gray-400 hover:text-gray-200" aria-label="Close">
             ✕
           </button>
         </div>
-        {error && <p className="mb-3 rounded-lg border border-red-200/60 bg-red-50/80 px-4 py-2 text-sm text-red-700">{error}</p>}
+        {error && <p className="mb-3 rounded-lg border border-red-400/20 bg-red-500/10 px-4 py-2 text-sm text-red-300">{error}</p>}
         <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
@@ -140,7 +140,7 @@ function ProductModal({ product, supplierId, onClose, onSaved }) {
             <label className="label">Certifications</label>
             <div className="flex flex-wrap gap-3">
               {CERTIFICATIONS.map((c) => (
-                <label key={c} className="flex items-center gap-1.5 text-sm text-gray-700">
+                <label key={c} className="flex items-center gap-1.5 text-sm text-gray-200">
                   <input type="checkbox" value={c} {...register('certifications')} className="rounded" />
                   {c}
                 </label>
@@ -194,14 +194,14 @@ export default function SupplierProducts() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-gray-900">Products</h1>
+        <h1 className="text-2xl font-bold text-white">Products</h1>
         <button className="btn-primary" onClick={() => setModal('new')}>
           + Add Product
         </button>
       </div>
 
       {supplier.products.length === 0 ? (
-        <div className="card py-16 text-center text-gray-500">
+        <div className="card py-16 text-center text-gray-400">
           No products yet. Add your first product so buyers can find you.
         </div>
       ) : (
@@ -217,23 +217,23 @@ export default function SupplierProducts() {
                 <th className="px-6 py-3 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-white/40">
+            <tbody className="divide-y divide-white/10">
               {supplier.products.map((p) => (
                 <tr key={p.id}>
-                  <td className="px-6 py-3 font-medium text-gray-900">{p.name}</td>
-                  <td className="px-6 py-3 text-gray-600">{p.category}</td>
-                  <td className="px-6 py-3 text-gray-900">
+                  <td className="px-6 py-3 font-medium text-white">{p.name}</td>
+                  <td className="px-6 py-3 text-gray-300">{p.category}</td>
+                  <td className="px-6 py-3 text-white">
                     ${p.pricePerUnit.toLocaleString()}/{p.unit}
                   </td>
-                  <td className="px-6 py-3 text-gray-600">
+                  <td className="px-6 py-3 text-gray-300">
                     {p.minimumOrderQuantity} {p.unit}
                   </td>
-                  <td className="px-6 py-3 text-gray-600">{p.quality}</td>
+                  <td className="px-6 py-3 text-gray-300">{p.quality}</td>
                   <td className="px-6 py-3 text-right">
-                    <button className="text-sm font-medium text-brand-700 hover:underline" onClick={() => setModal(p)}>
+                    <button className="text-sm font-medium text-brand-400 hover:underline" onClick={() => setModal(p)}>
                       Edit
                     </button>
-                    <button className="ml-4 text-sm font-medium text-red-600 hover:underline" onClick={() => remove(p)}>
+                    <button className="ml-4 text-sm font-medium text-red-300 hover:underline" onClick={() => remove(p)}>
                       Delete
                     </button>
                   </td>
