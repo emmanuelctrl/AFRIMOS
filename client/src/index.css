@@ -51,3 +51,64 @@
     @apply transition-colors duration-150 hover:bg-white/50;
   }
 }
+
+/* ------------------------------------------------------------------ *
+ *  Measured landing — fonts & glass effects
+ * ------------------------------------------------------------------ */
+
+/* Self-hosted Helvetica Neue Roman. Drop the binaries into
+   /public/fonts/ (see the README there); until then the fallback chain
+   keeps the page looking right. */
+@font-face {
+  font-family: 'Helvetica Neue Roman';
+  src:
+    url('/fonts/HelveticaNeue-Roman.woff2') format('woff2'),
+    url('/fonts/HelveticaNeue-Roman.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Inter is the global default on every element. */
+* {
+  font-family: 'Inter', sans-serif;
+}
+
+/* Applied on the hero wrapper. Class specificity beats the `*` rule above. */
+.font-helvetica-neue {
+  font-family: 'Helvetica Neue Roman', 'Helvetica Neue', Helvetica, Arial, 'Inter', sans-serif;
+}
+
+/* Near-invisible frosted glass with a border-only gradient (mask-composite trick). */
+.liquid-glass {
+  background: rgba(255, 255, 255, 0.01);
+  background-blend-mode: luminosity;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border: none;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+.liquid-glass::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.4px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.45) 0%,
+    rgba(255, 255, 255, 0.15) 20%,
+    rgba(255, 255, 255, 0) 40%,
+    rgba(255, 255, 255, 0) 60%,
+    rgba(255, 255, 255, 0.15) 80%,
+    rgba(255, 255, 255, 0.45) 100%
+  );
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}

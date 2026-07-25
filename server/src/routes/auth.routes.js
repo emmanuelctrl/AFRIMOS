@@ -49,6 +49,9 @@ router.post('/signup', validate(signupSchema), async (req, res, next) => {
         role,
         userType,
         emailVerifyToken,
+        // Suppliers (exporters) are manually vetted before they can access the
+        // marketplace, so they start "pending". Buyers are approved on signup.
+        verificationStatus: role === 'supplier' ? 'pending' : 'verified',
         ...(role === 'supplier'
           ? { supplierProfile: { create: { companyName } } }
           : {}),
@@ -145,6 +148,9 @@ router.post('/refresh-token', async (req, res) => {
     const payload = verifyRefreshToken(refreshToken);
     const user = await prisma.user.findUnique({ where: { id: payload.sub } });
     if (!user) return res.status(401).json({ error: 'User no longer exists' });
+    if (user.verificationStatus === 'rejected') {
+      return res.status(403).json({ error: 'Your account has been rejected.' });
+    }
     res.json({ token: signAccessToken(user), refreshToken: signRefreshToken(user) });
   } catch {
     res.status(401).json({ error: 'Invalid refresh token' });

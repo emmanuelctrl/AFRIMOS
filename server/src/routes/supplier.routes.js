@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { z } from 'zod';
 import { prisma } from '../lib/prisma.js';
-import { requireAuth, requireRole } from '../middleware/auth.js';
+import { requireAuth, requireRole, requireApproved } from '../middleware/auth.js';
 import { validate } from '../middleware/validate.js';
 import { profileCompleteness } from '../utils/completeness.js';
 
@@ -9,8 +9,9 @@ const router = Router();
 
 const CATEGORIES = ['Coffee', 'Pulses', 'Oilseeds', 'Sesame', 'Spices', 'Fruits'];
 
-// GET /api/suppliers - public directory (verified suppliers only)
-router.get('/', async (req, res, next) => {
+// GET /api/suppliers - directory of verified suppliers. Real business data, so
+// it requires an approved account.
+router.get('/', requireAuth, requireApproved, async (req, res, next) => {
   try {
     const page = Math.max(1, parseInt(req.query.page) || 1);
     const limit = Math.min(50, Math.max(1, parseInt(req.query.limit) || 20));
@@ -161,8 +162,8 @@ router.get('/me/analytics', requireAuth, requireRole('supplier'), async (req, re
   }
 });
 
-// GET /api/suppliers/:supplierId - public detail page
-router.get('/:supplierId', async (req, res, next) => {
+// GET /api/suppliers/:supplierId - supplier detail (approved accounts only)
+router.get('/:supplierId', requireAuth, requireApproved, async (req, res, next) => {
   try {
     const supplier = await prisma.supplierProfile.findUnique({
       where: { id: req.params.supplierId },
@@ -184,7 +185,7 @@ router.get('/:supplierId', async (req, res, next) => {
 });
 
 // GET /api/suppliers/:supplierId/products
-router.get('/:supplierId/products', async (req, res, next) => {
+router.get('/:supplierId/products', requireAuth, requireApproved, async (req, res, next) => {
   try {
     const products = await prisma.product.findMany({
       where: { supplierId: req.params.supplierId },
@@ -234,7 +235,7 @@ router.post(
 );
 
 // GET /api/suppliers/:supplierId/reviews
-router.get('/:supplierId/reviews', async (req, res, next) => {
+router.get('/:supplierId/reviews', requireAuth, requireApproved, async (req, res, next) => {
   try {
     const reviews = await prisma.review.findMany({
       where: { toSupplierId: req.params.supplierId },
@@ -260,6 +261,7 @@ const reviewSchema = z.object({
 router.post(
   '/:supplierId/reviews',
   requireAuth,
+  requireApproved,
   requireRole('buyer'),
   validate(reviewSchema),
   async (req, res, next) => {

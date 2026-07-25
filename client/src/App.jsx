@@ -12,6 +12,7 @@ import About from './pages/About';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
 import VerifyEmail from './pages/VerifyEmail';
+import AccountStatus from './pages/AccountStatus';
 import NotFound from './pages/NotFound';
 
 import SupplierDashboard from './pages/supplier/SupplierDashboard';
@@ -35,16 +36,35 @@ export default function App() {
     <AuthProvider>
       <BrowserRouter>
         <Routes>
+          {/* Fullscreen landing hero — rendered standalone, no shared chrome */}
+          <Route path="/" element={<Home />} />
+
           <Route element={<Layout />}>
+            {/* Marketplace data — real info, approved accounts only */}
+            <Route
+              path="/suppliers"
+              element={
+                <ProtectedRoute approved>
+                  <SuppliersDirectory />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/suppliers/:id"
+              element={
+                <ProtectedRoute approved>
+                  <SupplierDetail />
+                </ProtectedRoute>
+              }
+            />
+
             {/* Public */}
-            <Route path="/" element={<Home />} />
-            <Route path="/suppliers" element={<SuppliersDirectory />} />
-            <Route path="/suppliers/:id" element={<SupplierDetail />} />
             <Route path="/pricing" element={<Pricing />} />
             <Route path="/about" element={<About />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/login" element={<Login />} />
             <Route path="/verify-email" element={<VerifyEmail />} />
+            <Route path="/account-status" element={<AccountStatus />} />
 
             {/* Supplier dashboard */}
             <Route
@@ -68,7 +88,7 @@ export default function App() {
             <Route
               path="/dashboard/buyer"
               element={
-                <ProtectedRoute roles={['buyer']}>
+                <ProtectedRoute roles={['buyer']} approved>
                   <DashboardLayout role="buyer" />
                 </ProtectedRoute>
               }
