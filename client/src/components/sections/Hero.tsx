@@ -5,7 +5,7 @@ import { ArrowLeft, ArrowRight, ArrowUpRight } from 'lucide-react';
 import { EASE } from '@/lib/motion';
 import { useAuth } from '@/context/AuthContext';
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
-import { LazyHeroScene } from '@/components/three/LazyHeroScene';
+import { HeroBackdrop } from './HeroBackdrop';
 
 interface Slide {
   heading: string[];
@@ -84,7 +84,7 @@ export function Hero() {
         style={reduced ? undefined : { y: sceneY, scale: sceneScale }}
         className="absolute inset-0 z-0"
       >
-        <LazyHeroScene className="absolute inset-0" />
+        <HeroBackdrop />
       </motion.div>
 
       {/* Vignettes: keep the copy legible over the headlights */}
