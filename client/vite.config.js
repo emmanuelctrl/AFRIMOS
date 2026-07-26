@@ -12,11 +12,9 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
-        // Keep the heavy 3D/animation libraries out of the main bundle so the
-        // first paint stays fast; the hero scene is imported lazily.
+        // Keep the heavy libraries out of the main bundle so first paint
+        // stays fast. Charts are only reached from the dashboards.
         manualChunks: {
-          three: ['three'],
-          drei: ['@react-three/fiber', '@react-three/drei'],
           motion: ['framer-motion'],
           charts: ['recharts'],
         },

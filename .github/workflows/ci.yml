@@ -61,6 +61,10 @@ jobs:
 
     env:
       DATABASE_URL: postgresql://afrimos:afrimos@localhost:5432/afrimos_test
+      # A second, deliberately empty database: the admin bootstrap has to be
+      # tested against one nobody has seeded, which is the state the bug
+      # appeared in.
+      ADMIN_BOOTSTRAP_DATABASE_URL: postgresql://afrimos:afrimos@localhost:5432/afrimos_bootstrap
       JWT_SECRET: ci-secret-at-least-32-characters-long
       JWT_REFRESH_SECRET: ci-refresh-at-least-32-characters-long
 
@@ -77,11 +81,17 @@ jobs:
         run: npm ci
         working-directory: server
 
-      # `db push` rather than `migrate deploy`: this database is thrown away
+      # `db push` rather than `migrate deploy`: these databases are thrown away
       # after the run, so the schema is all that matters, not its history.
       - name: Create the schema
         run: npx prisma db push
         working-directory: server
+
+      - name: Create the empty bootstrap database
+        run: npx prisma db push
+        working-directory: server
+        env:
+          DATABASE_URL: ${{ env.ADMIN_BOOTSTRAP_DATABASE_URL }}
 
       # The gate tests sign in as the seeded accounts.
       - name: Seed

@@ -8,6 +8,7 @@ import { sendVerificationEmail } from '../lib/email.js';
 import { validate } from '../middleware/validate.js';
 import { rateLimitFailures, clientIp } from '../middleware/rateLimit.js';
 import { requireAuth } from '../middleware/auth.js';
+import { ensureAdmin } from '../lib/ensureAdmin.js';
 
 const router = Router();
 
@@ -143,12 +144,10 @@ const adminLoginSchema = z.object({ password: z.string().min(1, 'Password is req
 // from the admin settings page for anything public.
 router.post('/admin-login', adminLoginLimiter, validate(adminLoginSchema), async (req, res, next) => {
   try {
-    const admin = await prisma.user.findFirst({
-      where: { role: 'admin' },
-      orderBy: { createdAt: 'asc' },
-      include: { supplierProfile: { select: { id: true } } },
-    });
-    if (!admin) return res.status(500).json({ error: 'No admin account is configured' });
+    // Creates the account on a database nobody has seeded, so a fresh
+    // deployment answers the password instead of "No admin account is
+    // configured". Existing admins are returned untouched.
+    const admin = await ensureAdmin();
     const ok = await bcrypt.compare(req.body.password, admin.password);
     if (!ok) {
       req.limiter.recordFailure();
