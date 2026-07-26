@@ -108,9 +108,9 @@ export function Hero() {
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 26 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -18 }}
-                transition={{ duration: 0.7, ease: EASE }}
+                animate={{ opacity: 1, y: 0, transition: { duration: 0.7, ease: EASE } }}
+                exit={{ opacity: 0, y: -14, transition: { duration: 0.22, ease: 'easeIn' } }}
+                className="min-h-[13rem] sm:min-h-[15rem]"
               >
                 <h1 className="font-display text-4xl font-bold leading-[1.08] tracking-tight text-white sm:text-5xl lg:text-[3.4rem]">
                   {slide.heading.map((line) => (
@@ -149,10 +149,9 @@ export function Hero() {
             <motion.dl
               key={index}
               initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -14 }}
-              transition={{ duration: 0.6, ease: EASE }}
-              className="flex flex-wrap gap-x-12 gap-y-6 sm:gap-x-16"
+              animate={{ opacity: 1, y: 0, transition: { duration: 0.6, ease: EASE } }}
+              exit={{ opacity: 0, y: -10, transition: { duration: 0.2, ease: 'easeIn' } }}
+              className="flex min-h-[4.5rem] flex-wrap gap-x-12 gap-y-6 sm:gap-x-16"
             >
               {slide.stats.map((stat) => (
                 <div key={stat.label}>

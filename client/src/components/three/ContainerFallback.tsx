@@ -1,79 +1,93 @@
 import { motion } from 'framer-motion';
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
 
-const RIBS = Array.from({ length: 26 }, (_, i) => i);
+const RIBS = Array.from({ length: 30 }, (_, i) => i);
 
 /**
- * CSS-drawn shipping container used wherever the WebGL scene is not mounted —
- * mobile, low-core devices, reduced-motion and any WebGL failure. Without this
- * the hero simply had no subject on those devices.
+ * CSS stand-in for the WebGL yard, used on mobile, low-core devices,
+ * reduced-motion and any WebGL failure. Mirrors the 3D composition — a
+ * container slung under a gantry spreader — so those devices get the same
+ * scene rather than an empty glow.
  */
 export function ContainerFallback() {
   const reduced = usePrefersReducedMotion();
 
   return (
-    <div aria-hidden="true" className="absolute inset-0 flex items-center justify-center overflow-hidden">
-      {/* Warm ambient wash behind the crate */}
-      <div className="absolute h-[26rem] w-[34rem] max-w-[90vw] rounded-full bg-electric-500/20 blur-[110px]" />
+    <div aria-hidden="true" className="absolute inset-0 overflow-hidden">
+      {/* Crane floodlight wash */}
+      <div className="absolute left-1/2 top-[18%] h-64 w-[36rem] max-w-[95vw] -translate-x-1/2 rounded-full bg-[#FFCE8F]/20 blur-[110px]" />
 
-      <motion.div
-        animate={reduced ? undefined : { y: [0, -14, 0], rotate: [-8, -7, -8] }}
-        transition={{ duration: 9, repeat: Infinity, ease: 'easeInOut' }}
-        style={{ rotate: -8 }}
-        className="relative w-[92vw] max-w-[46rem]"
-      >
-        {/* Lifting cables */}
-        <div className="absolute inset-x-[18%] -top-[60vh] flex h-[60vh] justify-between">
-          {[0, 1].map((i) => (
-            <span key={i} className="w-px bg-gradient-to-b from-transparent via-white/20 to-white/35" />
-          ))}
-        </div>
+      {/* Gantry legs */}
+      <div className="absolute inset-x-[4%] top-0 flex h-[62%] justify-between">
+        {[0, 1].map((i) => (
+          <span key={i} className="w-3 rounded-sm bg-gradient-to-b from-[#B4562A] to-[#6E3319] sm:w-4" />
+        ))}
+      </div>
+      {/* Top girder */}
+      <div className="absolute inset-x-[4%] top-[6%] h-4 rounded-sm bg-gradient-to-b from-[#D8A33C] to-[#8E6A22] sm:h-5" />
 
-        {/* Body */}
-        <div className="relative rounded-[6px] bg-gradient-to-b from-[#8E3128] via-[#7A2B22] to-[#5B1E17] p-[3px] shadow-[0_26px_60px_rgba(0,0,0,0.6)]">
-          {/* Top rail */}
-          <div className="h-2 rounded-t-[4px] bg-gradient-to-b from-[#A03A2E] to-[#6B2419]" />
-
-          {/* Corrugated face */}
-          <div className="flex h-32 items-stretch gap-[3px] overflow-hidden bg-[#6B2419] px-1 sm:h-40">
-            {RIBS.map((i) => (
+      <div className="absolute inset-0 flex items-center justify-center">
+        <motion.div
+          animate={reduced ? undefined : { y: [0, -10, 0], rotate: [-1.5, -0.8, -1.5] }}
+          transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+          style={{ rotate: -1.5 }}
+          className="relative w-[86vw] max-w-[34rem]"
+        >
+          {/* Spreader + slings */}
+          <div className="absolute inset-x-[10%] -top-24 h-24">
+            <div className="absolute inset-x-0 top-0 h-2.5 rounded-sm bg-gradient-to-b from-[#E2B04A] to-[#9A7527]" />
+            {['left-1', 'right-1'].map((pos) => (
               <span
-                key={i}
-                className="flex-1 bg-gradient-to-b from-[#8E3128] via-[#72271E] to-[#571C15]"
-                style={{ boxShadow: 'inset -2px 0 4px rgba(0,0,0,0.45)' }}
+                key={pos}
+                className={`absolute ${pos} top-2.5 h-[5.5rem] w-px bg-gradient-to-b from-[#4A555E] to-[#2A3138]`}
               />
             ))}
           </div>
 
-          {/* Bottom rail */}
-          <div className="h-2 rounded-b-[4px] bg-gradient-to-b from-[#4A1811] to-[#6B2419]" />
+          {/* Container body */}
+          <div className="relative rounded-[5px] bg-gradient-to-b from-[#37708F] via-[#2C5C7E] to-[#1E4359] p-[3px] shadow-[0_30px_70px_rgba(0,0,0,0.65)]">
+            <div className="h-2.5 rounded-t-[3px] bg-gradient-to-b from-[#456F87] to-[#16232C]" />
 
-          {/* Corner castings */}
-          {[
-            'left-0 top-0',
-            'right-0 top-0',
-            'left-0 bottom-0',
-            'right-0 bottom-0',
-          ].map((pos) => (
-            <span
-              key={pos}
-              className={`absolute ${pos} h-5 w-7 rounded-[3px] bg-[#161E24] ring-1 ring-black/40`}
-            />
-          ))}
+            <div className="flex h-28 items-stretch gap-[3px] overflow-hidden bg-[#244C64] px-1 sm:h-36">
+              {RIBS.map((i) => (
+                <span
+                  key={i}
+                  className="flex-1 bg-gradient-to-b from-[#37708F] via-[#2A587A] to-[#1B3D52]"
+                  style={{ boxShadow: 'inset -2px 0 4px rgba(0,0,0,0.5)' }}
+                />
+              ))}
+            </div>
 
-          {/* Door end with locking bars */}
-          <div className="absolute inset-y-2 right-2 flex w-14 items-center justify-around rounded-[4px] bg-gradient-to-b from-[#2A3138] to-[#161E24] sm:w-16">
-            {[0, 1, 2].map((i) => (
-              <span key={i} className="h-[80%] w-[3px] rounded-full bg-black/25" />
+            <div className="h-2.5 rounded-b-[3px] bg-gradient-to-b from-[#16232C] to-[#244C64]" />
+
+            {/* Corner castings */}
+            {['left-0 top-0', 'right-0 top-0', 'left-0 bottom-0', 'right-0 bottom-0'].map((pos) => (
+              <span
+                key={pos}
+                className={`absolute ${pos} h-5 w-7 rounded-[3px] bg-[#131C24] ring-1 ring-black/40`}
+              />
             ))}
-          </div>
 
-          {/* Wordmark stencilled on the side */}
-          <span className="absolute left-6 top-1/2 -translate-y-1/2 font-display text-sm font-bold uppercase tracking-[0.3em] text-white/85 sm:text-base">
-            AFRIMOS
-          </span>
-        </div>
-      </motion.div>
+            {/* Door end */}
+            <div className="absolute inset-y-2 right-2 flex w-12 items-center justify-around rounded-[3px] bg-gradient-to-b from-[#26313A] to-[#131C24] sm:w-14">
+              {[0, 1, 2].map((i) => (
+                <span key={i} className="h-[80%] w-[3px] rounded-full bg-[#AEBCC4]/50" />
+              ))}
+            </div>
+
+            {/* Markings */}
+            <span className="absolute left-5 top-1/2 -translate-y-1/2 font-display text-sm font-bold uppercase tracking-[0.28em] text-white/85 sm:text-base">
+              AFRIMOS
+            </span>
+            <span className="absolute bottom-4 left-5 font-mono text-[0.55rem] tracking-widest text-white/45">
+              AFRU 482915 7
+            </span>
+          </div>
+        </motion.div>
+      </div>
+
+      {/* Wet apron reflection */}
+      <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-[#0A141A] via-[#0A141A]/70 to-transparent" />
     </div>
   );
 }
