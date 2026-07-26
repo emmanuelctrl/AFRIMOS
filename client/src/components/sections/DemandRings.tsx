@@ -34,10 +34,10 @@ export function DemandRings({ variant = 0 }: { variant?: number }) {
         }}
       />
 
-      <div className="relative rounded-3xl border border-espresso-900/10 bg-white/70 p-7 shadow-glass backdrop-blur-2xl">
+      <div className="relative rounded-3xl border border-white/10 bg-white/10 p-7 shadow-glass backdrop-blur-2xl">
         <div className="flex items-center justify-between">
-          <p className="text-sm font-medium text-espresso-900">Category demand</p>
-          <span className="rounded-full border border-espresso-900/10 bg-white/55 px-2.5 py-0.5 text-[0.65rem] text-espresso-600">
+          <p className="text-sm font-medium text-white">Category demand</p>
+          <span className="rounded-full border border-white/10 bg-white/5 px-2.5 py-0.5 text-[0.65rem] text-gray-400">
             90d
           </span>
         </div>
@@ -79,12 +79,12 @@ export function DemandRings({ variant = 0 }: { variant?: number }) {
                       transition={{ duration: 1.4, delay: 0.2 + i * 0.12, ease: 'easeOut' }}
                     />
                   </svg>
-                  <span className="absolute inset-0 flex items-center justify-center font-display text-sm font-semibold text-espresso-900">
+                  <span className="absolute inset-0 flex items-center justify-center font-display text-sm font-semibold text-white">
                     {c.demand}%
                   </span>
                 </div>
-                <p className="mt-2.5 text-xs font-medium text-espresso-700">{c.name}</p>
-                <p className="text-[0.65rem] text-espresso-500">{c.listings}</p>
+                <p className="mt-2.5 text-xs font-medium text-gray-300">{c.name}</p>
+                <p className="text-[0.65rem] text-gray-500">{c.listings}</p>
               </div>
             );
           })}
@@ -94,7 +94,7 @@ export function DemandRings({ variant = 0 }: { variant?: number }) {
         <div className="mt-8 space-y-3">
           {items.map((c, i) => (
             <div key={c.name}>
-              <div className="flex items-center justify-between text-[0.7rem] text-espresso-500">
+              <div className="flex items-center justify-between text-[0.7rem] text-gray-500">
                 <span>{c.origin}</span>
                 <span className="tabular-nums">{c.demand}</span>
               </div>

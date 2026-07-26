@@ -66,12 +66,12 @@ export function CallToAction() {
         transition={{ duration: 0.9, ease: EASE }}
         className="relative mx-auto max-w-3xl text-center"
       >
-        <h2 className="font-display text-[2.75rem] font-semibold leading-[1.02] tracking-tighter text-espresso-900 sm:text-6xl lg:text-7xl">
+        <h2 className="font-display text-[2.75rem] font-semibold leading-[1.02] tracking-tighter text-white sm:text-6xl lg:text-7xl">
           Ready to trade
           <br />
           <span className="text-gradient">without the middlemen?</span>
         </h2>
-        <p className="mx-auto mt-6 max-w-xl text-lg text-espresso-600">
+        <p className="mx-auto mt-6 max-w-xl text-lg text-gray-400">
           Join the intelligent marketplace built for African commodity exports. Free for buyers,
           free to list for suppliers.
         </p>

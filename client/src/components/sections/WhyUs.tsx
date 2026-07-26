@@ -21,7 +21,7 @@ export function WhyUs() {
         {/* ---- Statement ---- */}
         <div>
           <Reveal>
-            <p className="mb-5 flex items-center gap-2.5 text-xs font-semibold uppercase tracking-[0.22em] text-espresso-600">
+            <p className="mb-5 flex items-center gap-2.5 text-xs font-semibold uppercase tracking-[0.22em] text-gray-400">
               <span className="flex h-6 w-6 items-center justify-center rounded-full bg-electric-500/20 ring-1 ring-electric-400/40">
                 <Compass className="h-3.5 w-3.5 text-electric-500" />
               </span>
@@ -29,14 +29,14 @@ export function WhyUs() {
             </p>
           </Reveal>
           <Reveal delay={0.08}>
-            <h2 className="font-display text-3xl font-medium leading-[1.12] tracking-tight text-espresso-900 sm:text-[2.6rem]">
+            <h2 className="font-display text-3xl font-medium leading-[1.12] tracking-tight text-white sm:text-[2.6rem]">
               Tailoring export solutions
               <br />
               for every commodity
             </h2>
           </Reveal>
           <Reveal delay={0.16}>
-            <p className="mt-6 max-w-md text-espresso-600">
+            <p className="mt-6 max-w-md text-gray-400">
               From a single specialty coffee lot to bulk sesame shipments, every listing carries the
               specs, certifications and terms a buyer needs to move.
             </p>
@@ -51,11 +51,11 @@ export function WhyUs() {
           viewport={viewportOnce}
           transition={{ duration: 0.9, ease: EASE }}
           whileHover={{ y: -8 }}
-          className="group relative overflow-hidden rounded-2xl border border-espresso-900/10 bg-white/70 p-5 shadow-glass backdrop-blur-xl"
+          className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/10 p-5 shadow-glass backdrop-blur-xl"
         >
           <div className="flex items-start justify-between">
-            <p className="text-sm font-semibold text-espresso-900">Verified supply</p>
-            <ArrowUpRight className="h-4 w-4 text-espresso-600 transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-espresso-900" />
+            <p className="text-sm font-semibold text-white">Verified supply</p>
+            <ArrowUpRight className="h-4 w-4 text-gray-400 transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-white" />
           </div>
 
           {/* Stacked crate illustration */}
@@ -73,7 +73,7 @@ export function WhyUs() {
             ))}
           </div>
 
-          <div className="mt-5 flex items-center gap-2 text-xs text-espresso-600">
+          <div className="mt-5 flex items-center gap-2 text-xs text-gray-400">
             <Boxes className="h-3.5 w-3.5 text-electric-500" />
             585+ active listings
           </div>
@@ -86,19 +86,19 @@ export function WhyUs() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={viewportOnce}
             transition={{ duration: 0.9, delay: 0.1, ease: EASE }}
-            className="flex items-center justify-between rounded-2xl border border-espresso-900/10 bg-white/70 p-6 shadow-glass backdrop-blur-xl"
+            className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/10 p-6 shadow-glass backdrop-blur-xl"
           >
             <div>
-              <p className="font-display text-4xl font-semibold text-espresso-900">
+              <p className="font-display text-4xl font-semibold text-white">
                 <AnimatedCounter value={450} suffix="+" />
               </p>
-              <p className="mt-1 text-sm text-espresso-600">Industry leaders trust us</p>
+              <p className="mt-1 text-sm text-gray-400">Industry leaders trust us</p>
             </div>
             <div className="flex -space-x-3">
               {AVATARS.map((a) => (
                 <span
                   key={a.initials}
-                  className={`flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br ${a.tint} text-xs font-semibold text-base-600 ring-2 ring-base-700`}
+                  className={`flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br ${a.tint} text-xs font-semibold text-white ring-2 ring-base-800`}
                 >
                   {a.initials}
                 </span>
@@ -111,12 +111,12 @@ export function WhyUs() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={viewportOnce}
             transition={{ duration: 0.8, delay: 0.2, ease: EASE }}
-            className="flex items-center gap-3 rounded-2xl border border-espresso-900/10 bg-white/70 px-6 py-5 shadow-glass backdrop-blur-xl"
+            className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/10 px-6 py-5 shadow-glass backdrop-blur-xl"
           >
             <span className="flex h-6 w-6 items-center justify-center rounded-md bg-electric-500/20">
               <span className="h-2.5 w-2.5 rotate-45 rounded-sm bg-electric-400" />
             </span>
-            <p className="text-sm font-semibold uppercase tracking-[0.14em] text-espresso-900">
+            <p className="text-sm font-semibold uppercase tracking-[0.14em] text-white">
               Leading the way forward
             </p>
           </motion.div>

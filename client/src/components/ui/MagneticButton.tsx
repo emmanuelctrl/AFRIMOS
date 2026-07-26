@@ -14,10 +14,10 @@ interface MagneticButtonProps {
 
 const VARIANTS = {
   primary:
-    'bg-gradient-brand text-base-600 shadow-glow-cyan hover:shadow-[0_0_60px_rgba(212,154,90,0.45)]',
+    'bg-gradient-brand text-white shadow-glow-cyan hover:shadow-[0_0_60px_rgba(212,154,90,0.45)]',
   secondary:
-    'border border-espresso-900/15 bg-white/55 text-espresso-900 backdrop-blur-xl hover:border-espresso-900/25 hover:bg-white/70',
-  ghost: 'text-espresso-700 hover:text-espresso-900',
+    'border border-white/15 bg-white/5 text-white backdrop-blur-xl hover:border-white/25 hover:bg-white/10',
+  ghost: 'text-gray-300 hover:text-white',
 } as const;
 
 /**

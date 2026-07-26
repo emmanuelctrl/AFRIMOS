@@ -1,42 +1,72 @@
-import { useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { ArrowUpRight, ShieldCheck } from 'lucide-react';
+import { AnimatePresence, motion, useScroll, useTransform } from 'framer-motion';
+import { ArrowLeft, ArrowRight, ArrowUpRight } from 'lucide-react';
 import { EASE } from '@/lib/motion';
 import { useAuth } from '@/context/AuthContext';
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
 import { LazyHeroScene } from '@/components/three/LazyHeroScene';
 
-/** Small pulsing hotspot dot, as seen on the reference product shot. */
-function Hotspot({ className, delay = 0 }: { className: string; delay?: number }) {
-  return (
-    <span className={`absolute ${className}`} aria-hidden="true">
-      <span className="relative flex h-3.5 w-3.5 items-center justify-center">
-        <motion.span
-          className="absolute h-full w-full rounded-full bg-white/70"
-          animate={{ scale: [1, 2.1, 1], opacity: [0.5, 0, 0.5] }}
-          transition={{ duration: 2.6, repeat: Infinity, delay, ease: 'easeInOut' }}
-        />
-        <span className="relative h-2 w-2 rounded-full bg-white shadow-[0_0_12px_rgba(255,255,255,0.9)]" />
-      </span>
-    </span>
-  );
+interface Slide {
+  heading: string[];
+  body: string;
+  stats: { value: string; label: string }[];
 }
+
+const SLIDES: Slide[] = [
+  {
+    heading: ['Smarter Sourcing.', 'Faster Deals. Global Reach.'],
+    body: 'Technology-driven export solutions built for speed, trust and traceability — from verified African suppliers to buyers in 203 countries.',
+    stats: [
+      { value: '500+', label: 'Verified exporters' },
+      { value: '1.2K+', label: 'RFQs matched' },
+      { value: '203', label: 'Global destinations' },
+    ],
+  },
+  {
+    heading: ['Verified Supply.', 'Documented. Traceable.'],
+    body: 'Every exporter passes licence, document and trade-history review before listing, so a quote you receive is one you can act on.',
+    stats: [
+      { value: '100%', label: 'Manually vetted' },
+      { value: '6', label: 'Commodity categories' },
+      { value: '585+', label: 'Active listings' },
+    ],
+  },
+  {
+    heading: ['No Brokers.', 'No Commission. Direct.'],
+    body: 'Negotiate inside the inquiry thread and keep the margin that used to disappear into intermediaries on every shipment.',
+    stats: [
+      { value: '0%', label: 'Platform commission' },
+      { value: '94%', label: 'Response rate' },
+      { value: '$4.2B', label: 'Export market' },
+    ],
+  },
+];
+
+const AUTOPLAY_MS = 8000;
 
 export function Hero() {
   const ref = useRef<HTMLElement>(null);
   const navigate = useNavigate();
   const { user } = useAuth();
   const reduced = usePrefersReducedMotion();
+  const [index, setIndex] = useState(0);
 
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] });
-  // The wordmark drifts up and fades; the container hangs back a beat — the
-  // parallax split is what sells the depth as you scroll away.
-  const wordY = useTransform(scrollYProgress, [0, 1], ['0%', '-38%']);
-  const wordOpacity = useTransform(scrollYProgress, [0, 0.75], [1, 0]);
-  const sceneY = useTransform(scrollYProgress, [0, 1], ['0%', '14%']);
-  const sceneScale = useTransform(scrollYProgress, [0, 1], [1, 1.12]);
-  const uiOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+  const sceneY = useTransform(scrollYProgress, [0, 1], ['0%', '12%']);
+  const sceneScale = useTransform(scrollYProgress, [0, 1], [1, 1.1]);
+  const uiOpacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
+
+  const go = useCallback((dir: number) => {
+    setIndex((i) => (i + dir + SLIDES.length) % SLIDES.length);
+  }, []);
+
+  // Auto-advance, paused under reduced-motion.
+  useEffect(() => {
+    if (reduced) return;
+    const id = window.setInterval(() => go(1), AUTOPLAY_MS);
+    return () => window.clearInterval(id);
+  }, [go, reduced, index]);
 
   const dashboardPath =
     user?.role === 'admin'
@@ -45,120 +75,136 @@ export function Hero() {
         ? '/dashboard/supplier'
         : '/dashboard/buyer';
 
-  return (
-    <section
-      ref={ref}
-      className="relative flex min-h-[100svh] flex-col justify-center overflow-hidden"
-    >
-      {/* ---- Layer 1: giant silver wordmark ---- */}
-      <motion.div
-        style={reduced ? undefined : { y: wordY, opacity: wordOpacity }}
-        className="pointer-events-none absolute inset-x-0 top-[18%] z-[1] flex justify-center px-4 sm:top-[16%]"
-      >
-        <motion.h1
-          initial={{ opacity: 0, scale: 1.06, filter: 'blur(14px)' }}
-          animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
-          transition={{ duration: 1.5, ease: EASE }}
-          className="display-wordmark select-none text-center text-[22vw] leading-none sm:text-[19vw] lg:text-[17vw]"
-        >
-          AFRIMOS
-        </motion.h1>
-      </motion.div>
+  const slide = SLIDES[index];
 
-      {/* ---- Layer 2: the container, in front of the letters ---- */}
+  return (
+    <section ref={ref} className="relative min-h-[100svh] overflow-hidden">
+      {/* ---- Night scene ---- */}
       <motion.div
         style={reduced ? undefined : { y: sceneY, scale: sceneScale }}
-        className="absolute inset-0 z-[2]"
+        className="absolute inset-0 z-0"
       >
-        <motion.div
-          initial={{ opacity: 0, y: -70 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.7, delay: 0.25, ease: EASE }}
-          className="h-full w-full"
-        >
-          <LazyHeroScene className="absolute inset-0" />
-        </motion.div>
-
-        {/* Hotspots pinned over the container */}
-        {!reduced && (
-          <div className="pointer-events-none absolute inset-0 hidden md:block">
-            <Hotspot className="left-[46%] top-[45%]" />
-            <Hotspot className="left-[52%] top-[52%]" delay={0.8} />
-            <Hotspot className="left-[64%] top-[58%]" delay={1.6} />
-          </div>
-        )}
+        <LazyHeroScene className="absolute inset-0" />
       </motion.div>
 
-      {/* Floor vignette — grounds the container in the scene */}
+      {/* Vignettes: keep the copy legible over the headlights */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 bottom-0 z-[3] h-1/3 bg-gradient-to-t from-base-900 via-base-900/70 to-transparent"
+        className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-r from-base-900 via-base-900/70 to-transparent"
+      />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-2/5 bg-gradient-to-t from-base-900 via-base-900/80 to-transparent"
       />
 
-      {/* ---- Layer 3: floating UI ---- */}
+      {/* ---- Copy + stats ---- */}
       <motion.div
         style={reduced ? undefined : { opacity: uiOpacity }}
-        className="relative z-10 mx-auto w-full max-w-7xl px-5 sm:px-8"
+        className="relative z-10 mx-auto flex min-h-[100svh] w-full max-w-[110rem] flex-col justify-between px-5 pb-10 pt-32 sm:px-8 sm:pt-36"
       >
-        <div className="flex min-h-[100svh] flex-col justify-end pb-24 pt-32 sm:pb-28">
-          <div className="flex flex-col items-start justify-between gap-8 lg:flex-row lg:items-end">
-            {/* Left glass card */}
-            <motion.div
-              initial={{ opacity: 0, x: -36 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.9, delay: 0.8, ease: EASE }}
-              className="max-w-sm rounded-2xl border border-espresso-900/10 bg-white/70 p-6 shadow-glass backdrop-blur-xl"
-            >
-              <h2 className="font-display text-2xl font-medium leading-snug text-espresso-900 sm:text-[1.75rem]">
-                Export effortlessly
-                <br />
-                in just days
-              </h2>
-              <button
-                type="button"
-                onClick={() => navigate(user ? dashboardPath : '/signup')}
-                className="group mt-6 flex w-full items-center justify-center gap-2 rounded-lg bg-espresso-900 px-6 py-3.5 text-xs font-semibold uppercase tracking-[0.16em] text-base-600 shadow-glow-blue transition-all duration-300 hover:bg-espresso-800 hover:shadow-[0_10px_34px_rgba(74,52,32,0.35)]"
+        <div className="flex flex-1 items-center">
+          <div className="max-w-2xl">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 26 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -18 }}
+                transition={{ duration: 0.7, ease: EASE }}
               >
-                {user ? 'Open dashboard' : 'Start trading'}
-                <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-              </button>
-            </motion.div>
+                <h1 className="font-display text-4xl font-bold leading-[1.08] tracking-tight text-white sm:text-5xl lg:text-[3.4rem]">
+                  {slide.heading.map((line) => (
+                    <span key={line} className="block">
+                      {line}
+                    </span>
+                  ))}
+                </h1>
+                <p className="mt-6 max-w-xl text-base leading-relaxed text-gray-300 sm:text-lg">
+                  {slide.body}
+                </p>
+              </motion.div>
+            </AnimatePresence>
 
-            {/* Right spec card */}
-            <motion.div
-              initial={{ opacity: 0, x: 36 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.9, delay: 0.95, ease: EASE }}
-              className="hidden w-52 rounded-2xl border border-espresso-900/10 bg-white/70 p-3 shadow-glass backdrop-blur-xl lg:block"
+            <motion.button
+              type="button"
+              onClick={() => navigate(user ? dashboardPath : '/signup')}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.35, ease: EASE }}
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.98 }}
+              className="group mt-9 inline-flex items-center gap-3 rounded-full bg-white py-2 pl-6 pr-2 text-sm font-semibold text-base-900"
             >
-              <div className="relative flex h-24 items-center justify-center overflow-hidden rounded-xl bg-gradient-to-br from-electric-500/25 via-base-700 to-base-800">
-                <ShieldCheck className="h-9 w-9 text-electric-500" strokeWidth={1.5} />
-              </div>
-              <ul className="mt-3 space-y-1.5 px-1 pb-1 text-xs text-espresso-700">
-                {['Fully traceable', 'Quality assured', 'Export documented'].map((item) => (
-                  <li key={item} className="flex items-center gap-2">
-                    <span className="h-1 w-1 rounded-full bg-electric-400" />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
+              {user ? 'Go to dashboard' : 'See how it works'}
+              <span className="flex h-9 w-9 items-center justify-center rounded-full bg-base-900 text-white">
+                <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+              </span>
+            </motion.button>
           </div>
         </div>
-      </motion.div>
 
-      {/* Floating "global support" chip, overlapping the wordmark like the brief */}
-      <motion.div
-        initial={{ opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 1.15, ease: EASE }}
-        style={reduced ? undefined : { opacity: uiOpacity }}
-        className="absolute left-[6%] top-[38%] z-10 hidden rounded-xl border border-espresso-900/10 bg-white/70 px-5 py-3 text-center shadow-glass backdrop-blur-xl lg:block"
-      >
-        <p className="text-[0.6rem] font-semibold uppercase tracking-[0.18em] text-espresso-600">
-          Global reach
-        </p>
-        <p className="mt-1 font-display text-lg font-semibold text-espresso-900">203 countries</p>
+        {/* Bottom row: stats left, slide control right */}
+        <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+          <AnimatePresence mode="wait">
+            <motion.dl
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -14 }}
+              transition={{ duration: 0.6, ease: EASE }}
+              className="flex flex-wrap gap-x-12 gap-y-6 sm:gap-x-16"
+            >
+              {slide.stats.map((stat) => (
+                <div key={stat.label}>
+                  <dt className="font-display text-3xl font-bold text-white sm:text-4xl">
+                    {stat.value}
+                  </dt>
+                  <dd className="mt-1 max-w-[9rem] text-xs leading-snug text-gray-400 sm:text-sm">
+                    {stat.label}
+                  </dd>
+                </div>
+              ))}
+            </motion.dl>
+          </AnimatePresence>
+
+          {/* Slide control */}
+          <div className="flex items-center gap-4 self-start rounded-full border border-white/10 bg-base-900/70 px-3 py-2.5 backdrop-blur-xl lg:self-auto">
+            <button
+              type="button"
+              aria-label="Previous slide"
+              onClick={() => go(-1)}
+              className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20"
+            >
+              <ArrowLeft className="h-4 w-4" />
+            </button>
+            <button
+              type="button"
+              aria-label="Next slide"
+              onClick={() => go(1)}
+              className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-base-900 transition-transform hover:scale-105"
+            >
+              <ArrowRight className="h-4 w-4" />
+            </button>
+
+            {/* Progress track */}
+            <div className="relative h-px w-24 bg-white/15 sm:w-32">
+              <motion.span
+                key={index}
+                initial={{ scaleX: 0 }}
+                animate={{ scaleX: 1 }}
+                transition={{
+                  duration: reduced ? 0 : AUTOPLAY_MS / 1000,
+                  ease: 'linear',
+                }}
+                className="absolute inset-0 origin-left bg-electric-500"
+              />
+            </div>
+
+            <span className="pr-2 font-display text-lg font-semibold tabular-nums text-white">
+              {String(index + 1).padStart(2, '0')}
+            </span>
+          </div>
+        </div>
       </motion.div>
     </section>
   );

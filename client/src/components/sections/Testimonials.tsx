@@ -50,20 +50,20 @@ function TestimonialCard({
   role: string;
 }) {
   return (
-    <figure className="group relative w-[21rem] shrink-0 overflow-hidden rounded-2xl border border-espresso-900/10 bg-white/55 p-6 shadow-glass backdrop-blur-xl transition-all duration-300 hover:border-espresso-900/20 hover:bg-white/70 sm:w-[24rem]">
+    <figure className="group relative w-[21rem] shrink-0 overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-6 shadow-glass backdrop-blur-xl transition-all duration-300 hover:border-white/20 hover:bg-white/10 sm:w-[24rem]">
       <span
         aria-hidden="true"
         className="gradient-border pointer-events-none absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-500 group-hover:opacity-100"
       />
       <Quote className="h-6 w-6 text-electric-300/50" />
-      <blockquote className="mt-4 text-sm leading-relaxed text-espresso-700">{quote}</blockquote>
+      <blockquote className="mt-4 text-sm leading-relaxed text-gray-300">{quote}</blockquote>
       <figcaption className="mt-5 flex items-center gap-3">
-        <span className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-brand font-display text-sm font-semibold text-base-600">
+        <span className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-brand font-display text-sm font-semibold text-white">
           {name.charAt(0)}
         </span>
         <span>
-          <span className="block text-sm font-medium text-espresso-900">{name}</span>
-          <span className="block text-xs text-espresso-500">{role}</span>
+          <span className="block text-sm font-medium text-white">{name}</span>
+          <span className="block text-xs text-gray-500">{role}</span>
         </span>
       </figcaption>
     </figure>

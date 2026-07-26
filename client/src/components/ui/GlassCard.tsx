@@ -67,8 +67,8 @@ export function GlassCard({
       whileHover={reduced ? undefined : { y: -6 }}
       transition={{ type: 'spring', stiffness: 220, damping: 22 }}
       className={cn(
-        'group preserve-3d relative overflow-hidden rounded-2xl border border-espresso-900/10 bg-white/55 p-6 shadow-glass backdrop-blur-xl',
-        'transition-colors duration-300 hover:border-espresso-900/20',
+        'group preserve-3d relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-6 shadow-glass backdrop-blur-xl',
+        'transition-colors duration-300 hover:border-white/20',
         className
       )}
     >

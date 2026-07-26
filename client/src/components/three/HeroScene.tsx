@@ -4,14 +4,14 @@ import { Float, Points, PointMaterial } from '@react-three/drei';
 import * as THREE from 'three';
 
 /* ---- Palette: dark rig reading against the cream page ------------- */
-const BODY = '#43301F'; // container side panels
-const BODY_RIB = '#352517'; // corrugation shadow
-const FRAME = '#2A1D12'; // rails, castings, chassis
-const CAB = '#57422C'; // lighter than the container so the two read apart
-const GLASS = '#1D2A30';
-const CHROME = '#C9BCA6';
+const BODY = '#7A2B22'; // container side panels (oxide red)
+const BODY_RIB = '#5B1E17'; // corrugation shadow
+const FRAME = '#161E24'; // rails, castings, chassis
+const CAB = '#C21F16'; // signal-red cab, the focal point
+const GLASS = '#0E1A20';
+const CHROME = '#C8D4DA';
 const TYRE = '#1A1410';
-const HUB = '#9C8768';
+const HUB = '#8FA3AD';
 const BEAN = '#6B4423';
 const BEAN_DARK = '#3A2416';
 
@@ -32,14 +32,14 @@ function useDecalTexture(text: string) {
     const ctx = canvas.getContext('2d');
     if (ctx) {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = '#EFE4D2';
+      ctx.fillStyle = '#F2F6F8';
       ctx.font = 'bold 150px "Space Grotesk", Inter, sans-serif';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.letterSpacing = '18px';
       ctx.fillText(text, canvas.width / 2, canvas.height / 2 - 10);
       ctx.font = '46px Inter, sans-serif';
-      ctx.fillStyle = 'rgba(239,228,210,0.7)';
+      ctx.fillStyle = 'rgba(242,246,248,0.72)';
       ctx.letterSpacing = '10px';
       ctx.fillText('VERIFIED EXPORT', canvas.width / 2, canvas.height / 2 + 80);
     }
@@ -214,10 +214,37 @@ function Tractor() {
         <boxGeometry args={[0.16, 0.2, DEPTH * 1.02]} />
         <meshStandardMaterial color={CHROME} metalness={0.85} roughness={0.3} />
       </mesh>
+      {/* Headlights — emissive block plus a halo billboard for the bloom look */}
       {[0.45, -0.45].map((z, i) => (
-        <mesh key={i} position={[1.08, -0.45, z]}>
-          <boxGeometry args={[0.05, 0.12, 0.24]} />
-          <meshStandardMaterial color="#FFF3DC" emissive="#FFE9C4" emissiveIntensity={0.7} />
+        <group key={i} position={[1.08, -0.45, z]}>
+          <mesh>
+            <boxGeometry args={[0.05, 0.14, 0.26]} />
+            <meshBasicMaterial color="#FFF6E2" fog={false} />
+          </mesh>
+          <mesh position={[0.09, 0, 0]}>
+            <sphereGeometry args={[0.22, 12, 12]} />
+            <meshBasicMaterial
+              color="#FFD9A0"
+              transparent
+              opacity={0.45}
+              depthWrite={false}
+              fog={false}
+            />
+          </mesh>
+        </group>
+      ))}
+
+      {/* Amber marker lights along the roof and down the cab edge */}
+      {[-0.34, -0.17, 0, 0.17, 0.34].map((z, i) => (
+        <mesh key={`roof-${i}`} position={[0.66, 0.66, z * DEPTH]}>
+          <sphereGeometry args={[0.045, 10, 10]} />
+          <meshBasicMaterial color="#FFB347" fog={false} />
+        </mesh>
+      ))}
+      {[0.3, 0.05, -0.2].map((y, i) => (
+        <mesh key={`edge-${i}`} position={[1.0, y, DEPTH / 2 + 0.02]}>
+          <sphereGeometry args={[0.035, 8, 8]} />
+          <meshBasicMaterial color="#FF8A3D" fog={false} />
         </mesh>
       ))}
 
@@ -263,12 +290,14 @@ function Rig() {
     if (!group.current) return;
     // Subtle pointer parallax — the rig turns a few degrees toward the cursor.
     const { x, y } = state.pointer;
-    group.current.rotation.y = THREE.MathUtils.lerp(group.current.rotation.y, -0.5 + x * 0.12, 0.04);
-    group.current.rotation.x = THREE.MathUtils.lerp(group.current.rotation.x, 0.06 - y * 0.06, 0.04);
+    // ~+0.9rad swings the tractor's nose toward the camera for the reference's
+    // front-three-quarter view; negative angles show it side-on instead.
+    group.current.rotation.y = THREE.MathUtils.lerp(group.current.rotation.y, 0.92 + x * 0.1, 0.04);
+    group.current.rotation.x = THREE.MathUtils.lerp(group.current.rotation.x, 0.05 - y * 0.05, 0.04);
   });
 
   return (
-    <group ref={group} rotation={[0.06, -0.5, 0]} position={[0, -0.1, 0]}>
+    <group ref={group} rotation={[0.05, 0.92, 0]} position={[0, -0.1, 0]}>
       {/* Container sits on the deck */}
       <group position={[0, 0.28, 0]}>
         <Container />
@@ -339,11 +368,9 @@ function Bean({
 function Beans() {
   const beans = useMemo(
     () => [
-      { position: [-4.6, 1.9, 1.6], scale: 1.05, spin: 1 },
-      { position: [4.4, 1.6, 1.2], scale: 0.85, spin: -0.8 },
-      { position: [-3.4, -2.3, 2.1], scale: 0.95, spin: 1.3 },
-      { position: [4.8, -2.0, 1.8], scale: 1.15, spin: -1.1 },
-      { position: [1.6, 2.4, 2.3], scale: 0.8, spin: 0.9 },
+      { position: [-6.4, 2.4, -3.5], scale: 0.5, spin: 1 },
+      { position: [-4.8, -1.6, -4.2], scale: 0.42, spin: -0.8 },
+      { position: [-7.6, 0.4, -2.8], scale: 0.46, spin: 1.3 },
     ],
     []
   );
@@ -383,7 +410,7 @@ function Motes({ count = 700 }: { count?: number }) {
     <Points ref={ref} positions={positions} frustumCulled>
       <PointMaterial
         transparent
-        color="#8A7357"
+        color="#9FC0D0"
         size={0.03}
         sizeAttenuation
         depthWrite={false}
@@ -393,18 +420,85 @@ function Motes({ count = 700 }: { count?: number }) {
   );
 }
 
+/* ------------------------------------------------------------------ *
+ *  Wet road — dark plane with a warm reflected smear under the rig
+ * ------------------------------------------------------------------ */
+function Road() {
+  return (
+    <group position={[0, -1.25, 0]}>
+      <mesh rotation={[-Math.PI / 2, 0, 0]}>
+        <planeGeometry args={[60, 34]} />
+        <meshStandardMaterial color="#08121A" metalness={0.85} roughness={0.28} />
+      </mesh>
+      {/* Reflection smears standing in for wet-tarmac highlights */}
+      {[
+        { x: -1.2, w: 5.5, c: '#E5231B', o: 0.32 },
+        { x: 1.4, w: 3.2, c: '#FFB067', o: 0.28 },
+        { x: -4.2, w: 2.4, c: '#7FA8C0', o: 0.18 },
+      ].map((s, i) => (
+        <mesh key={i} position={[s.x, 0.012, 2.2 + i * 1.6]} rotation={[-Math.PI / 2, 0, 0]}>
+          <planeGeometry args={[s.w, 7]} />
+          <meshBasicMaterial color={s.c} transparent opacity={s.o} depthWrite={false} />
+        </mesh>
+      ))}
+    </group>
+  );
+}
+
+/* ------------------------------------------------------------------ *
+ *  Distant street lamps — warm bokeh in the haze
+ * ------------------------------------------------------------------ */
+function Bokeh() {
+  const lamps = useMemo(
+    () =>
+      Array.from({ length: 16 }, (_, i) => ({
+        position: [
+          -16 + (i % 8) * 4.4 + (i % 3),
+          1.4 + ((i * 37) % 5) * 0.5,
+          -10 - (i % 4) * 3.2,
+        ] as [number, number, number],
+        size: 0.2 + ((i * 13) % 4) * 0.1,
+        color: i % 3 === 0 ? '#FF8A3D' : '#FFC078',
+      })),
+    []
+  );
+
+  return (
+    <>
+      {lamps.map((l, i) => (
+        <mesh key={i} position={l.position}>
+          <sphereGeometry args={[l.size, 10, 10]} />
+          <meshBasicMaterial
+            color={l.color}
+            transparent
+            opacity={0.5}
+            depthWrite={false}
+            fog={false}
+          />
+        </mesh>
+      ))}
+    </>
+  );
+}
+
 function Scene() {
   return (
     <>
-      {/* Bright, daylight-ish rig — the page behind it is cream */}
-      <ambientLight intensity={1.15} />
-      <directionalLight position={[4, 9, 6]} intensity={2.6} color="#FFF6E9" />
-      <directionalLight position={[-3, 3, 8]} intensity={1.3} color="#F5E4C8" />
-      <directionalLight position={[-6, 4, -5]} intensity={1.1} color="#D49A5A" />
-      <pointLight position={[5, 1, 4]} intensity={22} color="#B0722F" distance={22} />
+      {/* Night: low ambient, cool moonlight, warm sodium bounce */}
+      <fog attach="fog" args={['#0A141A', 20, 52]} />
+      <ambientLight intensity={0.75} color="#A8C6D6" />
+      <directionalLight position={[6, 10, 8]} intensity={2.2} color="#CFE2EE" />
+      <directionalLight position={[-6, 4, -6]} intensity={1.1} color="#7FA8C0" />
+      {/* Headlight spill and the red rim off the cab */}
+      <pointLight position={[5.5, 0.4, 3.5]} intensity={70} color="#FFD9A0" distance={16} />
+      <pointLight position={[2, 0.6, 3]} intensity={40} color="#FF6A4A" distance={14} />
+      <pointLight position={[-5, 1.6, 2]} intensity={26} color="#FF9A5A" distance={18} />
+
+      <Road />
+      <Bokeh />
 
       {/* Shifted left and scaled down so the tractor stays fully in frame */}
-      <group position={[-1.15, -0.15, 0]} scale={0.78}>
+      <group position={[0.95, -0.05, 0]} scale={1.06}>
         <Rig />
       </group>
 

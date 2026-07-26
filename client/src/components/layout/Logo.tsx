@@ -24,7 +24,7 @@ export function Logo({ className, size = 28, withWordmark = false }: LogoProps) 
         <path d={LOGO_PATH} fill="url(#afrimos-mark)" />
       </svg>
       {withWordmark && (
-        <span className="font-display text-lg font-semibold tracking-tight text-espresso-900">AFRIMOS</span>
+        <span className="font-display text-lg font-semibold tracking-tight text-white">AFRIMOS</span>
       )}
     </Link>
   );

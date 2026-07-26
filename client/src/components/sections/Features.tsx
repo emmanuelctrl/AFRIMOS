@@ -32,17 +32,17 @@ export function Features() {
                   whileHover={{ rotate: -8, scale: 1.08 }}
                   transition={{ type: 'spring', stiffness: 300, damping: 15 }}
                   className={cn(
-                    'relative flex h-12 w-12 items-center justify-center rounded-2xl border border-espresso-900/10 bg-gradient-to-br',
+                    'relative flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-gradient-to-br',
                     feature.accent
                   )}
                 >
                   <Icon className="h-5 w-5 text-electric-500" strokeWidth={1.75} />
                 </motion.div>
 
-                <h3 className="mt-6 font-display text-xl font-semibold tracking-tight text-espresso-900">
+                <h3 className="mt-6 font-display text-xl font-semibold tracking-tight text-white">
                   {feature.title}
                 </h3>
-                <p className="mt-3 text-sm leading-relaxed text-espresso-600">{feature.body}</p>
+                <p className="mt-3 text-sm leading-relaxed text-gray-400">{feature.body}</p>
 
                 {/* Mini illustration — a subtle signal bar chart */}
                 <div className="mt-6 flex items-end gap-1" aria-hidden="true">
