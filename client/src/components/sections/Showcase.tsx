@@ -118,7 +118,7 @@ export function Showcase() {
               className="relative w-full max-w-2xl overflow-hidden rounded-3xl border border-white/10 bg-base-800/90 shadow-glass-lg backdrop-blur-2xl"
             >
               <div className="relative h-40 overflow-hidden bg-gradient-to-br from-electric-500/25 via-electric-600/15 to-transparent">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(212,154,90,0.35),transparent_60%)]" />
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(234,223,199,0.35),transparent_60%)]" />
                 <h3 className="absolute bottom-5 left-6 font-display text-4xl font-semibold tracking-tight text-white">
                   {active.name}
                 </h3>

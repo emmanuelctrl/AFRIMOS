@@ -3,10 +3,11 @@ import { COMMODITIES } from '@/lib/site';
 import { viewportOnce } from '@/lib/motion';
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
 
+// Ocean into cream: the ring reads as the tide running up onto sand.
 const PALETTES = [
-  { from: '#E3B778', to: '#E3B778' },
-  { from: '#B87333', to: '#96602A' },
-  { from: '#E3B778', to: '#B87333' },
+  { from: '#6FC8E4', to: '#0B6E99' },
+  { from: '#EADFC7', to: '#2E9CC9' },
+  { from: '#2E9CC9', to: '#EADFC7' },
 ];
 
 /**
@@ -34,10 +35,10 @@ export function DemandRings({ variant = 0 }: { variant?: number }) {
         }}
       />
 
-      <div className="relative rounded-3xl border border-white/10 bg-white/10 p-7 shadow-glass backdrop-blur-2xl">
+      <div className="relative rounded-3xl border border-cream-200/12 bg-cream-100/[0.09] p-7 shadow-glass backdrop-blur-2xl">
         <div className="flex items-center justify-between">
-          <p className="text-sm font-medium text-white">Category demand</p>
-          <span className="rounded-full border border-white/10 bg-white/5 px-2.5 py-0.5 text-[0.65rem] text-gray-400">
+          <p className="text-sm font-medium text-cream-50">Category demand</p>
+          <span className="rounded-full border border-cream-200/12 bg-cream-100/[0.06] px-2.5 py-0.5 text-[0.65rem] text-gray-400">
             90d
           </span>
         </div>
@@ -61,7 +62,7 @@ export function DemandRings({ variant = 0 }: { variant?: number }) {
                       cy="43"
                       r={radius}
                       fill="none"
-                      stroke="rgba(255,255,255,0.08)"
+                      stroke="rgba(234,223,199,0.12)"
                       strokeWidth="6"
                     />
                     <motion.circle
@@ -79,7 +80,7 @@ export function DemandRings({ variant = 0 }: { variant?: number }) {
                       transition={{ duration: 1.4, delay: 0.2 + i * 0.12, ease: 'easeOut' }}
                     />
                   </svg>
-                  <span className="absolute inset-0 flex items-center justify-center font-display text-sm font-semibold text-white">
+                  <span className="absolute inset-0 flex items-center justify-center font-display text-sm font-semibold text-cream-50">
                     {c.demand}%
                   </span>
                 </div>
@@ -98,7 +99,7 @@ export function DemandRings({ variant = 0 }: { variant?: number }) {
                 <span>{c.origin}</span>
                 <span className="tabular-nums">{c.demand}</span>
               </div>
-              <div className="mt-1.5 h-1 overflow-hidden rounded-full bg-white/8">
+              <div className="mt-1.5 h-1 overflow-hidden rounded-full bg-cream-200/10">
                 <motion.div
                   initial={{ width: 0 }}
                   whileInView={{ width: `${c.demand}%` }}

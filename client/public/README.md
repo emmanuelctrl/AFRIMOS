@@ -24,3 +24,11 @@ Guidance:
   the frame on the right and quieter space on the left where the headline sits.
 - A dark grade is applied over the top so white copy stays legible.
 - Use an image you hold the rights to.
+- **No other company's branding.** The file must not carry a third-party logo,
+  company name, tagline, website or contact details — shipping it would put
+  another business's identity on the AFRIMOS site. The current `hero-port.jpg`
+  was cropped down to its unbranded middle band for exactly that reason.
+
+Above `md`, an AFRIMOS container is composited in front of the photograph
+(`components/three/ContainerShowpiece.tsx`), so the hero has our own box in it
+whatever the backdrop happens to be.
