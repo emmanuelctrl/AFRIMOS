@@ -2,6 +2,7 @@ import { useMemo, useRef } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Float, Points, PointMaterial } from '@react-three/drei';
 import * as THREE from 'three';
+import { useContainerMaps, useSteelMaps } from './containerTextures';
 
 /* ---- Palette: dark rig reading against the cream page ------------- */
 const BODY = '#7A2B22'; // container side panels (oxide red)
@@ -19,55 +20,15 @@ const BEAN_DARK = '#3A2416';
 const LENGTH = 5.8;
 const HEIGHT = 1.5;
 const DEPTH = 1.44;
-const RIB_COUNT = 34;
-
-/* ------------------------------------------------------------------ *
- *  Stencilled side decal, drawn to a canvas texture
- * ------------------------------------------------------------------ */
-function useDecalTexture(text: string) {
-  return useMemo(() => {
-    const canvas = document.createElement('canvas');
-    canvas.width = 1024;
-    canvas.height = 256;
-    const ctx = canvas.getContext('2d');
-    if (ctx) {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = '#F2F6F8';
-      ctx.font = 'bold 150px "Space Grotesk", Inter, sans-serif';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.letterSpacing = '18px';
-      ctx.fillText(text, canvas.width / 2, canvas.height / 2 - 10);
-      ctx.font = '46px Inter, sans-serif';
-      ctx.fillStyle = 'rgba(242,246,248,0.72)';
-      ctx.letterSpacing = '10px';
-      ctx.fillText('VERIFIED EXPORT', canvas.width / 2, canvas.height / 2 + 80);
-    }
-    const texture = new THREE.CanvasTexture(canvas);
-    texture.anisotropy = 4;
-    return texture;
-  }, [text]);
-}
 
 /* ------------------------------------------------------------------ *
  *  Shipping container
  * ------------------------------------------------------------------ */
 function Container() {
-  const decal = useDecalTexture('AFRIMOS');
-
-  // Corrugation: alternating depths give the trapezoidal wave a real
-  // container has, instead of a flat panel with lines on it.
-  const ribs = useMemo(
-    () =>
-      Array.from({ length: RIB_COUNT }, (_, i) => {
-        const t = i / (RIB_COUNT - 1);
-        return {
-          x: -LENGTH / 2 + 0.22 + t * (LENGTH - 0.44),
-          out: i % 2 === 0,
-        };
-      }),
-    []
-  );
+  // Corrugation, weathering and stencils all come from the generated skin, so
+  // the side panels are single quads rather than dozens of rib boxes.
+  const side = useContainerMaps(BODY, 7);
+  const steel = useSteelMaps(BODY_RIB, 3);
 
   const corners = useMemo(() => {
     const out: [number, number, number][] = [];
@@ -81,70 +42,109 @@ function Container() {
 
   return (
     <group>
-      {/* Shell */}
-      <mesh>
+      {/* Shell: per-face materials so the sides, ends and roof each get the
+          right skin instead of one stretched texture wrapped around the box. */}
+      <mesh castShadow receiveShadow>
         <boxGeometry args={[LENGTH, HEIGHT, DEPTH]} />
-        <meshStandardMaterial color={BODY} metalness={0.45} roughness={0.62} />
+        {/* +X end */}
+        <meshStandardMaterial
+          attach="material-0"
+          map={steel.map}
+          bumpMap={steel.bumpMap}
+          bumpScale={0.02}
+          roughnessMap={steel.roughnessMap}
+          metalness={0.55}
+          roughness={0.7}
+        />
+        {/* -X end (doors) */}
+        <meshStandardMaterial
+          attach="material-1"
+          map={steel.map}
+          bumpMap={steel.bumpMap}
+          bumpScale={0.02}
+          roughnessMap={steel.roughnessMap}
+          metalness={0.55}
+          roughness={0.7}
+        />
+        {/* +Y roof */}
+        <meshStandardMaterial
+          attach="material-2"
+          map={steel.map}
+          bumpMap={steel.bumpMap}
+          bumpScale={0.03}
+          metalness={0.6}
+          roughness={0.75}
+        />
+        {/* -Y floor */}
+        <meshStandardMaterial attach="material-3" color="#12181D" metalness={0.4} roughness={0.9} />
+        {/* +Z / -Z long sides */}
+        <meshStandardMaterial
+          attach="material-4"
+          map={side.map}
+          bumpMap={side.bumpMap}
+          bumpScale={0.045}
+          roughnessMap={side.roughnessMap}
+          metalness={0.62}
+          roughness={0.58}
+        />
+        <meshStandardMaterial
+          attach="material-5"
+          map={side.map}
+          bumpMap={side.bumpMap}
+          bumpScale={0.045}
+          roughnessMap={side.roughnessMap}
+          metalness={0.62}
+          roughness={0.58}
+        />
       </mesh>
-
-      {/* Corrugation */}
-      {ribs.map((rib, i) => (
-        <mesh key={i} position={[rib.x, 0, 0]}>
-          <boxGeometry
-            args={[rib.out ? 0.075 : 0.05, HEIGHT * 0.9, DEPTH + (rib.out ? 0.03 : 0.012)]}
-          />
-          <meshStandardMaterial
-            color={rib.out ? BODY : BODY_RIB}
-            metalness={0.5}
-            roughness={rib.out ? 0.55 : 0.7}
-          />
-        </mesh>
-      ))}
 
       {/* Top / bottom rails */}
       {[HEIGHT / 2, -HEIGHT / 2].map((y, i) => (
-        <mesh key={i} position={[0, y, 0]}>
-          <boxGeometry args={[LENGTH + 0.01, 0.12, DEPTH + 0.06]} />
-          <meshStandardMaterial color={FRAME} metalness={0.6} roughness={0.45} />
+        <mesh key={i} position={[0, y, 0]} castShadow>
+          <boxGeometry args={[LENGTH + 0.015, 0.11, DEPTH + 0.05]} />
+          <meshStandardMaterial color={FRAME} metalness={0.75} roughness={0.42} />
         </mesh>
       ))}
 
       {/* Corner castings */}
       {corners.map((p, i) => (
-        <mesh key={i} position={p}>
-          <boxGeometry args={[0.26, 0.19, 0.19]} />
-          <meshStandardMaterial color={FRAME} metalness={0.7} roughness={0.4} />
+        <mesh key={i} position={p} castShadow>
+          <boxGeometry args={[0.27, 0.2, 0.2]} />
+          <meshStandardMaterial color={FRAME} metalness={0.8} roughness={0.38} />
         </mesh>
       ))}
 
-      {/* Side decal, both faces */}
-      {[DEPTH / 2 + 0.035, -DEPTH / 2 - 0.035].map((z, i) => (
-        <mesh key={i} position={[0.4, 0.05, z]} rotation={[0, i === 0 ? 0 : Math.PI, 0]}>
-          <planeGeometry args={[2.6, 0.65]} />
-          <meshBasicMaterial map={decal} transparent opacity={0.9} />
-        </mesh>
-      ))}
-
-      {/* Door end — hinges, locking bars and handles */}
-      <group position={[-LENGTH / 2 - 0.02, 0, 0]}>
-        <mesh rotation={[0, -Math.PI / 2, 0]}>
-          <planeGeometry args={[DEPTH * 0.98, HEIGHT * 0.94]} />
-          <meshStandardMaterial color={FRAME} metalness={0.5} roughness={0.6} />
-        </mesh>
-        {[-0.42, -0.15, 0.15, 0.42].map((z, i) => (
-          <group key={i} position={[-0.04, 0, z * DEPTH]}>
-            {/* Locking bar */}
-            <mesh>
-              <cylinderGeometry args={[0.022, 0.022, HEIGHT * 0.82, 10]} />
-              <meshStandardMaterial color={CHROME} metalness={0.85} roughness={0.3} />
+      {/* Door hardware on the -X end */}
+      <group position={[-LENGTH / 2 - 0.035, 0, 0]}>
+        {[-0.4, -0.14, 0.14, 0.4].map((z, i) => (
+          <group key={i} position={[0, 0, z * DEPTH]}>
+            <mesh castShadow>
+              <cylinderGeometry args={[0.024, 0.024, HEIGHT * 0.84, 12]} />
+              <meshStandardMaterial color={CHROME} metalness={0.9} roughness={0.28} />
             </mesh>
-            {/* Cam handle */}
-            <mesh position={[-0.045, 0.1, 0]} rotation={[0, 0, Math.PI / 2]}>
-              <boxGeometry args={[0.05, 0.16, 0.05]} />
-              <meshStandardMaterial color={CHROME} metalness={0.8} roughness={0.35} />
+            {/* Cam keeper top and bottom */}
+            {[HEIGHT * 0.36, -HEIGHT * 0.36].map((y, k) => (
+              <mesh key={k} position={[-0.02, y, 0]}>
+                <boxGeometry args={[0.07, 0.07, 0.07]} />
+                <meshStandardMaterial color={FRAME} metalness={0.8} roughness={0.4} />
+              </mesh>
+            ))}
+            {/* Handle */}
+            <mesh position={[-0.05, 0.06, 0]} rotation={[0, 0, Math.PI / 2]}>
+              <boxGeometry args={[0.045, 0.18, 0.045]} />
+              <meshStandardMaterial color={CHROME} metalness={0.85} roughness={0.32} />
             </mesh>
           </group>
         ))}
+        {/* Hinges */}
+        {[-0.46, 0.46].map((z, i) =>
+          [0.45, 0, -0.45].map((y, k) => (
+            <mesh key={`${i}-${k}`} position={[0.01, y * HEIGHT, z * DEPTH]}>
+              <boxGeometry args={[0.06, 0.1, 0.09]} />
+              <meshStandardMaterial color={FRAME} metalness={0.8} roughness={0.4} />
+            </mesh>
+          ))
+        )}
       </group>
     </group>
   );
@@ -368,9 +368,12 @@ function Bean({
 function Beans() {
   const beans = useMemo(
     () => [
-      { position: [-6.4, 2.4, -3.5], scale: 0.5, spin: 1 },
-      { position: [-4.8, -1.6, -4.2], scale: 0.42, spin: -0.8 },
-      { position: [-7.6, 0.4, -2.8], scale: 0.46, spin: 1.3 },
+      { position: [-4.9, 1.5, 2.6], scale: 1.15, spin: 1 },
+      { position: [-3.2, -1.7, 3.1], scale: 1.0, spin: -0.9 },
+      { position: [4.6, 1.9, 2.2], scale: 0.9, spin: 1.2 },
+      { position: [3.3, -2.0, 3.0], scale: 1.25, spin: -1.1 },
+      { position: [-6.1, -0.3, 1.8], scale: 0.85, spin: 1.4 },
+      { position: [1.1, 2.6, 2.4], scale: 0.8, spin: -0.7 },
     ],
     []
   );
@@ -486,19 +489,30 @@ function Scene() {
     <>
       {/* Night: low ambient, cool moonlight, warm sodium bounce */}
       <fog attach="fog" args={['#0A141A', 20, 52]} />
-      <ambientLight intensity={0.75} color="#A8C6D6" />
-      <directionalLight position={[6, 10, 8]} intensity={2.2} color="#CFE2EE" />
-      <directionalLight position={[-6, 4, -6]} intensity={1.1} color="#7FA8C0" />
+      <ambientLight intensity={1.5} color="#B8D2E2" />
+      <directionalLight position={[6, 10, 8]} intensity={3.6} color="#E4F0F8" />
+      <directionalLight position={[-6, 4, -6]} intensity={1.8} color="#9FC4DA" />
       {/* Headlight spill and the red rim off the cab */}
       <pointLight position={[5.5, 0.4, 3.5]} intensity={70} color="#FFD9A0" distance={16} />
       <pointLight position={[2, 0.6, 3]} intensity={40} color="#FF6A4A" distance={14} />
       <pointLight position={[-5, 1.6, 2]} intensity={26} color="#FF9A5A" distance={18} />
+      {/* Cool rim from behind picks out the container's top edge */}
+      <directionalLight position={[-8, 6, -7]} intensity={3.2} color="#B4D8F0" />
+      {/* Camera-side key so the lettered flank is the brightest thing in frame */}
+      <directionalLight position={[-1, 2.5, 9]} intensity={2.8} color="#FFEBD2" />
 
       <Road />
       <Bokeh />
 
+      {/* Contact shadow — a plain dark ellipse, since real shadow maps and
+          drei's ContactShadows both need render targets we avoid here. */}
+      <mesh position={[0.9, -1.23, 0.2]} rotation={[-Math.PI / 2, 0, 0]}>
+        <planeGeometry args={[11, 4.4]} />
+        <meshBasicMaterial color="#03080C" transparent opacity={0.55} depthWrite={false} />
+      </mesh>
+
       {/* Shifted left and scaled down so the tractor stays fully in frame */}
-      <group position={[0.95, -0.05, 0]} scale={1.06}>
+      <group position={[0.75, 0.05, 0]} scale={1.18}>
         <Rig />
       </group>
 

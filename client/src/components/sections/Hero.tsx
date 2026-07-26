@@ -90,7 +90,7 @@ export function Hero() {
       {/* Vignettes: keep the copy legible over the headlights */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-r from-base-900 via-base-900/70 to-transparent"
+        className="pointer-events-none absolute inset-y-0 left-0 z-[1] w-[62%] bg-gradient-to-r from-base-900 via-base-900/75 to-transparent"
       />
       <div
         aria-hidden="true"
