@@ -85,23 +85,82 @@ test('a guessed account is limited without affecting others', options, async () 
   );
 });
 
-test('a new supplier signs up pending, not approved', options, async () => {
+/** Signs up a fresh account of either role and returns its session. */
+async function signUp(role) {
   const res = await post('/api/auth/signup', {
-    email: `pending+${Date.now()}@example.com`,
+    email: `${role}+${Date.now()}${Math.random().toString(36).slice(2, 6)}@example.com`,
     password: 'Password123!',
-    fullName: 'Pending Supplier',
-    role: 'supplier',
-    companyName: 'Pending Exports plc',
+    fullName: `New ${role}`,
+    role,
+    ...(role === 'supplier' ? { companyName: 'Pending Exports plc' } : {}),
   });
   assert.equal(res.status, 201);
-  const { user, token } = await res.json();
-  assert.equal(user.verificationStatus, 'pending');
+  return res.json();
+}
 
-  // The whole point of `pending`: a signed-in but unapproved account still
-  // sees nothing real.
-  for (const path of ['/api/suppliers', '/api/rfqs', '/api/messages/conversations']) {
-    assert.equal((await get(path, token)).status, 403, path);
-  }
+for (const role of ['supplier', 'buyer']) {
+  test(`a new ${role} signs up pending, not approved`, options, async () => {
+    const { user, token } = await signUp(role);
+    assert.equal(user.verificationStatus, 'pending');
+
+    // The whole point of `pending`: a signed-in but unapproved account still
+    // sees nothing real. Buyers included — they see exporter contact details
+    // and pricing, which is exactly the data being protected.
+    for (const path of ['/api/suppliers', '/api/rfqs', '/api/messages/conversations']) {
+      assert.equal((await get(path, token)).status, 403, path);
+    }
+  });
+}
+
+test('an admin can approve a buyer, and only then do they get in', options, async () => {
+  const { user, token } = await signUp('buyer');
+  assert.equal((await get('/api/suppliers', token)).status, 403, 'blocked before approval');
+
+  // The buyer has to be reachable from the queue, or there is no way to
+  // approve them and the pending default would strand every buyer.
+  const queue = await get('/api/admin/accounts?role=buyer&status=pending', adminToken);
+  assert.equal(queue.status, 200);
+  const { accounts } = await queue.json();
+  assert.ok(accounts.some((a) => a.id === user.id), 'new buyer appears in the pending queue');
+
+  const decision = await fetch(`${base}/api/admin/accounts/${user.id}/verify`, {
+    method: 'PUT',
+    headers: { 'content-type': 'application/json', authorization: `Bearer ${adminToken}` },
+    body: JSON.stringify({ verificationStatus: 'verified', notes: 'Checked' }),
+  });
+  assert.equal(decision.status, 200);
+  assert.equal((await decision.json()).account.verificationStatus, 'verified');
+
+  assert.equal((await get('/api/suppliers', token)).status, 200, 'through after approval');
+});
+
+test('an admin can reject a buyer, and rejection locks them out', options, async () => {
+  const { user, token } = await signUp('buyer');
+  const res = await fetch(`${base}/api/admin/accounts/${user.id}/verify`, {
+    method: 'PUT',
+    headers: { 'content-type': 'application/json', authorization: `Bearer ${adminToken}` },
+    body: JSON.stringify({ verificationStatus: 'rejected', notes: 'No' }),
+  });
+  assert.equal(res.status, 200);
+
+  // Rejected is stopped earlier than pending — in requireAuth rather than at
+  // the approval gate — but still as 403: the token is valid, the account just
+  // is not allowed through. A token issued before the rejection is no good.
+  const blocked = await get('/api/suppliers', token);
+  assert.equal(blocked.status, 403);
+  assert.match((await blocked.json()).error, /rejected/i);
+});
+
+test('the admin account cannot be reviewed through the queue', options, async () => {
+  const me = await get('/api/auth/me', adminToken);
+  const { user: admin } = await me.json();
+
+  const res = await fetch(`${base}/api/admin/accounts/${admin.id}/verify`, {
+    method: 'PUT',
+    headers: { 'content-type': 'application/json', authorization: `Bearer ${adminToken}` },
+    body: JSON.stringify({ verificationStatus: 'rejected' }),
+  });
+  assert.equal(res.status, 404, 'there is nobody above the admin to approve them');
 });
 
 test('anonymous callers reach no marketplace data at all', options, async () => {

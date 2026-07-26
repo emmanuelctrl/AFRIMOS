@@ -5,8 +5,6 @@ import { ArrowLeft, ArrowRight, ArrowUpRight } from 'lucide-react';
 import { EASE } from '@/lib/motion';
 import { useAuth } from '@/context/AuthContext';
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
-import { useHeroPhoto } from '@/hooks/useHeroPhoto';
-import { LazyContainerShowpiece } from '@/components/three/LazyContainerShowpiece';
 import { HeroBackdrop } from './HeroBackdrop';
 
 interface Slide {
@@ -53,14 +51,10 @@ export function Hero() {
   const { user } = useAuth();
   const reduced = usePrefersReducedMotion();
   const [index, setIndex] = useState(0);
-  // When the photograph is the backdrop the 3D yard never mounts, so the
-  // container gets composited on top of the photo instead of inside it.
-  const { status: photo } = useHeroPhoto();
 
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] });
   const sceneY = useTransform(scrollYProgress, [0, 1], ['0%', '12%']);
   const sceneScale = useTransform(scrollYProgress, [0, 1], [1, 1.1]);
-  const showpieceY = useTransform(scrollYProgress, [0, 1], ['0%', '-22%']);
   const uiOpacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
 
   const go = useCallback((dir: number) => {
@@ -102,26 +96,6 @@ export function Hero() {
         aria-hidden="true"
         className="pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-2/5 bg-gradient-to-t from-base-900 via-base-900/80 to-transparent"
       />
-
-      {/* ---- The cargo, out in front ----
-          Sits above the vignettes and moves against the backdrop as you
-          scroll, so it reads as breaking out of the frame rather than sitting
-          inside the picture. Only needed when a photograph is the backdrop —
-          the 3D yard already has a container in it. Held back below md,
-          where there is no room beside the copy and the photograph is
-          already a container yard. */}
-      {photo === 'ready' && (
-        <motion.div
-          aria-hidden="true"
-          style={reduced ? undefined : { y: showpieceY }}
-          className="pointer-events-none absolute z-[2] hidden md:bottom-[14%] md:right-[-14%] md:block md:h-[32%] md:w-[74%] lg:bottom-auto lg:top-[42%] lg:h-[42%] lg:w-[54%] lg:-translate-y-1/2 xl:right-[-4%] xl:w-[50%]"
-        >
-          {/* Contact shadow: without something dark underneath, a floating
-              object looks pasted on rather than lit. */}
-          <div className="absolute inset-x-[8%] bottom-[6%] h-[22%] rounded-[50%] bg-black/55 blur-3xl" />
-          <LazyContainerShowpiece className="absolute inset-0" />
-        </motion.div>
-      )}
 
       {/* ---- Copy + stats ---- */}
       <motion.div

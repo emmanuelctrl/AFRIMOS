@@ -27,15 +27,23 @@ export default function AdminDashboard() {
     <div className="space-y-6">
       <h1 className="text-2xl font-bold text-white">Platform overview</h1>
 
-      {data.pendingVerifications > 0 && (
-        <Link
-          to="/admin/suppliers?status=pending"
-          className="block rounded-xl border border-amber-400/20 bg-amber-500/10 px-4 py-3 backdrop-blur-sm text-sm font-medium text-amber-300 hover:bg-amber-500/20"
-        >
-          ⚠ {data.pendingVerifications} supplier{data.pendingVerifications === 1 ? '' : 's'} awaiting
-          verification - review now
-        </Link>
-      )}
+      {/* Split by role: one combined number hid pending buyers behind a link
+          that only ever showed suppliers. */}
+      {[
+        ['supplier', data.pendingSuppliers, 'exporter'],
+        ['buyer', data.pendingBuyers, 'buyer'],
+      ]
+        .filter(([, count]) => count > 0)
+        .map(([role, count, noun]) => (
+          <Link
+            key={role}
+            to={`/admin/accounts?role=${role}&status=pending`}
+            className="block rounded-xl border border-amber-400/20 bg-amber-500/10 px-4 py-3 backdrop-blur-sm text-sm font-medium text-amber-300 hover:bg-amber-500/20"
+          >
+            ⚠ {count} {noun}
+            {count === 1 ? '' : 's'} awaiting approval - review now
+          </Link>
+        ))}
 
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <StatCard label="Total suppliers" value={data.totalSuppliers} />
@@ -73,8 +81,8 @@ export default function AdminDashboard() {
       </section>
 
       <div className="flex gap-3">
-        <Link to="/admin/suppliers" className="btn-primary">
-          Supplier verification
+        <Link to="/admin/accounts" className="btn-primary">
+          Account verification
         </Link>
         <Link to="/admin/users" className="btn-secondary">
           User management

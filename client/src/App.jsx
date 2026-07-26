@@ -36,7 +36,7 @@ const Messages = lazy(() => import('./pages/shared/Messages'));
 
 const AdminLogin = lazy(() => import('./pages/admin/AdminLogin'));
 const AdminDashboard = lazy(() => import('./pages/admin/AdminDashboard'));
-const AdminSuppliers = lazy(() => import('./pages/admin/AdminSuppliers'));
+const AdminAccounts = lazy(() => import('./pages/admin/AdminAccounts'));
 const AdminUsers = lazy(() => import('./pages/admin/AdminUsers'));
 const AdminSettings = lazy(() => import('./pages/admin/AdminSettings'));
 
@@ -122,7 +122,9 @@ export default function App() {
                 }
               >
                 <Route index element={<AdminDashboard />} />
-                <Route path="suppliers" element={<AdminSuppliers />} />
+                <Route path="accounts" element={<AdminAccounts />} />
+                {/* Old path: bookmarks and the pending-review banner still point here. */}
+                <Route path="suppliers" element={<Navigate to="/admin/accounts?role=supplier" replace />} />
                 <Route path="users" element={<AdminUsers />} />
                 <Route path="settings" element={<AdminSettings />} />
               </Route>

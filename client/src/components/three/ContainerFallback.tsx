@@ -48,79 +48,56 @@ function Box() {
 }
 
 /**
- * CSS stand-in for the WebGL container, used on mobile, low-core devices,
+ * CSS stand-in for the WebGL yard, used on mobile, low-core devices,
  * reduced-motion and any WebGL failure — so those devices still get the
- * subject rather than an empty glow.
- *
- * `yard` mirrors the full 3D scene: the box slung under a gantry spreader.
- * `solo` is just the box, for layering over the hero photograph.
+ * subject rather than an empty glow. Mirrors the 3D composition: the box
+ * slung under a gantry spreader.
  */
-export function ContainerFallback({ variant = 'yard' }: { variant?: 'yard' | 'solo' }) {
+export function ContainerFallback() {
   const reduced = usePrefersReducedMotion();
-  const solo = variant === 'solo';
 
   return (
     <div aria-hidden="true" className="absolute inset-0 overflow-hidden">
-      {!solo && (
-        <>
-          {/* Crane floodlight wash */}
-          <div className="absolute left-1/2 top-[18%] h-64 w-[36rem] max-w-[95vw] -translate-x-1/2 rounded-full bg-[#FFCE8F]/20 blur-[110px]" />
+      {/* Crane floodlight wash */}
+      <div className="absolute left-1/2 top-[18%] h-64 w-[36rem] max-w-[95vw] -translate-x-1/2 rounded-full bg-[#FFCE8F]/20 blur-[110px]" />
 
-          {/* Gantry legs */}
-          <div className="absolute inset-x-[4%] top-0 flex h-[62%] justify-between">
-            {[0, 1].map((i) => (
-              <span
-                key={i}
-                className="w-3 rounded-sm bg-gradient-to-b from-[#B4562A] to-[#6E3319] sm:w-4"
-              />
-            ))}
-          </div>
-          {/* Top girder */}
-          <div className="absolute inset-x-[4%] top-[6%] h-4 rounded-sm bg-gradient-to-b from-[#D8A33C] to-[#8E6A22] sm:h-5" />
-        </>
-      )}
+      {/* Gantry legs */}
+      <div className="absolute inset-x-[4%] top-0 flex h-[62%] justify-between">
+        {[0, 1].map((i) => (
+          <span
+            key={i}
+            className="w-3 rounded-sm bg-gradient-to-b from-[#B4562A] to-[#6E3319] sm:w-4"
+          />
+        ))}
+      </div>
 
-      {solo && (
-        /* Ocean glow behind the box, standing in for the 3D rim light */
-        <div className="absolute left-1/2 top-1/2 h-[70%] w-[85%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-electric-400/25 blur-[70px]" />
-      )}
-      {solo && (
-        /* Contact shadow, so the box does not read as a decal */
-        <div className="absolute inset-x-[6%] bottom-[8%] h-[18%] rounded-[50%] bg-black/55 blur-2xl" />
-      )}
+      {/* Top girder */}
+      <div className="absolute inset-x-[4%] top-[6%] h-4 rounded-sm bg-gradient-to-b from-[#D8A33C] to-[#8E6A22] sm:h-5" />
 
       <div className="absolute inset-0 flex items-center justify-center">
         <motion.div
           animate={reduced ? undefined : { y: [0, -10, 0], rotate: [-1.5, -0.8, -1.5] }}
           transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
           style={{ rotate: -1.5 }}
-          className={solo ? 'relative w-[92%]' : 'relative w-[86vw] max-w-[34rem]'}
+          className="relative w-[86vw] max-w-[34rem]"
         >
-          {!solo && (
-            /* Spreader + slings */
-            <div className="absolute inset-x-[10%] -top-24 h-24">
-              <div className="absolute inset-x-0 top-0 h-2.5 rounded-sm bg-gradient-to-b from-[#E2B04A] to-[#9A7527]" />
-              {['left-1', 'right-1'].map((pos) => (
-                <span
-                  key={pos}
-                  className={`absolute ${pos} top-2.5 h-[5.5rem] w-px bg-gradient-to-b from-[#4A555E] to-[#2A3138]`}
-                />
-              ))}
-            </div>
-          )}
+          {/* Spreader + slings */}
+          <div className="absolute inset-x-[10%] -top-24 h-24">
+            <div className="absolute inset-x-0 top-0 h-2.5 rounded-sm bg-gradient-to-b from-[#E2B04A] to-[#9A7527]" />
+            {['left-1', 'right-1'].map((pos) => (
+              <span
+                key={pos}
+                className={`absolute ${pos} top-2.5 h-[5.5rem] w-px bg-gradient-to-b from-[#4A555E] to-[#2A3138]`}
+              />
+            ))}
+          </div>
 
           <Box />
-          {solo && (
-            /* Grade the flat CSS box down toward the photograph behind it */
-            <div className="pointer-events-none absolute inset-0 rounded-[5px] bg-gradient-to-tr from-base-900/55 via-transparent to-base-900/25" />
-          )}
         </motion.div>
       </div>
 
-      {!solo && (
-        /* Wet apron reflection */
-        <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-[#0A141A] via-[#0A141A]/70 to-transparent" />
-      )}
+      {/* Wet apron reflection */}
+      <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-[#0A141A] via-[#0A141A]/70 to-transparent" />
     </div>
   );
 }

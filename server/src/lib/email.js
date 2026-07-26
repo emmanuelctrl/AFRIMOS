@@ -77,16 +77,30 @@ export function sendMessageNotification(recipient, sender, rfq) {
   });
 }
 
+// Buyers go through the same review as suppliers, and the two are approved for
+// opposite things — one becomes visible, the other gains access — so the copy
+// has to follow the role rather than talk about a "supplier profile" to
+// everybody.
+const APPROVED_COPY = {
+  supplier: 'Your exporter profile is now verified and visible to international buyers.',
+  buyer: 'Your buyer account is approved. You can now browse verified exporters and send RFQs.',
+};
+
 export function sendVerificationDecisionEmail(user, status, notes) {
   const verified = status === 'verified';
+  const approved = APPROVED_COPY[user.role] ?? APPROVED_COPY.buyer;
+  const subject = verified
+    ? 'Your AFRIMOS account has been approved'
+    : 'Your AFRIMOS account needs changes';
+
   return sendEmail({
     to: user.email,
-    subject: verified ? 'Your AFRIMOS profile has been verified' : 'Your AFRIMOS profile needs changes',
+    subject,
     text: verified
-      ? 'Congratulations - your supplier profile is now verified and visible to buyers.'
-      : `Your profile was not approved. ${notes || 'Contact admin@afrimos.et for details.'}`,
+      ? `Congratulations - ${approved.charAt(0).toLowerCase()}${approved.slice(1)}`
+      : `Your account was not approved. ${notes || 'Contact admin@afrimos.et for details.'}`,
     html: verified
-      ? `<p>Congratulations! Your supplier profile is now <strong>verified</strong> and visible to international buyers.</p>`
-      : `<p>Your profile was not approved.</p><p>${notes || 'Contact admin@afrimos.et for details.'}</p>`,
+      ? `<p>Congratulations! ${approved}</p>`
+      : `<p>Your account was not approved.</p><p>${notes || 'Contact admin@afrimos.et for details.'}</p>`,
   });
 }

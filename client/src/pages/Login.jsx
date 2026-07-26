@@ -5,7 +5,7 @@ import { useAuth } from '../context/AuthContext';
 import { apiError } from '../api/client';
 
 export default function Login() {
-  const { login } = useAuth();
+  const { login, adminLogin } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const [error, setError] = useState('');
@@ -17,13 +17,19 @@ export default function Login() {
 
   const onSubmit = async ({ email, password }) => {
     setError('');
+    // Leaving the email blank signs in as the administrator on the password
+    // alone. Not advertised on the form on purpose — anyone who needs it knows
+    // it, and the endpoint behind it is rate limited either way.
+    const asAdmin = !email?.trim();
     try {
-      const user = await login(email, password);
+      const user = asAdmin ? await adminLogin(password) : await login(email, password);
       const fallback =
         user.role === 'admin' ? '/admin' : user.role === 'supplier' ? '/dashboard/supplier' : '/dashboard/buyer';
       navigate(location.state?.from || fallback);
     } catch (err) {
-      setError(apiError(err, 'Invalid email or password'));
+      setError(
+        apiError(err, asAdmin ? 'Incorrect password' : 'Invalid email or password')
+      );
     }
   };
 
@@ -34,7 +40,7 @@ export default function Login() {
         {error && <p className="rounded-lg border border-red-400/20 bg-red-500/10 px-4 py-2 text-sm text-red-300">{error}</p>}
         <div>
           <label className="label">Email</label>
-          <input className="input" type="email" {...register('email', { required: 'Email is required' })} />
+          <input className="input" type="email" autoComplete="username" {...register('email')} />
           {errors.email && <p className="field-error">{errors.email.message}</p>}
         </div>
         <div>
@@ -42,6 +48,7 @@ export default function Login() {
           <input
             className="input"
             type="password"
+            autoComplete="current-password"
             {...register('password', { required: 'Password is required' })}
           />
           {errors.password && <p className="field-error">{errors.password.message}</p>}

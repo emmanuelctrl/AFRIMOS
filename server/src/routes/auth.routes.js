@@ -74,9 +74,12 @@ router.post('/signup', validate(signupSchema), async (req, res, next) => {
         role,
         userType,
         emailVerifyToken,
-        // Suppliers (exporters) are manually vetted before they can access the
-        // marketplace, so they start "pending". Buyers are approved on signup.
-        verificationStatus: role === 'supplier' ? 'pending' : 'verified',
+        // Everybody is vetted before reaching the marketplace — buyers see
+        // real exporter contact details and pricing, so an unreviewed buyer
+        // account is the same leak as an unreviewed supplier one. Existing
+        // accounts keep whatever status they already have; this only sets the
+        // starting point for new ones.
+        verificationStatus: 'pending',
         ...(role === 'supplier'
           ? { supplierProfile: { create: { companyName } } }
           : {}),

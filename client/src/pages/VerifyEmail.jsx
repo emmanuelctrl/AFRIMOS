@@ -19,6 +19,12 @@ export default function VerifyEmail() {
         setState('done');
         await refreshUser();
         setTimeout(() => {
+          // Both roles start unapproved now, so a buyer landing on the
+          // dashboard would only be bounced. Send them where the state is
+          // actually explained.
+          if (user && user.role !== 'admin' && user.verificationStatus !== 'verified') {
+            return navigate('/account-status');
+          }
           navigate(user?.role === 'supplier' ? '/dashboard/supplier/profile' : '/dashboard/buyer');
         }, 1500);
       })
@@ -45,7 +51,7 @@ export default function VerifyEmail() {
         <>
           <p className="text-4xl">✅</p>
           <h1 className="mt-4 text-2xl font-bold text-white">Email verified!</h1>
-          <p className="mt-2 text-gray-300">Redirecting you to your dashboard…</p>
+          <p className="mt-2 text-gray-300">Taking you to your account…</p>
         </>
       )}
       {state === 'error' && (

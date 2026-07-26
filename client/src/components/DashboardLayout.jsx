@@ -19,7 +19,7 @@ const MENUS = {
   ],
   admin: [
     ['/admin', 'Overview', true],
-    ['/admin/suppliers', 'Supplier verification'],
+    ['/admin/accounts', 'Account verification'],
     ['/admin/users', 'Users'],
     ['/admin/settings', 'Settings'],
   ],

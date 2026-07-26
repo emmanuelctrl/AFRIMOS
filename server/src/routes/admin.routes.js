@@ -31,17 +31,33 @@ router.put('/password', validate(adminPasswordSchema), async (req, res, next) =>
   }
 });
 
-// GET /api/admin/suppliers?status=pending
-router.get('/suppliers', async (req, res, next) => {
+// Suppliers and buyers go through the same review queue — both start pending
+// and neither reaches marketplace data until an admin says so. Admins are
+// excluded: there is no one above them to approve them.
+const REVIEWABLE_ROLES = ['supplier', 'buyer'];
+
+const accountsQuerySchema = z.object({
+  role: z.enum(['supplier', 'buyer']).optional(),
+  status: z.enum(['pending', 'verified', 'rejected']).optional(),
+});
+
+// GET /api/admin/accounts?role=buyer&status=pending
+router.get('/accounts', async (req, res, next) => {
   try {
+    const parsed = accountsQuerySchema.safeParse(req.query);
+    if (!parsed.success) {
+      return res.status(400).json({ error: 'Unknown role or status filter' });
+    }
+    const { role, status } = parsed.data;
+
     const page = Math.max(1, parseInt(req.query.page) || 1);
     const limit = Math.min(50, Math.max(1, parseInt(req.query.limit) || 20));
-    const { status } = req.query;
     const where = {
-      role: 'supplier',
+      role: role ? role : { in: REVIEWABLE_ROLES },
       ...(status ? { verificationStatus: status } : {}),
     };
-    const [users, total] = await Promise.all([
+
+    const [accounts, total] = await Promise.all([
       prisma.user.findMany({
         where,
         orderBy: { createdAt: 'desc' },
@@ -51,6 +67,8 @@ router.get('/suppliers', async (req, res, next) => {
           id: true,
           email: true,
           fullName: true,
+          role: true,
+          userType: true,
           verificationStatus: true,
           verificationNotes: true,
           emailVerified: true,
@@ -58,11 +76,14 @@ router.get('/suppliers', async (req, res, next) => {
           supplierProfile: {
             include: { _count: { select: { products: true } } },
           },
+          // A buyer has no profile to inspect, so their activity is the only
+          // signal an admin has to review.
+          _count: { select: { rfqsSent: true } },
         },
       }),
       prisma.user.count({ where }),
     ]);
-    res.json({ suppliers: users, total, page, limit });
+    res.json({ accounts, total, page, limit });
   } catch (err) {
     next(err);
   }
@@ -73,21 +94,22 @@ const verifySchema = z.object({
   notes: z.string().optional().nullable(),
 });
 
-// PUT /api/admin/suppliers/:userId/verify
-router.put('/suppliers/:userId/verify', validate(verifySchema), async (req, res, next) => {
+// PUT /api/admin/accounts/:userId/verify
+router.put('/accounts/:userId/verify', validate(verifySchema), async (req, res, next) => {
   try {
     const { verificationStatus, notes } = req.body;
     const user = await prisma.user.findUnique({ where: { id: req.params.userId } });
-    if (!user || user.role !== 'supplier') {
-      return res.status(404).json({ error: 'Supplier not found' });
+    if (!user || !REVIEWABLE_ROLES.includes(user.role)) {
+      return res.status(404).json({ error: 'Account not found' });
     }
-    const updatedSupplier = await prisma.user.update({
+    const account = await prisma.user.update({
       where: { id: user.id },
       data: { verificationStatus, verificationNotes: notes || null },
       select: {
         id: true,
         email: true,
         fullName: true,
+        role: true,
         verificationStatus: true,
         verificationNotes: true,
         supplierProfile: true,
@@ -96,7 +118,7 @@ router.put('/suppliers/:userId/verify', validate(verifySchema), async (req, res,
     if (verificationStatus !== 'pending') {
       await sendVerificationDecisionEmail(user, verificationStatus, notes);
     }
-    res.json({ updatedSupplier });
+    res.json({ account });
   } catch (err) {
     next(err);
   }
@@ -105,15 +127,23 @@ router.put('/suppliers/:userId/verify', validate(verifySchema), async (req, res,
 // GET /api/admin/analytics - platform-wide stats + growth series
 router.get('/analytics', async (req, res, next) => {
   try {
-    const [totalSuppliers, totalBuyers, totalRFQs, totalMessages, pendingVerifications, closedRfqs] =
-      await Promise.all([
-        prisma.user.count({ where: { role: 'supplier' } }),
-        prisma.user.count({ where: { role: 'buyer' } }),
-        prisma.rfq.count(),
-        prisma.message.count(),
-        prisma.user.count({ where: { role: 'supplier', verificationStatus: 'pending' } }),
-        prisma.rfq.count({ where: { status: 'Closed' } }),
-      ]);
+    const [
+      totalSuppliers,
+      totalBuyers,
+      totalRFQs,
+      totalMessages,
+      pendingSuppliers,
+      pendingBuyers,
+      closedRfqs,
+    ] = await Promise.all([
+      prisma.user.count({ where: { role: 'supplier' } }),
+      prisma.user.count({ where: { role: 'buyer' } }),
+      prisma.rfq.count(),
+      prisma.message.count(),
+      prisma.user.count({ where: { role: 'supplier', verificationStatus: 'pending' } }),
+      prisma.user.count({ where: { role: 'buyer', verificationStatus: 'pending' } }),
+      prisma.rfq.count({ where: { status: 'Closed' } }),
+    ]);
 
     // Growth over the last 12 weeks
     const twelveWeeksAgo = new Date(Date.now() - 12 * 7 * 24 * 3600 * 1000);
@@ -152,7 +182,11 @@ router.get('/analytics', async (req, res, next) => {
       totalBuyers,
       totalRFQs,
       totalMessages,
-      pendingVerifications,
+      pendingSuppliers,
+      pendingBuyers,
+      // Kept as the sum so any older client reading it still sees the whole
+      // queue rather than half of it.
+      pendingVerifications: pendingSuppliers + pendingBuyers,
       closedRfqs,
       revenue: 0, // payments are post-MVP
       growth: Object.values(series),
