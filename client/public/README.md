@@ -3,13 +3,14 @@
 The landing hero uses a photograph when one is present, and falls back to the
 generated 3D container yard when it is not.
 
-To use a photo, drop it here as:
+To use a photo, drop it here named `hero-port` with any of these extensions:
 
 ```
-client/public/hero-port.jpg
+client/public/hero-port.jpg     (or .jpeg, .png, .webp, .avif)
 ```
 
-It is picked up automatically on the next build — no code change needed.
+It is picked up automatically on the next build — no rename, conversion or
+code change needed.
 
 Prefer a different filename or a remote URL? Set the env var instead:
 

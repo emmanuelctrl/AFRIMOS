@@ -4,11 +4,37 @@ import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
 import { LazyHeroScene } from '@/components/three/LazyHeroScene';
 
 /**
- * Where the hero photograph lives. Drop a file at `client/public/hero-port.jpg`
- * (or point VITE_HERO_IMAGE at any URL) and it becomes the backdrop; until then
- * the generated 3D yard is used instead.
+ * Where the hero photograph lives. Drop a file named `hero-port.*` into
+ * `client/public/` (or point VITE_HERO_IMAGE at any URL) and it becomes the
+ * backdrop; until then the generated 3D yard is used instead.
+ *
+ * Several extensions are probed rather than demanding one, so the file does not
+ * have to be renamed or converted to be picked up.
  */
-export const HERO_IMAGE: string = import.meta.env.VITE_HERO_IMAGE || '/hero-port.jpg';
+const CANDIDATES: string[] = [
+  import.meta.env.VITE_HERO_IMAGE,
+  '/hero-port.jpg',
+  '/hero-port.jpeg',
+  '/hero-port.png',
+  '/hero-port.webp',
+  '/hero-port.avif',
+].filter(Boolean) as string[];
+
+/** Resolves to the first candidate that actually decodes, or null if none do. */
+function probe(sources: string[]): Promise<string | null> {
+  return new Promise((resolve) => {
+    let i = 0;
+    const next = () => {
+      if (i >= sources.length) return resolve(null);
+      const src = sources[i++];
+      const img = new Image();
+      img.onload = () => (img.naturalWidth > 1 ? resolve(src) : next());
+      img.onerror = next;
+      img.src = src;
+    };
+    next();
+  });
+}
 
 type Status = 'loading' | 'ready' | 'missing';
 
@@ -20,23 +46,22 @@ type Status = 'loading' | 'ready' | 'missing';
 export function HeroBackdrop() {
   const reduced = usePrefersReducedMotion();
   const [status, setStatus] = useState<Status>('loading');
+  const [src, setSrc] = useState<string | null>(null);
 
   useEffect(() => {
     let cancelled = false;
-    const img = new Image();
-    img.onload = () => {
-      if (!cancelled) setStatus(img.naturalWidth > 1 ? 'ready' : 'missing');
-    };
-    img.onerror = () => {
-      if (!cancelled) setStatus('missing');
-    };
-    img.src = HERO_IMAGE;
+    probe(CANDIDATES).then((found) => {
+      if (cancelled) return;
+      setSrc(found);
+      setStatus(found ? 'ready' : 'missing');
+    });
     return () => {
       cancelled = true;
     };
   }, []);
 
-  if (status === 'missing') return <LazyHeroScene className="absolute inset-0" />;
+  if (status === 'missing' || (status === 'ready' && !src))
+    return <LazyHeroScene className="absolute inset-0" />;
 
   return (
     <div aria-hidden="true" className="absolute inset-0 overflow-hidden bg-base-900">
@@ -47,7 +72,7 @@ export function HeroBackdrop() {
         className="absolute inset-0"
       >
         <img
-          src={HERO_IMAGE}
+          src={src ?? undefined}
           alt=""
           decoding="async"
           fetchPriority="high"
