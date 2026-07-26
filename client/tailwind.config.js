@@ -33,40 +33,65 @@ export default {
           800: '#102028',
           700: '#172E38',
         },
-        // Signal red — CTAs, active nav, progress
+        // Signal — ocean blue: CTAs, active nav, progress.
+        // 500 is the fill (5.5:1 under white text); 300 is the on-dark text
+        // tone, since 500 is too deep to read against the night base.
         electric: {
-          300: '#FF7A72',
-          400: '#F5453A',
-          500: '#E5231B',
-          600: '#C4160F',
-          700: '#96100B',
+          300: '#6FC8E4',
+          400: '#2E9CC9',
+          500: '#0B6E99',
+          600: '#07567A',
+          700: '#053E59',
         },
-        // Cool white gradient for display type
+        // Cream / beige — the warm counterweight to all that ocean.
+        cream: {
+          50: '#FCF9F2',
+          100: '#F6EFE0',
+          200: '#EADFC7',
+          300: '#D9CBAD',
+          400: '#BEAF8F',
+          500: '#9C8E72',
+          600: '#786C55',
+        },
+        // Warm off-white in place of pure white, so every hairline, label and
+        // ghost surface picks up a little cream without any extra markup.
+        white: '#FCFAF4',
+        // Body-copy ramp, warmed off Tailwind's cool default greys. Only the
+        // shades this app actually uses are overridden; the rest fall through.
+        gray: {
+          100: '#F3EDE1',
+          200: '#E4DAC7',
+          300: '#CEC3AC',
+          400: '#A79C86',
+          500: '#7F7563',
+        },
+        // Warm metal gradient for display type
         silver: {
-          100: '#FFFFFF',
-          200: '#E6EEF2',
-          300: '#C2D2DA',
-          400: '#94A9B4',
-          500: '#6B818D',
+          100: '#FCFAF4',
+          200: '#F1E9DA',
+          300: '#DED2BA',
+          400: '#B3A88F',
+          500: '#8A8069',
         },
-        // `brand` stays mapped so existing app screens keep working.
+        // `brand` stays mapped so the existing app screens keep working — now
+        // on the same ocean ramp as the marketing site, not the old copper.
         brand: {
-          50: '#fdf8f2',
-          100: '#f7ebdc',
-          200: '#eed6b9',
-          300: '#E3B778',
-          400: '#D49A5A',
-          500: '#B87333',
-          600: '#96602A',
-          700: '#6F461F',
-          800: '#4E3217',
-          900: '#33210F',
-          950: '#1C1108',
+          50: '#F0F9FD',
+          100: '#D7F0FA',
+          200: '#AEE1F2',
+          300: '#6FC8E4',
+          400: '#2E9CC9',
+          500: '#0B6E99',
+          600: '#095A7F',
+          700: '#074761',
+          800: '#053345',
+          900: '#04222E',
+          950: '#02141B',
         },
         accent: {
-          400: '#D49A5A',
-          500: '#B87333',
-          600: '#96602A',
+          400: '#2E9CC9',
+          500: '#0B6E99',
+          600: '#095A7F',
         },
       },
       fontFamily: {
@@ -79,15 +104,17 @@ export default {
       boxShadow: {
         glass: '0 8px 32px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.08)',
         'glass-lg': '0 20px 48px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.12)',
-        glow: '0 0 50px rgba(229, 35, 27, 0.14)',
-        'glow-cyan': '0 0 40px rgba(229, 35, 27, 0.30)',
-        'glow-purple': '0 0 40px rgba(245, 69, 58, 0.25)',
-        'glow-blue': '0 10px 34px rgba(229, 35, 27, 0.45)',
+        glow: '0 0 50px rgba(11, 110, 153, 0.18)',
+        'glow-cyan': '0 0 40px rgba(46, 156, 201, 0.32)',
+        'glow-purple': '0 0 40px rgba(111, 200, 228, 0.24)',
+        'glow-blue': '0 10px 34px rgba(11, 110, 153, 0.48)',
+        'glow-cream': '0 10px 40px rgba(234, 223, 199, 0.20)',
       },
       backgroundImage: {
-        'gradient-brand': 'linear-gradient(120deg, #F5453A 0%, #E5231B 50%, #C4160F 100%)',
+        'gradient-brand': 'linear-gradient(120deg, #2E9CC9 0%, #0B6E99 55%, #07567A 100%)',
+        'gradient-cream': 'linear-gradient(120deg, #FCF9F2 0%, #F6EFE0 50%, #D9CBAD 100%)',
         'gradient-silver':
-          'linear-gradient(180deg, #FFFFFF 0%, #E6EEF2 40%, #C2D2DA 75%, #94A9B4 100%)',
+          'linear-gradient(180deg, #FCF9F2 0%, #F1E9DA 40%, #DED2BA 75%, #B3A88F 100%)',
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         noise:
           "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E\")",

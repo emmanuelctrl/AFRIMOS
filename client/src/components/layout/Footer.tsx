@@ -89,7 +89,7 @@ export function Footer() {
                 <motion.p
                   initial={{ opacity: 0, y: -4 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="mt-2 text-xs text-electric-500"
+                  className="mt-2 text-xs text-electric-300"
                 >
                   Thanks — you're on the list.
                 </motion.p>
@@ -125,11 +125,11 @@ export function Footer() {
             href="mailto:admin@afrimos.et"
             className="flex items-center gap-2 transition-colors hover:text-white"
           >
-            <Mail className="h-4 w-4 text-electric-500" />
+            <Mail className="h-4 w-4 text-electric-300" />
             admin@afrimos.et
           </a>
           <span className="flex items-center gap-2">
-            <MapPin className="h-4 w-4 text-electric-500" />
+            <MapPin className="h-4 w-4 text-electric-300" />
             Addis Ababa, Ethiopia
           </span>
         </div>

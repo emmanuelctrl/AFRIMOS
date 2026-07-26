@@ -44,7 +44,7 @@ export function Navbar() {
       >
         <nav className="relative mx-auto flex max-w-[110rem] items-center justify-between">
           {/* Left: link pill group */}
-          <div className="hidden items-center gap-1 rounded-full border border-white/10 bg-base-900/70 p-1.5 backdrop-blur-xl lg:flex">
+          <div className="hidden items-center gap-1 rounded-full border border-cream-200/10 bg-base-900/70 p-1.5 backdrop-blur-xl lg:flex">
             {links.map((item) => {
               const active = location.pathname === item.to;
               return (
@@ -54,8 +54,8 @@ export function Navbar() {
                   className={cn(
                     'rounded-full px-5 py-2 text-xs font-semibold transition-colors duration-300',
                     active
-                      ? 'bg-electric-500 text-white shadow-glow-blue'
-                      : 'text-gray-400 hover:text-white'
+                      ? 'bg-electric-500 text-cream-50 shadow-glow-blue'
+                      : 'text-gray-400 hover:text-cream-100'
                   )}
                 >
                   {item.label}
@@ -66,7 +66,7 @@ export function Navbar() {
 
           {/* Centre: brand badge */}
           <div className="lg:absolute lg:left-1/2 lg:-translate-x-1/2">
-            <div className="flex items-center gap-2.5 rounded-2xl border border-white/10 bg-white/95 px-5 py-2.5 shadow-glass">
+            <div className="flex items-center gap-2.5 rounded-2xl border border-cream-300/40 bg-cream-50 px-5 py-2.5 shadow-glass">
               <Logo size={24} />
               <span className="leading-none">
                 <span className="block font-display text-base font-bold tracking-tight text-base-900">
@@ -83,10 +83,10 @@ export function Navbar() {
           <div className="flex items-center gap-2.5">
             <Link
               to={user ? dashboardPath : '/login'}
-              className="group hidden items-center gap-2 rounded-full bg-white px-5 py-2.5 text-xs font-semibold text-base-900 transition-transform duration-300 hover:scale-[1.03] sm:flex"
+              className="group hidden items-center gap-2 rounded-full bg-cream-100 px-5 py-2.5 text-xs font-semibold text-base-900 transition-transform duration-300 hover:scale-[1.03] sm:flex"
             >
               {user ? 'Dashboard' : 'Track inquiry'}
-              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-base-900 text-white">
+              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-base-900 text-cream-50">
                 <ArrowUpRight className="h-3 w-3 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
               </span>
             </Link>
@@ -94,10 +94,10 @@ export function Navbar() {
             <button
               type="button"
               onClick={() => navigate(user ? dashboardPath : '/signup')}
-              className="group hidden items-center gap-2 rounded-full bg-electric-500 px-5 py-2.5 text-xs font-semibold text-white shadow-glow-blue transition-all duration-300 hover:bg-electric-400 sm:flex"
+              className="group hidden items-center gap-2 rounded-full bg-electric-500 px-5 py-2.5 text-xs font-semibold text-cream-50 shadow-glow-blue transition-all duration-300 hover:bg-electric-400 hover:text-base-900 sm:flex"
             >
               Get in touch with us
-              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-white/20">
+              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-cream-50/25">
                 <ArrowUpRight className="h-3 w-3 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
               </span>
             </button>
@@ -107,7 +107,7 @@ export function Navbar() {
               aria-label="Open menu"
               aria-expanded={open}
               onClick={() => setOpen(true)}
-              className="flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-base-900/70 text-white backdrop-blur-xl transition-colors hover:bg-white/10 lg:hidden"
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-cream-200/10 bg-base-900/70 text-cream-50 backdrop-blur-xl transition-colors hover:bg-cream-100/10 lg:hidden"
             >
               <Menu className="h-5 w-5" />
             </button>
@@ -134,7 +134,7 @@ export function Navbar() {
                 initial={{ rotate: -90, scale: 0.8, opacity: 0 }}
                 animate={{ rotate: 0, scale: 1, opacity: 1 }}
                 transition={{ duration: 0.45, ease: EASE }}
-                className="flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white"
+                className="flex h-11 w-11 items-center justify-center rounded-full border border-cream-200/10 bg-cream-100/[0.06] text-cream-50"
               >
                 <X className="h-5 w-5" />
               </motion.button>
@@ -151,7 +151,7 @@ export function Navbar() {
                   <Link
                     to={item.to}
                     onClick={() => setOpen(false)}
-                    className="block py-2 font-display text-4xl font-medium tracking-tight text-white"
+                    className="block py-2 font-display text-4xl font-medium tracking-tight text-cream-50"
                   >
                     {item.label}
                   </Link>
@@ -171,7 +171,7 @@ export function Navbar() {
                   setOpen(false);
                   navigate(user ? dashboardPath : '/signup');
                 }}
-                className="flex w-full items-center justify-center gap-2 rounded-full bg-electric-500 px-6 py-3.5 text-sm font-semibold text-white"
+                className="flex w-full items-center justify-center gap-2 rounded-full bg-electric-500 px-6 py-3.5 text-sm font-semibold text-cream-50"
               >
                 {user ? 'Go to dashboard' : 'Get in touch with us'}
                 <ArrowUpRight className="h-4 w-4" />
@@ -180,7 +180,7 @@ export function Navbar() {
                 <Link
                   to="/login"
                   onClick={() => setOpen(false)}
-                  className="text-center text-sm font-medium text-gray-400 transition-colors hover:text-white"
+                  className="text-center text-sm font-medium text-gray-400 transition-colors hover:text-cream-100"
                 >
                   Already have an account? Sign in
                 </Link>

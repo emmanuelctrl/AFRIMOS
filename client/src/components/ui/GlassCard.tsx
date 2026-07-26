@@ -36,7 +36,7 @@ export function GlassCard({
   // Specular highlight follows the pointer, smoothed by the same spring.
   const glowX = useTransform(useSpring(px, spring), (v) => `${v * 100}%`);
   const glowY = useTransform(useSpring(py, spring), (v) => `${v * 100}%`);
-  const background = useMotionTemplate`radial-gradient(320px circle at ${glowX} ${glowY}, rgba(212,154,90,0.14), transparent 70%)`;
+  const background = useMotionTemplate`radial-gradient(320px circle at ${glowX} ${glowY}, rgba(234,223,199,0.14), transparent 70%)`;
 
   const onPointerMove = (event: ReactPointerEvent<HTMLDivElement>) => {
     if (reduced || !ref.current) return;

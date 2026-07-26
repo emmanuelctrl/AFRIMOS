@@ -5,6 +5,8 @@ import { ArrowLeft, ArrowRight, ArrowUpRight } from 'lucide-react';
 import { EASE } from '@/lib/motion';
 import { useAuth } from '@/context/AuthContext';
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
+import { useHeroPhoto } from '@/hooks/useHeroPhoto';
+import { LazyContainerShowpiece } from '@/components/three/LazyContainerShowpiece';
 import { HeroBackdrop } from './HeroBackdrop';
 
 interface Slide {
@@ -51,10 +53,14 @@ export function Hero() {
   const { user } = useAuth();
   const reduced = usePrefersReducedMotion();
   const [index, setIndex] = useState(0);
+  // When the photograph is the backdrop the 3D yard never mounts, so the
+  // container gets composited on top of the photo instead of inside it.
+  const { status: photo } = useHeroPhoto();
 
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] });
   const sceneY = useTransform(scrollYProgress, [0, 1], ['0%', '12%']);
   const sceneScale = useTransform(scrollYProgress, [0, 1], [1, 1.1]);
+  const showpieceY = useTransform(scrollYProgress, [0, 1], ['0%', '-22%']);
   const uiOpacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
 
   const go = useCallback((dir: number) => {
@@ -97,6 +103,26 @@ export function Hero() {
         className="pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-2/5 bg-gradient-to-t from-base-900 via-base-900/80 to-transparent"
       />
 
+      {/* ---- The cargo, out in front ----
+          Sits above the vignettes and moves against the backdrop as you
+          scroll, so it reads as breaking out of the frame rather than sitting
+          inside the picture. Only needed when a photograph is the backdrop —
+          the 3D yard already has a container in it. Held back below md,
+          where there is no room beside the copy and the photograph is
+          already a container yard. */}
+      {photo === 'ready' && (
+        <motion.div
+          aria-hidden="true"
+          style={reduced ? undefined : { y: showpieceY }}
+          className="pointer-events-none absolute z-[2] hidden md:bottom-[14%] md:right-[-14%] md:block md:h-[32%] md:w-[74%] lg:bottom-auto lg:top-[42%] lg:h-[42%] lg:w-[54%] lg:-translate-y-1/2 xl:right-[-4%] xl:w-[50%]"
+        >
+          {/* Contact shadow: without something dark underneath, a floating
+              object looks pasted on rather than lit. */}
+          <div className="absolute inset-x-[8%] bottom-[6%] h-[22%] rounded-[50%] bg-black/55 blur-3xl" />
+          <LazyContainerShowpiece className="absolute inset-0" />
+        </motion.div>
+      )}
+
       {/* ---- Copy + stats ---- */}
       <motion.div
         style={reduced ? undefined : { opacity: uiOpacity }}
@@ -112,7 +138,7 @@ export function Hero() {
                 exit={{ opacity: 0, y: -14, transition: { duration: 0.22, ease: 'easeIn' } }}
                 className="min-h-[13rem] sm:min-h-[15rem]"
               >
-                <h1 className="font-display text-4xl font-bold leading-[1.08] tracking-tight text-white sm:text-5xl lg:text-[3.4rem]">
+                <h1 className="font-display text-4xl font-bold leading-[1.08] tracking-tight text-cream-50 sm:text-5xl lg:text-[3.4rem]">
                   {slide.heading.map((line) => (
                     <span key={line} className="block">
                       {line}
@@ -133,10 +159,10 @@ export function Hero() {
               transition={{ duration: 0.8, delay: 0.35, ease: EASE }}
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.98 }}
-              className="group mt-9 inline-flex items-center gap-3 rounded-full bg-white py-2 pl-6 pr-2 text-sm font-semibold text-base-900"
+              className="group mt-9 inline-flex items-center gap-3 rounded-full bg-cream-100 py-2 pl-6 pr-2 text-sm font-semibold shadow-glow-cream text-base-900"
             >
               {user ? 'Go to dashboard' : 'See how it works'}
-              <span className="flex h-9 w-9 items-center justify-center rounded-full bg-base-900 text-white">
+              <span className="flex h-9 w-9 items-center justify-center rounded-full bg-base-900 text-cream-50">
                 <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
               </span>
             </motion.button>
@@ -155,7 +181,7 @@ export function Hero() {
             >
               {slide.stats.map((stat) => (
                 <div key={stat.label}>
-                  <dt className="font-display text-3xl font-bold text-white sm:text-4xl">
+                  <dt className="font-display text-3xl font-bold text-cream-50 sm:text-4xl">
                     {stat.value}
                   </dt>
                   <dd className="mt-1 max-w-[9rem] text-xs leading-snug text-gray-400 sm:text-sm">
@@ -167,12 +193,12 @@ export function Hero() {
           </AnimatePresence>
 
           {/* Slide control */}
-          <div className="flex items-center gap-4 self-start rounded-full border border-white/10 bg-base-900/70 px-3 py-2.5 backdrop-blur-xl lg:self-auto">
+          <div className="flex items-center gap-4 self-start rounded-full border border-cream-200/10 bg-base-900/70 px-3 py-2.5 backdrop-blur-xl lg:self-auto">
             <button
               type="button"
               aria-label="Previous slide"
               onClick={() => go(-1)}
-              className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20"
+              className="flex h-9 w-9 items-center justify-center rounded-full bg-cream-100/10 text-cream-50 transition-colors hover:bg-cream-100/20"
             >
               <ArrowLeft className="h-4 w-4" />
             </button>
@@ -180,13 +206,13 @@ export function Hero() {
               type="button"
               aria-label="Next slide"
               onClick={() => go(1)}
-              className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-base-900 transition-transform hover:scale-105"
+              className="flex h-9 w-9 items-center justify-center rounded-full bg-cream-100 text-base-900 transition-transform hover:scale-105"
             >
               <ArrowRight className="h-4 w-4" />
             </button>
 
             {/* Progress track */}
-            <div className="relative h-px w-24 bg-white/15 sm:w-32">
+            <div className="relative h-px w-24 bg-cream-200/20 sm:w-32">
               <motion.span
                 key={index}
                 initial={{ scaleX: 0 }}
@@ -195,11 +221,11 @@ export function Hero() {
                   duration: reduced ? 0 : AUTOPLAY_MS / 1000,
                   ease: 'linear',
                 }}
-                className="absolute inset-0 origin-left bg-electric-500"
+                className="absolute inset-0 origin-left bg-electric-400"
               />
             </div>
 
-            <span className="pr-2 font-display text-lg font-semibold tabular-nums text-white">
+            <span className="pr-2 font-display text-lg font-semibold tabular-nums text-cream-50">
               {String(index + 1).padStart(2, '0')}
             </span>
           </div>

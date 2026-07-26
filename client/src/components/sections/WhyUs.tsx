@@ -23,7 +23,7 @@ export function WhyUs() {
           <Reveal>
             <p className="mb-5 flex items-center gap-2.5 text-xs font-semibold uppercase tracking-[0.22em] text-gray-400">
               <span className="flex h-6 w-6 items-center justify-center rounded-full bg-electric-500/20 ring-1 ring-electric-400/40">
-                <Compass className="h-3.5 w-3.5 text-electric-500" />
+                <Compass className="h-3.5 w-3.5 text-electric-300" />
               </span>
               Why us
             </p>
@@ -60,7 +60,7 @@ export function WhyUs() {
 
           {/* Stacked crate illustration */}
           <div className="relative mt-6 flex h-40 items-end justify-center gap-2 overflow-hidden rounded-xl bg-gradient-to-b from-electric-500/15 via-base-700/60 to-base-800">
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_20%,rgba(212,154,90,0.28),transparent_65%)]" />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_20%,rgba(234,223,199,0.28),transparent_65%)]" />
             {[0.55, 0.8, 0.65, 0.9, 0.7].map((h, i) => (
               <motion.span
                 key={i}
@@ -68,13 +68,13 @@ export function WhyUs() {
                 whileInView={{ height: `${h * 100}%` }}
                 viewport={viewportOnce}
                 transition={{ duration: 0.8, delay: 0.15 + i * 0.08, ease: EASE }}
-                className="relative w-8 rounded-t-sm bg-gradient-to-t from-electric-700 to-electric-400 shadow-[0_0_18px_rgba(184,115,51,0.35)]"
+                className="relative w-8 rounded-t-sm bg-gradient-to-t from-electric-700 to-electric-400 shadow-[0_0_18px_rgba(46,156,201,0.35)]"
               />
             ))}
           </div>
 
           <div className="mt-5 flex items-center gap-2 text-xs text-gray-400">
-            <Boxes className="h-3.5 w-3.5 text-electric-500" />
+            <Boxes className="h-3.5 w-3.5 text-electric-300" />
             585+ active listings
           </div>
         </motion.a>

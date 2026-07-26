@@ -5,6 +5,7 @@ import { COMMODITIES, LISTINGS } from '@/lib/site';
 import { EASE } from '@/lib/motion';
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
 import { SectionHeading } from '@/components/ui/SectionHeading';
+import { ProductImage } from '@/components/ui/ProductImage';
 
 interface Project {
   name: string;
@@ -117,9 +118,10 @@ export function Showcase() {
               onClick={(e) => e.stopPropagation()}
               className="relative w-full max-w-2xl overflow-hidden rounded-3xl border border-white/10 bg-base-800/90 shadow-glass-lg backdrop-blur-2xl"
             >
-              <div className="relative h-40 overflow-hidden bg-gradient-to-br from-electric-500/25 via-electric-600/15 to-transparent">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(212,154,90,0.35),transparent_60%)]" />
-                <h3 className="absolute bottom-5 left-6 font-display text-4xl font-semibold tracking-tight text-white">
+              <div className="relative h-48 overflow-hidden">
+                <ProductImage name={active.name} className="absolute inset-0" />
+                <div className="absolute inset-0 bg-gradient-to-t from-base-800 via-base-800/45 to-transparent" />
+                <h3 className="absolute bottom-5 left-6 font-display text-4xl font-semibold tracking-tight text-cream-50">
                   {active.name}
                 </h3>
               </div>
@@ -179,11 +181,27 @@ function ShowcaseCard({
       onClick={onOpen}
       whileHover={{ y: -10 }}
       transition={{ type: 'spring', stiffness: 240, damping: 22 }}
-      className="group relative h-[22rem] w-[19rem] shrink-0 overflow-hidden rounded-3xl border border-white/10 bg-white/10 p-7 text-left shadow-glass backdrop-blur-xl sm:h-[24rem] sm:w-[21rem]"
+      className="group relative h-[22rem] w-[19rem] shrink-0 overflow-hidden rounded-3xl border border-cream-200/10 bg-base-800 p-7 text-left shadow-glass sm:h-[24rem] sm:w-[21rem]"
     >
+      {/* The goods themselves, filling the card, with the copy sitting in a
+          gradient well at the foot so it stays readable over the pile. */}
+      <ProductImage
+        name={project.name}
+        className="pointer-events-none absolute inset-0 transition-transform duration-700 group-hover:scale-105"
+      />
+      {/* Two scrims rather than one wash, so the middle of the card — where
+          the goods actually are — stays clear. */}
       <div
         aria-hidden="true"
-        className={`absolute inset-0 bg-gradient-to-br ${gradient} opacity-70 transition-opacity duration-500 group-hover:opacity-100`}
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-3/5 bg-gradient-to-t from-base-900 via-base-900/80 to-transparent"
+      />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-base-900/75 to-transparent"
+      />
+      <div
+        aria-hidden="true"
+        className={`pointer-events-none absolute inset-0 bg-gradient-to-br ${gradient} opacity-0 mix-blend-overlay transition-opacity duration-500 group-hover:opacity-60`}
       />
       <span
         aria-hidden="true"

@@ -8,22 +8,22 @@ const LOGO_PATH =
 function Logo() {
   return (
     <Link to="/" className="flex items-center gap-2">
-      <svg viewBox="0 0 256 256" width="26" height="26" fill="white" aria-hidden="true">
+      <svg viewBox="0 0 256 256" width="26" height="26" fill="#FCF9F2" aria-hidden="true">
         <path d={LOGO_PATH} />
       </svg>
-      <span className="text-lg font-bold tracking-tight text-white">AFRIMOS</span>
+      <span className="text-lg font-bold tracking-tight text-cream-50">AFRIMOS</span>
     </Link>
   );
 }
 
-/* Fixed dark backdrop with crimson glows that the glass surfaces refract against */
+/* Fixed dark backdrop with ocean and cream glows for the glass to refract */
 function BackgroundMesh() {
   return (
     <div aria-hidden="true" className="pointer-events-none fixed inset-0 -z-10 overflow-hidden bg-ink-900">
       <div className="absolute -left-40 -top-40 h-[30rem] w-[30rem] rounded-full bg-brand-600/25 blur-3xl" />
       <div className="absolute -right-48 top-1/4 h-[34rem] w-[34rem] rounded-full bg-brand-800/30 blur-3xl" />
       <div className="absolute bottom-[-10rem] left-1/4 h-[26rem] w-[26rem] rounded-full bg-brand-500/15 blur-3xl" />
-      <div className="absolute bottom-1/3 right-1/3 h-72 w-72 rounded-full bg-rose-500/10 blur-3xl" />
+      <div className="absolute bottom-1/3 right-1/3 h-72 w-72 rounded-full bg-cream-200/[0.07] blur-3xl" />
     </div>
   );
 }

@@ -10,21 +10,21 @@ interface LogoProps {
   withWordmark?: boolean;
 }
 
-/** AFRIMOS geometric mark with a cyan→purple gradient fill. */
+/** AFRIMOS geometric mark, filled ocean-blue into cream. */
 export function Logo({ className, size = 28, withWordmark = false }: LogoProps) {
   return (
     <Link to="/" aria-label="AFRIMOS home" className={cn('flex items-center gap-2.5', className)}>
       <svg viewBox="0 0 256 256" width={size} height={size} aria-hidden="true" className="shrink-0">
         <defs>
           <linearGradient id="afrimos-mark" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stopColor="#E3B778" />
-            <stop offset="100%" stopColor="#B87333" />
+            <stop offset="0%" stopColor="#2E9CC9" />
+            <stop offset="100%" stopColor="#0B6E99" />
           </linearGradient>
         </defs>
         <path d={LOGO_PATH} fill="url(#afrimos-mark)" />
       </svg>
       {withWordmark && (
-        <span className="font-display text-lg font-semibold tracking-tight text-white">AFRIMOS</span>
+        <span className="font-display text-lg font-semibold tracking-tight text-cream-50">AFRIMOS</span>
       )}
     </Link>
   );

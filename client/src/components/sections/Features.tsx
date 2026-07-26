@@ -36,7 +36,7 @@ export function Features() {
                     feature.accent
                   )}
                 >
-                  <Icon className="h-5 w-5 text-electric-500" strokeWidth={1.75} />
+                  <Icon className="h-5 w-5 text-electric-300" strokeWidth={1.75} />
                 </motion.div>
 
                 <h3 className="mt-6 font-display text-xl font-semibold tracking-tight text-white">
