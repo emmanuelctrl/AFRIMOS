@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { COMMODITIES } from '@/lib/site';
 import { viewportOnce } from '@/lib/motion';
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
+import { ProductImage } from '@/components/ui/ProductImage';
 
 // Ocean into cream: the ring reads as the tide running up onto sand.
 const PALETTES = [
@@ -50,7 +51,17 @@ export function DemandRings({ variant = 0 }: { variant?: number }) {
             return (
               <div key={c.name} className="flex flex-col items-center">
                 <div className="relative h-[86px] w-[86px]">
-                  <svg viewBox="0 0 86 86" className="h-full w-full -rotate-90">
+                  {/* The goods sit inside the ring, so the chart is also a
+                      picture of what is being measured. */}
+                  <ProductImage
+                    name={c.name}
+                    className="absolute inset-[9px] rounded-full"
+                  />
+                  <div
+                    aria-hidden="true"
+                    className="absolute inset-[9px] rounded-full bg-base-900/30"
+                  />
+                  <svg viewBox="0 0 86 86" className="relative h-full w-full -rotate-90">
                     <defs>
                       <linearGradient id={gid} x1="0" y1="0" x2="1" y2="1">
                         <stop offset="0%" stopColor={palette.from} />
