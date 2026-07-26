@@ -1,0 +1,93 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+
+# Least privilege: these jobs only read the tree.
+permissions:
+  contents: read
+
+# A new push to the same PR makes the in-flight run irrelevant.
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  client:
+    name: client typecheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          # client/package.json asks for >=18; 20 is the current LTS.
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: client/package-lock.json
+
+      # `ci` rather than `install`, so the lockfile is honoured exactly and a
+      # drifting dependency fails here instead of silently resolving.
+      - name: Install dependencies
+        run: npm ci
+        working-directory: client
+
+      - name: Typecheck
+        run: npm run typecheck
+        working-directory: client
+
+  server:
+    name: server tests
+    runs-on: ubuntu-latest
+
+    # The auth tests run against the real routes, which means a real database.
+    # Without one they skip, and the guarantees they exist to protect — that no
+    # unapproved account reads marketplace data, and that the admin password
+    # cannot be guessed at speed — would stop being checked.
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: afrimos
+          POSTGRES_PASSWORD: afrimos
+          POSTGRES_DB: afrimos_test
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      DATABASE_URL: postgresql://afrimos:afrimos@localhost:5432/afrimos_test
+      JWT_SECRET: ci-secret-at-least-32-characters-long
+      JWT_REFRESH_SECRET: ci-refresh-at-least-32-characters-long
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: server/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+        working-directory: server
+
+      # `db push` rather than `migrate deploy`: this database is thrown away
+      # after the run, so the schema is all that matters, not its history.
+      - name: Create the schema
+        run: npx prisma db push
+        working-directory: server
+
+      # The gate tests sign in as the seeded accounts.
+      - name: Seed
+        run: npm run seed
+        working-directory: server
+
+      - name: Test
+        run: npm test
+        working-directory: server

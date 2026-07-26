@@ -13,6 +13,17 @@ import { notFound, errorHandler } from './middleware/error.js';
 export function createApp() {
   const app = express();
 
+  // Rate limiting counts per client address, so `req.ip` has to be the real
+  // caller. Behind a proxy (nginx, Render, Fly, a load balancer) set
+  // TRUST_PROXY to the number of hops in front — otherwise every request
+  // carries the proxy's address and the whole world shares one bucket.
+  // Left off by default: trusting a header nobody is setting would let a
+  // directly-exposed server be talked out of its own limits.
+  if (process.env.TRUST_PROXY) {
+    const hops = Number(process.env.TRUST_PROXY);
+    app.set('trust proxy', Number.isFinite(hops) ? hops : process.env.TRUST_PROXY);
+  }
+
   app.use(
     cors({
       origin: process.env.CORS_ORIGIN || process.env.FRONTEND_URL || 'http://localhost:3000',

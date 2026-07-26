@@ -6,9 +6,34 @@ import { prisma } from '../lib/prisma.js';
 import { signAccessToken, signRefreshToken, verifyRefreshToken } from '../lib/jwt.js';
 import { sendVerificationEmail } from '../lib/email.js';
 import { validate } from '../middleware/validate.js';
+import { rateLimitFailures, clientIp } from '../middleware/rateLimit.js';
 import { requireAuth } from '../middleware/auth.js';
 
 const router = Router();
+
+// The admin password is short by request (default "0703"), so the only thing
+// standing between it and a script is this: 5 wrong guesses per IP per 15
+// minutes turns a 10,000-key space into years rather than seconds. There is
+// only one admin credential, so pooling attempts by address is the point: if
+// this is reached, someone is guessing.
+const adminLoginLimiter = rateLimitFailures({
+  name: 'admin-login',
+  max: 5,
+  windowMs: 15 * 60 * 1000,
+  message: 'Too many incorrect attempts. Try again in a few minutes.',
+});
+
+// Ordinary sign-in is a longer password against a known email, so the limit is
+// looser — enough to stop credential stuffing, not enough to punish typos.
+// Keyed by address *and* email: behind a proxy or a shared office IP, one
+// person fat-fingering their password must not lock out everyone else.
+const loginLimiter = rateLimitFailures({
+  name: 'login',
+  max: 10,
+  windowMs: 15 * 60 * 1000,
+  message: 'Too many failed sign-in attempts. Try again in a few minutes.',
+  key: (req) => `${clientIp(req)}|${String(req.body?.email || '').toLowerCase()}`,
+});
 
 const publicUser = (u) => ({
   id: u.id,
@@ -75,15 +100,17 @@ router.post('/signup', validate(signupSchema), async (req, res, next) => {
 
 const loginSchema = z.object({ email: z.string().email(), password: z.string() });
 
-router.post('/login', validate(loginSchema), async (req, res, next) => {
+router.post('/login', loginLimiter, validate(loginSchema), async (req, res, next) => {
   try {
     const user = await prisma.user.findUnique({
       where: { email: req.body.email },
       include: { supplierProfile: { select: { id: true } } },
     });
     if (!user || !(await bcrypt.compare(req.body.password, user.password))) {
+      req.limiter.recordFailure();
       return res.status(401).json({ error: 'Invalid email or password' });
     }
+    req.limiter.reset();
     if (user.verificationStatus === 'rejected') {
       return res.status(403).json({ error: 'Your account has been rejected. Contact admin@afrimos.et for details.' });
     }
@@ -108,10 +135,10 @@ const adminLoginSchema = z.object({ password: z.string().min(1, 'Password is req
 
 // Password-only admin login. Authenticates against the admin account's stored
 // (bcrypt-hashed) password — default "0703", changeable from admin settings.
-// NOTE: a short numeric password is easy to brute force; there is no rate
-// limiting here, so set a stronger one via the admin settings page in anything
-// beyond a trusted/internal deployment.
-router.post('/admin-login', validate(adminLoginSchema), async (req, res, next) => {
+// A four-digit password is only 10,000 possibilities: the rate limit above is
+// doing the real work here, so keep it in place, and prefer a longer password
+// from the admin settings page for anything public.
+router.post('/admin-login', adminLoginLimiter, validate(adminLoginSchema), async (req, res, next) => {
   try {
     const admin = await prisma.user.findFirst({
       where: { role: 'admin' },
@@ -120,7 +147,11 @@ router.post('/admin-login', validate(adminLoginSchema), async (req, res, next) =
     });
     if (!admin) return res.status(500).json({ error: 'No admin account is configured' });
     const ok = await bcrypt.compare(req.body.password, admin.password);
-    if (!ok) return res.status(401).json({ error: 'Incorrect password' });
+    if (!ok) {
+      req.limiter.recordFailure();
+      return res.status(401).json({ error: 'Incorrect password' });
+    }
+    req.limiter.reset();
     res.json({
       userId: admin.id,
       token: signAccessToken(admin),

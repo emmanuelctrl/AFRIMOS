@@ -31,14 +31,15 @@ interface Item {
   variant: number;
 }
 
-/**
- * Jittered grid rather than pure random: pure random clumps and leaves
- * bald patches, which reads as a mistake at this size.
- */
+/** Square canvas: the cards are portrait, so a wide frame gets sliced away. */
 const SIZE = 240;
 /** Every commodity draws three variants of its item. */
 const VARIANTS = 3;
 
+/**
+ * Jittered grid rather than pure random: pure random clumps and leaves
+ * bald patches, which reads as a mistake at this size.
+ */
 function scatter(seed: number, cols: number, rows: number, variants: number): Item[] {
   const r = rng(seed);
   const out: Item[] = [];
